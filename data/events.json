@@ -7,6 +7,8 @@
         "slug": "jennys-dinner",
         "title": "Jenny's Dinner",
         "description": "Friendly atmosphere. Great selection of local brews. ",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-08T17:05:50.134Z",
         "location":
         {
             "address": "Hamilton, ON, Canada",
@@ -22,6 +24,8 @@
         "slug": "picnic-in-the-park",
         "title": "Picnic In The Park",
         "description": "Amazing selection of everything sour, fermented and tart. ",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-20T17:05:50.134Z",
         "location":
         {
             "address": "King William Street, Hamilton, ON, Canada",
@@ -37,6 +41,8 @@
         "slug": "the-french",
         "title": "The French",
         "description": "High end french restaurant on the hippest street in town. ",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-12T17:05:50.134Z",
         "location":
         {
             "address": "The French, King William Street, Hamilton, ON, Canada",
@@ -52,6 +58,8 @@
         "slug": "rust-city-brewery",
         "title": "Rust City Brewery",
         "description": "A family run urban coffee house, craft beer pub and brewpub combining our love of coffee, beer and people",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-18T14:05:50.134Z",
         "location":
         {
             "address": "27 King William Street, Hamilton, ON, Canada",
@@ -67,6 +75,8 @@
         "slug": "berkeley-north",
         "title": "Berkeley North",
         "description": "Set in the revitalized James St. North neighbourhood, Berkeley North is a West Coast inspired restaurant located on historic King William Street in the heart of downtown Hamilton.\r\n",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-28T17:05:50.134Z",
         "location":
         {
             "address": "31 King William St, Hamilton, ON, Canada",
@@ -82,6 +92,8 @@
         "slug": "mezcal-tacos--tequila",
         "title": "Mezcal Tacos & Tequila",
         "description": "Familiar Mexican fare with a gourmet twist & housemade margaritas, plus a lively late-night scene.\r\n",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-08T17:05:50.134Z",
         "location":
         {
             "address": "150 James St S, Hamilton, ON L8P 3A2, Canada",
@@ -97,6 +109,8 @@
         "slug": "two-black-sheep",
         "title": "Two Black Sheep",
         "description": "Intimate, rustic-chic bar providing oysters, charcuterie, cheese plates, wine & craft cocktails.\r\n",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-12T17:05:50.134Z",
         "location":
         {
             "address": "163 John St S, Hamilton, ON L8N 2C3, Canada",
@@ -112,6 +126,8 @@
         "slug": "donut-monster",
         "title": "Donut Monster",
         "description": "Small-batch, from-scratch donuts available at select coffee shops on Thursdays, Fridays, and Saturdays.",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-24T17:05:50.134Z",
         "location":
         {
             "address": "The Kitchen Collective, King Street East, Hamilton, ON, Canada",
@@ -127,6 +143,8 @@
         "slug": "the-harbour-diner",
         "title": "The Harbour Diner",
         "description": "Classic diner eats like eggs Benedict & club sandwiches star at this charming, old-timey nook.\r\n",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-01T17:05:50.134Z",
         "location":
         {
             "address": "The Harbour Diner, James Street North, Hamilton, ON, Canada",
@@ -142,6 +160,8 @@
         "slug": "charred",
         "title": "Charred",
         "description": "BBQ chicken prepared Portugese style over an open charcoal pit.",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-02T17:05:50.134Z",
         "location":
         {
             "address": "Charred Rotisserie House, James Street North, Hamilton, ON, Canada",
@@ -157,6 +177,8 @@
         "slug": "green-bar",
         "title": "Green Bar",
         "description": "Cheery counter-serve serving organic, health-conscious fare such as smoothies & simple vegan eats.\r\n",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-08T17:05:50.134Z",
         "location":
         {
             "address": "Green Bar, James Street North, Hamilton, ON, Canada",
@@ -172,6 +194,8 @@
         "slug": "work",
         "title": "Work",
         "description": "Dive bar, unreal nachos and huge selection of beers on both on tap and in bottle. ",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-15T17:05:50.134Z",
         "location":
         {
             "address": "Work Restaurant, James Street North, Hamilton, ON, Canada",
@@ -187,6 +211,8 @@
         "slug": "born--raised",
         "title": "Born & Raised",
         "description": "Wood fired Pizzas, oysters and a modern take on classic Italian dishes. Great collection of locals beers. ",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-20T17:05:50.134Z",
         "location":
         {
             "address": "Born & Raised, James Street North, Hamilton, ON, Canada",
@@ -202,6 +228,8 @@
         "slug": "the-burnt-tongue",
         "title": "The Burnt Tongue",
         "description": "Counter-serve joint with an ever-changing selection of elevated soups, plus burgers & other fare.\r\n",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-05-01T17:05:50.134Z",
         "location":
         {
             "address": "The Burnt Tongue, Cannon Street East, Hamilton, ON, Canada",
@@ -217,6 +245,8 @@
         "slug": "bar-izakaya",
         "title": "Bar Izakaya",
         "description": "Incorporating local meats and produce with the finest Japanese ingredients. The menu consists of Rice bowls and Ramen, while the evening menu is served family style with small & medium sharing plates and house board options. ",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-07-08T17:05:50.134Z",
         "location":
         {
             "address": "Bar Izakaya, James Street North, Hamilton, ON, Canada",
@@ -232,6 +262,8 @@
         "slug": "mulberry-coffee",
         "title": "Mulberry Coffee",
         "description": "Chill cafe in the former lobby of an 1880s hotel serving coffee, sweets & panini, plus cocktails.\r\n",
+        "author": "58c039018060197ca0b52d4c",
+        "date": "2019-04-22T17:05:50.134Z",
         "location":
         {
             "address": "Mulberry Street Coffeehouse, James Street North, Hamilton, ON, Canada",

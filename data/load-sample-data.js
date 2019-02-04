@@ -11,6 +11,7 @@ const Event = require('../models/Event');
 
 
 const users = JSON.parse(fs.readFileSync(__dirname + '/users.json', 'utf-8'));
+const events = JSON.parse(fs.readFileSync(__dirname + '/events.json', 'utf-8'));
 
 async function deleteData() {
   console.log('😢😢 Goodbye Data...');

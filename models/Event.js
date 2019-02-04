@@ -9,6 +9,10 @@ const eventSchema = new Schema({
       trim: true,
       required: "You must add an event name!"
   },
+  description:{
+      type: String,
+      trim: true,
+  },
   slug: String,
   created: {
       type: Date,
@@ -50,3 +54,5 @@ const eventSchema = new Schema({
 
   // attendees: [User], you can do through virtuals
 })
+
+module.exports = mongoose.model('Event', eventSchema);

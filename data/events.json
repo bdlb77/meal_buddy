@@ -1,0 +1,242 @@
+[
+    {
+        "_id": "58c039938060197ca0b52d4d",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "jennys-dinner",
+        "title": "Jenny's Dinner",
+        "description": "Friendly atmosphere. Great selection of local brews. ",
+        "location":
+        {
+            "address": "Hamilton, ON, Canada",
+            "coordinates": [-79.87110239999998, 43.2557206],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c039ee8060197ca0b52d4e",
+        "minCapacity": 2,
+        "maxCapacity": 8,
+        "price": 560,
+        "slug": "picnic-in-the-park",
+        "title": "Picnic In The Park",
+        "description": "Amazing selection of everything sour, fermented and tart. ",
+        "location":
+        {
+            "address": "King William Street, Hamilton, ON, Canada",
+            "coordinates": [-79.85870940000001, 43.25482439999999],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c03a428060197ca0b52d4f",
+        "minCapacity": 2,
+        "maxCapacity": 9,
+        "price": 560,
+        "slug": "the-french",
+        "title": "The French",
+        "description": "High end french restaurant on the hippest street in town. ",
+        "location":
+        {
+            "address": "The French, King William Street, Hamilton, ON, Canada",
+            "coordinates": [-79.8674666, 43.257414],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c03a958060197ca0b52d50",
+        "minCapacity": 1,
+        "maxCapacity": 3,
+        "price": 560,
+        "slug": "rust-city-brewery",
+        "title": "Rust City Brewery",
+        "description": "A family run urban coffee house, craft beer pub and brewpub combining our love of coffee, beer and people",
+        "location":
+        {
+            "address": "27 King William Street, Hamilton, ON, Canada",
+            "coordinates": [-79.8677515, 43.2574964],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c057838060197ca0b52d54",
+        "minCapacity": 2,
+        "maxCapacity": 7,
+        "price": 560,
+        "slug": "berkeley-north",
+        "title": "Berkeley North",
+        "description": "Set in the revitalized James St. North neighbourhood, Berkeley North is a West Coast inspired restaurant located on historic King William Street in the heart of downtown Hamilton.\r\n",
+        "location":
+        {
+            "address": "31 King William St, Hamilton, ON, Canada",
+            "coordinates": [-79.86767780000002, 43.25747380000001],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c05aef8060197ca0b52d55",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "mezcal-tacos--tequila",
+        "title": "Mezcal Tacos & Tequila",
+        "description": "Familiar Mexican fare with a gourmet twist & housemade margaritas, plus a lively late-night scene.\r\n",
+        "location":
+        {
+            "address": "150 James St S, Hamilton, ON L8P 3A2, Canada",
+            "coordinates": [-79.8712961, 43.2522698],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c05b558060197ca0b52d56",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "two-black-sheep",
+        "title": "Two Black Sheep",
+        "description": "Intimate, rustic-chic bar providing oysters, charcuterie, cheese plates, wine & craft cocktails.\r\n",
+        "location":
+        {
+            "address": "163 John St S, Hamilton, ON L8N 2C3, Canada",
+            "coordinates": [-79.8681206, 43.2517517],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c05bcd8060197ca0b52d57",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "donut-monster",
+        "title": "Donut Monster",
+        "description": "Small-batch, from-scratch donuts available at select coffee shops on Thursdays, Fridays, and Saturdays.",
+        "location":
+        {
+            "address": "The Kitchen Collective, King Street East, Hamilton, ON, Canada",
+            "coordinates": [-79.84285160000002, 43.2515332],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c05c208060197ca0b52d58",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "the-harbour-diner",
+        "title": "The Harbour Diner",
+        "description": "Classic diner eats like eggs Benedict & club sandwiches star at this charming, old-timey nook.\r\n",
+        "location":
+        {
+            "address": "The Harbour Diner, James Street North, Hamilton, ON, Canada",
+            "coordinates": [-79.86328909999997, 43.2694073],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c05f928060197ca0b52d59",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "charred",
+        "title": "Charred",
+        "description": "BBQ chicken prepared Portugese style over an open charcoal pit.",
+        "location":
+        {
+            "address": "Charred Rotisserie House, James Street North, Hamilton, ON, Canada",
+            "coordinates": [-79.86624549999999, 43.2627693],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c05fd08060197ca0b52d5a",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "green-bar",
+        "title": "Green Bar",
+        "description": "Cheery counter-serve serving organic, health-conscious fare such as smoothies & simple vegan eats.\r\n",
+        "location":
+        {
+            "address": "Green Bar, James Street North, Hamilton, ON, Canada",
+            "coordinates": [-79.866177, 43.2625711],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c060558060197ca0b52d5b",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "work",
+        "title": "Work",
+        "description": "Dive bar, unreal nachos and huge selection of beers on both on tap and in bottle. ",
+        "location":
+        {
+            "address": "Work Restaurant, James Street North, Hamilton, ON, Canada",
+            "coordinates": [-79.86569700000001, 43.2649159],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c060e98060197ca0b52d5d",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "born--raised",
+        "title": "Born & Raised",
+        "description": "Wood fired Pizzas, oysters and a modern take on classic Italian dishes. Great collection of locals beers. ",
+        "location":
+        {
+            "address": "Born & Raised, James Street North, Hamilton, ON, Canada",
+            "coordinates": [-79.86640360000001, 43.2624108],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c0609b8060197ca0b52d5c",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "the-burnt-tongue",
+        "title": "The Burnt Tongue",
+        "description": "Counter-serve joint with an ever-changing selection of elevated soups, plus burgers & other fare.\r\n",
+        "location":
+        {
+            "address": "The Burnt Tongue, Cannon Street East, Hamilton, ON, Canada",
+            "coordinates": [-79.8669046, 43.26053],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c061518060197ca0b52d5e",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "bar-izakaya",
+        "title": "Bar Izakaya",
+        "description": "Incorporating local meats and produce with the finest Japanese ingredients. The menu consists of Rice bowls and Ramen, while the evening menu is served family style with small & medium sharing plates and house board options. ",
+        "location":
+        {
+            "address": "Bar Izakaya, James Street North, Hamilton, ON, Canada",
+            "coordinates": [-79.86634700000002, 43.26375700000001],
+            "type": "Point"
+        }
+    },
+    {
+        "_id": "58c065dbbbb1a51e0d43a04f",
+        "minCapacity": 2,
+        "maxCapacity": 5,
+        "price": 560,
+        "slug": "mulberry-coffee",
+        "title": "Mulberry Coffee",
+        "description": "Chill cafe in the former lobby of an 1880s hotel serving coffee, sweets & panini, plus cocktails.\r\n",
+        "location":
+        {
+            "address": "Mulberry Street Coffeehouse, James Street North, Hamilton, ON, Canada",
+            "coordinates": [-79.8669744, 43.2618072],
+            "type": "Point"
+        }
+    }
+]

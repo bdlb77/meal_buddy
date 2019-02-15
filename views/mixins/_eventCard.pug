@@ -1,4 +1,3 @@
 mixin eventCard(event = {})
-
-    .event
-        h1=event.title
+    a(href=`/event/${event.slug}`) #{event.title}
+        .event

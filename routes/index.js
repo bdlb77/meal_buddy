@@ -9,6 +9,8 @@ const { catchErrors } = require('../handlers/errorHandlers');
 
 // Do work here
 // EVENTS
+router.get('/', catchErrors(eventController.getEvents));
+
 router.get('/homepage', eventController.homePage);
 
 router.get('/events', catchErrors(eventController.getEvents));
@@ -19,11 +21,21 @@ router.get('/event/:id/edit', catchErrors(eventController.editSingleEvent));
 
 router.post('/add/:id', catchErrors(eventController.updateEvent));
 
-// AUTHENTICATION
+// AUTHENTICATION / USERS
 
 router.get('/users/login', userController.loginForm);
+
 router.post('/users/login', authController.login);
 
+router.get('/users/logout', authController.logout);
+
+router.get('/users/register', userController.registerForm);
+
+router.post('/users/register', 
+    userController.validateRegister,
+    userController.register,
+    authController.login
+);
 
 module.exports = router;
 

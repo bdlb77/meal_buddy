@@ -7,8 +7,14 @@ const crypto = require('crypto');
 exports.login = passport.authenticate('local', {
     failureRedirect: '/users/login',
     failureFlash: 'Please Login.',
-    successRedirect: '/events',
+    successRedirect: '/',
     successFlash: 'You are now logged in!'
-})
+});
+
+exports.logout = (req, res) => {
+    req.logout();
+    req.flash('success', 'You have successfully logged out!');
+    req.redirect('/');
+}
 
 

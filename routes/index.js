@@ -31,11 +31,7 @@ router.get('/users/logout', authController.logout);
 
 router.get('/users/register', userController.registerForm);
 
-router.post('/users/register', 
-    userController.validateRegister,
-    userController.register,
-    authController.login
-);
+router.post('/users/register', userController.validateRegister, userController.register, authController.login);
 
+router.post('/account/forgot', catchErrors(authController.forgot));
 module.exports = router;
-

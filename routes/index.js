@@ -34,4 +34,8 @@ router.get('/users/register', userController.registerForm);
 router.post('/users/register', userController.validateRegister, userController.register, authController.login);
 
 router.post('/account/forgot', catchErrors(authController.forgot));
+
+router.get('/account/reset/:token', catchErrors(authController.reset));
+
+router.post('/account/resets/:token', authController.confirmedPasswords, catchErrors(authController.update));
 module.exports = router;

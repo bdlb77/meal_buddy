@@ -1,16 +1,6 @@
 
-## Sample Data
+## Meal Buddy is an app to find local meals near you! 
 
-To load sample data, run the following command in your terminal:
 
-```bash
-npm run sample
-```
-
-If you have previously loaded in this data, you can wipe your database 100% clean with:
-
-```bash
-npm run blowitallaway
-```
-
+Built in Node. Designed and Developed by Bryan Leighton
 

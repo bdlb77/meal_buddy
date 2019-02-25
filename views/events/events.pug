@@ -1,0 +1,8 @@
+extends ../layout
+include ../mixins/_eventCard
+
+block content
+  h2 Hello!
+  .events
+    each event in events
+      +eventCard(event)

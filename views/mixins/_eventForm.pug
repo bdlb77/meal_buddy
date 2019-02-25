@@ -1,0 +1,18 @@
+
+mixin eventForm(event = {})  
+    h1=event.title
+    form(action=`/add/${event._id || ''}` method="POST")
+        label(for="title") Title
+        input(type="text" name="title" value=event.title)
+        label(for="description") Description
+        textarea(name="description")=event.description
+        label(for="address") Address
+        input(type="text" name="location[address]" value=(event.location && event.location.address))
+        label(for="minCapacity") Minimum Capacity
+        input(type="number" name="minCapacity" value=event.minCapacity)
+        label(for="maxCapacity") Maximum Capacity
+        input(type="number" name="maxCapacity" value=event.maxCapacity)
+        label(for="price") Price
+        input(type="number" name="price" value=event.price)
+        input(type="submit" value="save" class="button")
+

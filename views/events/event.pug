@@ -1,0 +1,8 @@
+extends ../layout
+
+block content
+    h1=title
+
+    //- if user && user.author.equals(user._id)
+    a(href=`/event/${event._id}/edit`)
+         p Edit

@@ -9,6 +9,10 @@ const eventSchema = new Schema({
       trim: true,
       required: "You must add an event name!"
   },
+  description:{
+      type: String,
+      trim: true,
+  },
   slug: String,
   created: {
       type: Date,
@@ -16,7 +20,7 @@ const eventSchema = new Schema({
   },
   date: {
       type: Date,
-      min: Date.now
+      min: Date.now,
       required: "Please enter a valid event Date!",
   },
   minCapacity:{
@@ -29,8 +33,10 @@ const eventSchema = new Schema({
   },
   price: Number,
   location: {
-    type: String,
-    default: 'Point',
+    type: {
+        type: String,
+        default: 'Point',
+    },
     coordinates: [{
         type: Number,
         required: "You must supply coords!"
@@ -50,3 +56,5 @@ const eventSchema = new Schema({
 
   // attendees: [User], you can do through virtuals
 })
+
+module.exports = mongoose.model('Event', eventSchema);

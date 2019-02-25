@@ -113,6 +113,37 @@ __webpack_require__(1);
 
 var _bling = __webpack_require__(0);
 
+var _navbar = __webpack_require__(4);
+
+var _navbar2 = _interopRequireDefault(_navbar);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// allow for easier use of querySelector and querySelectorAll
+// credits to WesBos!
+var navMenu = (0, _bling.$)('.nav__dropdown');
+navMenu.on('click', _navbar2.default);
+
+/***/ }),
+/* 3 */,
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _bling = __webpack_require__(0);
+
+function navbar(e) {
+	var navDrop = (0, _bling.$)('.nav__dropdown__menu');
+	navDrop.classList.toggle('active__drop__menu');
+}
+exports.default = navbar;
+
 /***/ })
 /******/ ]);
 //# sourceMappingURL=App.bundle.js.map

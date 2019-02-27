@@ -503,7 +503,8 @@ template {
     margin-right: 2rem; }
   .nav .fas {
     font-size: 24px;
-    color: #efefef; }
+    color: #efefef;
+    cursor: pointer; }
   .nav__item__link {
     text-decoration: none;
     color: black; }
@@ -517,8 +518,9 @@ template {
         justify-content: space-evenly;
     position: absolute;
     top: 5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
     right: 15px;
-    height: 6rem;
+    height: 8rem;
     background: #efefef; }
     .nav__dropdown__menu::before {
       content: '';
@@ -540,6 +542,8 @@ template {
       content: '';
       height: 0.5px;
       background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, black 50%, rgba(0, 0, 0, 0) 100%); }
+    .nav__dropdown__menu:hover {
+      cursor: pointer; }
 
 .active__drop__menu {
   display: -ms-flexbox;

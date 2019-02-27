@@ -23,6 +23,7 @@
   .fas {
     font-size: 24px;
     color: $white;
+    cursor: pointer;
   }
   &__item__link {
     text-decoration: none;
@@ -58,9 +59,13 @@
     justify-content: space-evenly;
     position: absolute;
     top: 5rem;
+    box-shadow: $shad;
     right: 15px;
-    height: 6rem;
+    height: 8rem;
     background: $white;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 .active__drop__menu {

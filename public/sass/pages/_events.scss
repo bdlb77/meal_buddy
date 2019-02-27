@@ -1,0 +1,53 @@
+.events__page {
+  display: flex;
+  flex-direction: column;
+  height: calc( 100vh - (65px + 4rem ));
+  .top__events {
+    height: 55%;
+  }
+  .bottom__events {
+    height: 45%;
+    background: $primaryBold;
+    box-shadow: 0 -2px 4px $black;
+  }
+}
+.bottom__events {
+  
+  display: flex;
+  flex-direction: column;
+  &__avatar {
+    width: 33%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  &__absolute__av {
+    position: absolute;
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    background: gray;
+    top: -4rem;
+
+    box-shadow: 4px 5px 24px rgba(0, 0, 0, 0.25);
+  }
+  &__top {
+    height: 30%;
+    display: flex;
+    justify-content: space-around;
+  }
+  .navi__btn {
+    width: 33%;
+    display: flex;
+    justify-content: center;
+  }
+  .fas {
+    color: $white;
+    font-size: 3rem;
+    padding-top: 1.5rem;
+  }
+  &__bottom {
+    height: 70%;
+  }
+}
+

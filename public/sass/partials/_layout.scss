@@ -3,8 +3,11 @@ html {
 }
 body {
   color: $white;
+  background: $primaryLinear;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
-
 
 .inner {
   max-width:900px;

@@ -659,7 +659,7 @@ pre.error {
     height: 55%; }
   .events__page .bottom__events {
     height: 45%;
-    background: #188BCA;
+    background: linear-gradient(54.78deg, #188BCA 6.08%, rgba(24, 139, 202, 0.85) 16.57%, rgba(24, 139, 202, 0.65) 50.28%, rgba(24, 139, 202, 0.85) 89.5%, #188BCA 100%);
     box-shadow: 0 -2px 4px black; }
 
 .bottom__events {

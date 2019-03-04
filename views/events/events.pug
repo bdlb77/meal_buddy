@@ -3,6 +3,10 @@ include ../mixins/_eventCard
 
 block content
   .events__page
-    each event in events 
-      +eventCard(event)
+    .event__cards
+      each event in events
+        +eventCard(event)
+    .filter__bar
+    //- each event in events 
+    //-   +eventCard(event)
   

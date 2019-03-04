@@ -1,17 +1,12 @@
 html {
   font-size: 10px;
 }
-
 body {
-  background: $purple;
-  background:#efefef;
-  &:before {
-    content: '';
-    display: block;
-    background: $grad;
-    height: 10px;
-    width: 100%;
-  }
+  color: $white;
+  background: $primaryLinear;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
 
 .inner {

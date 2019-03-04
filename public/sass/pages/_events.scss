@@ -1,0 +1,61 @@
+// CARD POSITIONING
+.events__page {
+  height: calc(100vh - (65px + 4rem));
+  width: 100vw;
+  display: grid;
+  grid-template-rows: 80% 20%;
+  
+}
+.event__cards {
+  position: relative;
+  width: 70%;
+  margin: 0 auto;
+}
+.event__card {
+  position: absolute;
+  height: 90%;
+  border-radius: 5px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  box-shadow: 2px -4px 8px rgba(0, 0, 0, 0.45);
+  &:nth-child(1) {
+    z-index: 5;
+    background: white;
+    bottom: $default-diff * 0;
+    width: $default-width - $default-min * 0;
+  }
+  &:nth-child(n + 2) {
+    background: $secondary;
+  }
+  &:nth-child(2) {
+    z-index: 4;
+    bottom: $default-diff * 1;
+    width: $default-width - $default-min * 1;
+  }
+  &:nth-child(3) {
+    z-index: 3;
+    bottom: $default-diff * 2;
+    width: $default-width - $default-min * 2;
+  }
+  &:nth-child(4) {
+    z-index: 2;
+    bottom: $default-diff * 3;
+    width: $default-width - $default-min * 3;
+  }
+  &:nth-child(5) {
+    z-index: 1;
+    bottom: $default-diff * 4;
+    width: $default-width - $default-min * 4;
+  }
+  &:nth-child(n + 6) {
+    z-index: 0;
+    opacity: 0;
+    bottom: $default-diff * 4;
+    width: $default-width - $default-min * 4;
+  }
+}
+.filter__bar {
+  height: 100%;
+  border: 1px solid blue;
+}

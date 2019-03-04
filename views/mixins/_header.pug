@@ -1,0 +1,12 @@
+mixin header()
+  nav.nav
+    .nav__logo
+      a.nav__link.nav__link--logo(href="/")
+       != h.icon('mb')
+    .nav__right__section
+      .nav__dropdown
+        i.fas.fa-bars
+        ul.nav__dropdown__menu
+           li: a.nav__item__link(href="") Hello
+           li: a.nav__item__link(href="") World
+           li: a.nav__item__link(href="") Two

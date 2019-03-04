@@ -2,7 +2,11 @@ extends ../layout
 include ../mixins/_eventCard
 
 block content
-  h2 Hello!
-  .events
-    each event in events
-      +eventCard(event)
+  .events__page
+    .event__cards
+      each event in events
+        +eventCard(event)
+    .filter__bar
+    //- each event in events 
+    //-   +eventCard(event)
+  

@@ -1,3 +1,17 @@
 mixin eventCard(event = {})
-    a(href=`/event/${event.slug}`) #{event.title}
-        .event
+  .event__card
+    .event__card__top
+      .event__card__top__single
+        .event__card__top__title
+        .event__card__top__date
+    .event__card__bottom
+      .event__card__bottom--first
+        .event__card__bottom--navi.navi__left
+          i.fas.fa-angle-double-left
+        .event__card__bottom--avatar
+          .event__card__bottom--absolute--av.avatar__big
+        .event__card__bottom--navi.navi__right
+          i.fas.fa-angle-double-right
+      .event__card__bottom--second
+          .event__card__bottom__time 12:30
+          .event__card__bottom__address 100 Village Circle, San Antonio, Texas 78232

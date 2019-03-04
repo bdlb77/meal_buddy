@@ -3,17 +3,6 @@ include ../mixins/_eventCard
 
 block content
   .events__page
-    .top__events
-      each event in events
-        +eventCard(event)
-    .bottom__events
-      .bottom__events__top
-        .navi__btn.navi__left
-          i.fas.fa-angle-double-left
-        .bottom__events__avatar
-          .bottom__events__absolute__av
-        .navi__btn.navi__right
-          i.fas.fa-angle-double-right
-      .bottom__events__bottom
-        .bottom__events__time 12:30
-        .bottom__events__address 100 Village Circle, San Antonio, Texas 78232
+    each event in events 
+      +eventCard(event)
+  

@@ -3,10 +3,11 @@ include ../mixins/_eventCard
 
 block content
   .events__page
+    .navi__btns
+      i.fas.fa-angle-double-left
+      i.fas.fa-angle-double-right
     .event__cards
       each event in events
         +eventCard(event)
     .filter__bar
-    //- each event in events 
-    //-   +eventCard(event)
   

@@ -663,7 +663,8 @@ pre.error {
   display: -ms-grid;
   display: grid;
   -ms-grid-rows: 80% 20%;
-      grid-template-rows: 80% 20%; }
+      grid-template-rows: 80% 20%;
+  position: relative; }
 
 .event__cards {
   position: relative;
@@ -680,7 +681,7 @@ pre.error {
   box-shadow: 2px -4px 8px rgba(0, 0, 0, 0.45); }
   .event__card:nth-child(1) {
     z-index: 5;
-    background: white;
+    background: gray;
     bottom: 0px;
     width: 100%; }
   .event__card:nth-child(n + 2) {
@@ -710,5 +711,52 @@ pre.error {
 .filter__bar {
   height: 100%;
   border: 1px solid blue; }
+
+.navi__btns {
+  height: 100%;
+  position: absolute;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center;
+  width: 100vw;
+  z-index: 10; }
+  .navi__btns i {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+        justify-content: center;
+    -ms-flex-align: center;
+        align-items: center;
+    height: 50px;
+    width: 50px;
+    color: #efefef;
+    font-size: 40px;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05); }
+
+.event__card {
+  display: -ms-flexbox;
+  display: flex;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-pack: space-evenly;
+      justify-content: space-evenly; }
+  .event__card__title {
+    text-align: center;
+    font-size: 3rem; }
+  .event__card__date {
+    font-size: 2rem;
+    margin-top: -2rem; }
+  .event__card__avatar {
+    position: absolute;
+    top: 15px;
+    left: 15px; }
 
 /*# sourceMappingURL=style.css.map*/

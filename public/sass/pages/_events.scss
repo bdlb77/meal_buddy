@@ -4,6 +4,7 @@
   width: 100vw;
   display: grid;
   grid-template-rows: 80% 20%;
+  position: relative;
   
 }
 .event__cards {
@@ -21,7 +22,7 @@
   box-shadow: 2px -4px 8px rgba(0, 0, 0, 0.45);
   &:nth-child(1) {
     z-index: 5;
-    background: white;
+    background: gray;
     bottom: $default-diff * 0;
     width: $default-width - $default-min * 0;
   }
@@ -58,4 +59,23 @@
 .filter__bar {
   height: 100%;
   border: 1px solid blue;
+}
+.navi__btns {
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100vw;
+  z-index: 10;
+  i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    color: $white;
+    font-size: 40px;
+    text-shadow: $shad;
+  }
 }

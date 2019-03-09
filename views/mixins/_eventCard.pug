@@ -1,3 +1,6 @@
 mixin eventCard(event = {})
   .event__card
-  
+    .event__card__title=event.title
+    .event__card__date=h.moment(event.date).format("MMMM Do")
+    .event__card__avatar
+      img.avatar(src=event.author.gravatar)

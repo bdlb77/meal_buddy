@@ -17,3 +17,11 @@ $width: 800px;
 $default-diff: 12px;
 $default-width: 100%;
 $default-min: 10%;
+
+// mixins
+
+@mixin flexbox__c(){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

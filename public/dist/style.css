@@ -709,8 +709,29 @@ pre.error {
     width: 60%; }
 
 .filter__bar {
-  height: 100%;
-  border: 1px solid blue; }
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  height: 90%;
+  background: linear-gradient(54.78deg, #188BCA 6.08%, rgba(24, 139, 202, 0.85) 16.57%, rgba(24, 139, 202, 0.65) 50.28%, rgba(24, 139, 202, 0.85) 89.5%, #188BCA 100%);
+  margin-top: auto;
+  box-shadow: 2px -4px 8px rgba(0, 0, 0, 0.45); }
+  .filter__bar__date, .filter__bar__title, .filter__bar__locale {
+    position: relative; }
+  .filter__bar i {
+    color: #E45A97;
+    font-size: 4rem;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05); }
+  .filter__bar i[class*="fa-arrow"] {
+    position: absolute;
+    right: -10px;
+    font-size: 1rem;
+    color: #efefef; }
 
 .navi__btns {
   height: 100%;
@@ -750,10 +771,11 @@ pre.error {
       justify-content: space-evenly; }
   .event__card__title {
     text-align: center;
-    font-size: 3rem; }
+    font-size: 3rem;
+    margin-top: -6rem; }
   .event__card__date {
-    font-size: 2rem;
-    margin-top: -2rem; }
+    font-size: 2.5rem;
+    margin-top: -9rem; }
   .event__card__avatar {
     position: absolute;
     top: 15px;

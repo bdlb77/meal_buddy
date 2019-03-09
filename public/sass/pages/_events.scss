@@ -19,7 +19,7 @@
   left: 0;
   right: 0;
   margin: 0 auto;
-  box-shadow: 2px -4px 8px rgba(0, 0, 0, 0.45);
+  box-shadow: $top-shad;
   &:nth-child(1) {
     z-index: 5;
     background: gray;
@@ -57,8 +57,26 @@
   }
 }
 .filter__bar {
-  height: 100%;
-  border: 1px solid blue;
+  @include flexbox__c;
+  justify-content: space-around;
+  height: 90%;
+  background: $primary;
+  margin-top: auto;
+  box-shadow: $top-shad;
+  &__date, &__title, &__locale {
+    position: relative;
+  }
+  i {
+    color: $tertBold;
+    font-size: 4rem;
+    text-shadow: $shad;
+  }
+  i[class*="fa-arrow"] {
+    position: absolute;
+    right: -10px;
+    font-size: 1rem;
+    color: $white;
+  }
 }
 .navi__btns {
   height: 100%;

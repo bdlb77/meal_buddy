@@ -1,0 +1,19 @@
+.event__card {
+    display: flex;
+    @include flexbox__c;
+    flex-direction: column;
+    justify-content: space-evenly;
+    &__title {
+        text-align: center;
+        font-size: 3rem;
+    }
+    &__date {
+        font-size: 2rem;
+        margin-top: -2rem;
+    }
+    &__avatar {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+    }
+}

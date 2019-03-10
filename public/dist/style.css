@@ -678,7 +678,9 @@ pre.error {
   left: 0;
   right: 0;
   margin: 0 auto;
-  box-shadow: 2px -4px 8px rgba(0, 0, 0, 0.45); }
+  box-shadow: 2px -4px 8px rgba(0, 0, 0, 0.45);
+  text-decoration: none;
+  color: #efefef; }
   .event__card:nth-child(1) {
     z-index: 5;
     background: gray;
@@ -742,8 +744,7 @@ pre.error {
       justify-content: space-between;
   -ms-flex-align: center;
       align-items: center;
-  width: 100vw;
-  z-index: 10; }
+  width: 100vw; }
   .navi__btns i {
     display: -ms-flexbox;
     display: flex;

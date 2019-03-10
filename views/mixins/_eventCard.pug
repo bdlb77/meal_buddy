@@ -1,5 +1,5 @@
 mixin eventCard(event = {})
-  .event__card
+  a.event__card(href=`/event/${event.slug}`)
     .event__card__title=event.title
     .event__card__date=h.moment(event.date).format("MMMM Do")
     .event__card__avatar

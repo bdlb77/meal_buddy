@@ -48,3 +48,9 @@ exports.updateEvent = async (req, res) => {
 	);
 	res.redirect(`/event/${event._id}/edit`);
 };
+
+exports.getMap = async (req, res) => {
+	const event = await Event.findOne({ _id: req.params.id });
+
+	res.json(event);
+};

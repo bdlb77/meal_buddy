@@ -20,8 +20,12 @@ block content
             <i class="fas fa-map-marker-alt"></i>
             h1 #{event.location.address}
         .single__event__buttons
-          .single__event__buttons__back
-          .single__event__buttons__map
+          .single__event__bg
+            a(href="javascript:history.back()")
+              i.fas.fa-arrow-left
+          .single__event__bg
+            a(href=`/event/${event._id}/map`)
+              i.far.fa-map
         .single__event__reserve
           button.button Reserve
 

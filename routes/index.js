@@ -21,6 +21,8 @@ router.get('/event/:id/edit', catchErrors(eventController.editSingleEvent));
 
 router.post('/add/:id', catchErrors(eventController.updateEvent));
 
+router.get('/event/:id/map', catchErrors(eventController.getMap));
+
 // AUTHENTICATION / USERS
 
 router.get('/users/login', userController.loginForm);

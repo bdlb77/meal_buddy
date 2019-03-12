@@ -850,12 +850,21 @@ pre.error {
         justify-content: space-between;
     width: 90%;
     margin: 0 auto; }
-    .single__event__buttons * {
-      height: 50px;
-      width: 50px;
-      border-radius: 50%;
-      background: linear-gradient(54.78deg, #8B77F4 0%, #E45A97 100%);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05); }
+    .single__event__buttons i {
+      font-size: 32px;
+      color: #efefef; }
+  .single__event__bg {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+        justify-content: center;
+    -ms-flex-align: center;
+        align-items: center;
+    background: linear-gradient(54.78deg, #8B77F4 0%, #E45A97 100%);
+    height: 56px;
+    width: 56px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05); }
   .single__event__reserve {
     z-index: 3;
     bottom: 1rem;

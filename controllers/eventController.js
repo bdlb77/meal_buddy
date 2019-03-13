@@ -52,5 +52,5 @@ exports.updateEvent = async (req, res) => {
 exports.getMap = async (req, res) => {
 	const event = await Event.findOne({ _id: req.params.id });
 
-	res.json(event);
+	res.render('map', { title: 'Map' });
 };

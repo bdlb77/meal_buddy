@@ -136,12 +136,4199 @@ var _navbar = __webpack_require__(1);
 
 var _navbar2 = _interopRequireDefault(_navbar);
 
+var _map = __webpack_require__(13);
+
+var _map2 = _interopRequireDefault(_map);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var navMenu = (0, _bling.$)('.nav__dropdown');
 // allow for easier use of querySelector and querySelectorAll
 // credits to WesBos!
-var navMenu = (0, _bling.$)('.nav__dropdown');
+
 navMenu.on('click', _navbar2.default);
+(0, _map2.default)((0, _bling.$)('#map'));
+
+/***/ }),
+/* 4 */,
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var bind = __webpack_require__(11);
+
+/*global toString:true*/
+
+// utils is a library of generic helper functions non-specific to axios
+
+var toString = Object.prototype.toString;
+
+/**
+ * Determine if a value is an Array
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Array, otherwise false
+ */
+function isArray(val) {
+  return toString.call(val) === '[object Array]';
+}
+
+/**
+ * Determine if a value is an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an ArrayBuffer, otherwise false
+ */
+function isArrayBuffer(val) {
+  return toString.call(val) === '[object ArrayBuffer]';
+}
+
+/**
+ * Determine if a value is a FormData
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an FormData, otherwise false
+ */
+function isFormData(val) {
+  return typeof FormData !== 'undefined' && val instanceof FormData;
+}
+
+/**
+ * Determine if a value is a view on an ArrayBuffer
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a view on an ArrayBuffer, otherwise false
+ */
+function isArrayBufferView(val) {
+  var result;
+  if (typeof ArrayBuffer !== 'undefined' && ArrayBuffer.isView) {
+    result = ArrayBuffer.isView(val);
+  } else {
+    result = val && val.buffer && val.buffer instanceof ArrayBuffer;
+  }
+  return result;
+}
+
+/**
+ * Determine if a value is a String
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a String, otherwise false
+ */
+function isString(val) {
+  return typeof val === 'string';
+}
+
+/**
+ * Determine if a value is a Number
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Number, otherwise false
+ */
+function isNumber(val) {
+  return typeof val === 'number';
+}
+
+/**
+ * Determine if a value is undefined
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if the value is undefined, otherwise false
+ */
+function isUndefined(val) {
+  return typeof val === 'undefined';
+}
+
+/**
+ * Determine if a value is an Object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is an Object, otherwise false
+ */
+function isObject(val) {
+  return val !== null && (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object';
+}
+
+/**
+ * Determine if a value is a Date
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Date, otherwise false
+ */
+function isDate(val) {
+  return toString.call(val) === '[object Date]';
+}
+
+/**
+ * Determine if a value is a File
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a File, otherwise false
+ */
+function isFile(val) {
+  return toString.call(val) === '[object File]';
+}
+
+/**
+ * Determine if a value is a Blob
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Blob, otherwise false
+ */
+function isBlob(val) {
+  return toString.call(val) === '[object Blob]';
+}
+
+/**
+ * Determine if a value is a Function
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Function, otherwise false
+ */
+function isFunction(val) {
+  return toString.call(val) === '[object Function]';
+}
+
+/**
+ * Determine if a value is a Stream
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a Stream, otherwise false
+ */
+function isStream(val) {
+  return isObject(val) && isFunction(val.pipe);
+}
+
+/**
+ * Determine if a value is a URLSearchParams object
+ *
+ * @param {Object} val The value to test
+ * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+ */
+function isURLSearchParams(val) {
+  return typeof URLSearchParams !== 'undefined' && val instanceof URLSearchParams;
+}
+
+/**
+ * Trim excess whitespace off the beginning and end of a string
+ *
+ * @param {String} str The String to trim
+ * @returns {String} The String freed of excess whitespace
+ */
+function trim(str) {
+  return str.replace(/^\s*/, '').replace(/\s*$/, '');
+}
+
+/**
+ * Determine if we're running in a standard browser environment
+ *
+ * This allows axios to run in a web worker, and react-native.
+ * Both environments support XMLHttpRequest, but not fully standard globals.
+ *
+ * web workers:
+ *  typeof window -> undefined
+ *  typeof document -> undefined
+ *
+ * react-native:
+ *  typeof document.createElement -> undefined
+ */
+function isStandardBrowserEnv() {
+  return typeof window !== 'undefined' && typeof document !== 'undefined' && typeof document.createElement === 'function';
+}
+
+/**
+ * Iterate over an Array or an Object invoking a function for each item.
+ *
+ * If `obj` is an Array callback will be called passing
+ * the value, index, and complete array for each item.
+ *
+ * If 'obj' is an Object callback will be called passing
+ * the value, key, and complete object for each property.
+ *
+ * @param {Object|Array} obj The object to iterate
+ * @param {Function} fn The callback to invoke for each item
+ */
+function forEach(obj, fn) {
+  // Don't bother if no value provided
+  if (obj === null || typeof obj === 'undefined') {
+    return;
+  }
+
+  // Force an array if not already something iterable
+  if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' && !isArray(obj)) {
+    /*eslint no-param-reassign:0*/
+    obj = [obj];
+  }
+
+  if (isArray(obj)) {
+    // Iterate over array values
+    for (var i = 0, l = obj.length; i < l; i++) {
+      fn.call(null, obj[i], i, obj);
+    }
+  } else {
+    // Iterate over object keys
+    for (var key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        fn.call(null, obj[key], key, obj);
+      }
+    }
+  }
+}
+
+/**
+ * Accepts varargs expecting each argument to be an object, then
+ * immutably merges the properties of each object and returns result.
+ *
+ * When multiple objects contain the same key the later object in
+ * the arguments list will take precedence.
+ *
+ * Example:
+ *
+ * ```js
+ * var result = merge({foo: 123}, {foo: 456});
+ * console.log(result.foo); // outputs 456
+ * ```
+ *
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function merge() /* obj1, obj2, obj3, ... */{
+  var result = {};
+  function assignValue(val, key) {
+    if (_typeof(result[key]) === 'object' && (typeof val === 'undefined' ? 'undefined' : _typeof(val)) === 'object') {
+      result[key] = merge(result[key], val);
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
+ * Extends object a by mutably adding to it the properties of object b.
+ *
+ * @param {Object} a The object to be extended
+ * @param {Object} b The object to copy properties from
+ * @param {Object} thisArg The object to bind function to
+ * @return {Object} The resulting value of object a
+ */
+function extend(a, b, thisArg) {
+  forEach(b, function assignValue(val, key) {
+    if (thisArg && typeof val === 'function') {
+      a[key] = bind(val, thisArg);
+    } else {
+      a[key] = val;
+    }
+  });
+  return a;
+}
+
+module.exports = {
+  isArray: isArray,
+  isArrayBuffer: isArrayBuffer,
+  isFormData: isFormData,
+  isArrayBufferView: isArrayBufferView,
+  isString: isString,
+  isNumber: isNumber,
+  isObject: isObject,
+  isUndefined: isUndefined,
+  isDate: isDate,
+  isFile: isFile,
+  isBlob: isBlob,
+  isFunction: isFunction,
+  isStream: isStream,
+  isURLSearchParams: isURLSearchParams,
+  isStandardBrowserEnv: isStandardBrowserEnv,
+  forEach: forEach,
+  merge: merge,
+  extend: extend,
+  trim: trim
+};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(5);
+var normalizeHeaderName = __webpack_require__(29);
+
+var PROTECTION_PREFIX = /^\)\]\}',?\n/;
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(7);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(7);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) || utils.isArrayBuffer(data) || utils.isStream(data) || utils.isFile(data) || utils.isBlob(data)) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      data = data.replace(PROTECTION_PREFIX, '');
+      try {
+        data = JSON.parse(data);
+      } catch (e) {/* Ignore */}
+    }
+    return data;
+  }],
+
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMehtodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(5);
+var settle = __webpack_require__(21);
+var buildURL = __webpack_require__(24);
+var parseHeaders = __webpack_require__(30);
+var isURLSameOrigin = __webpack_require__(28);
+var createError = __webpack_require__(10);
+var btoa = typeof window !== 'undefined' && window.btoa && window.btoa.bind(window) || __webpack_require__(23);
+
+module.exports = function xhrAdapter(config) {
+  return new Promise(function dispatchXhrRequest(resolve, reject) {
+    var requestData = config.data;
+    var requestHeaders = config.headers;
+
+    if (utils.isFormData(requestData)) {
+      delete requestHeaders['Content-Type']; // Let the browser set it
+    }
+
+    var request = new XMLHttpRequest();
+    var loadEvent = 'onreadystatechange';
+    var xDomain = false;
+
+    // For IE 8/9 CORS support
+    // Only supports POST and GET calls and doesn't returns the response headers.
+    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
+    if (process.env.NODE_ENV !== 'test' && typeof window !== 'undefined' && window.XDomainRequest && !('withCredentials' in request) && !isURLSameOrigin(config.url)) {
+      request = new window.XDomainRequest();
+      loadEvent = 'onload';
+      xDomain = true;
+      request.onprogress = function handleProgress() {};
+      request.ontimeout = function handleTimeout() {};
+    }
+
+    // HTTP basic authentication
+    if (config.auth) {
+      var username = config.auth.username || '';
+      var password = config.auth.password || '';
+      requestHeaders.Authorization = 'Basic ' + btoa(username + ':' + password);
+    }
+
+    request.open(config.method.toUpperCase(), buildURL(config.url, config.params, config.paramsSerializer), true);
+
+    // Set the request timeout in MS
+    request.timeout = config.timeout;
+
+    // Listen for ready state
+    request[loadEvent] = function handleLoad() {
+      if (!request || request.readyState !== 4 && !xDomain) {
+        return;
+      }
+
+      // The request errored out and we didn't get a response, this will be
+      // handled by onerror instead
+      // With one exception: request that using file: protocol, most browsers
+      // will return status as 0 even though it's a successful request
+      if (request.status === 0 && !(request.responseURL && request.responseURL.indexOf('file:') === 0)) {
+        return;
+      }
+
+      // Prepare the response
+      var responseHeaders = 'getAllResponseHeaders' in request ? parseHeaders(request.getAllResponseHeaders()) : null;
+      var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
+      var response = {
+        data: responseData,
+        // IE sends 1223 instead of 204 (https://github.com/mzabriskie/axios/issues/201)
+        status: request.status === 1223 ? 204 : request.status,
+        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+        headers: responseHeaders,
+        config: config,
+        request: request
+      };
+
+      settle(resolve, reject, response);
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle low level network errors
+    request.onerror = function handleError() {
+      // Real errors are hidden from us by the browser
+      // onerror should only fire if it's a network error
+      reject(createError('Network Error', config));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle timeout
+    request.ontimeout = function handleTimeout() {
+      reject(createError('timeout of ' + config.timeout + 'ms exceeded', config, 'ECONNABORTED'));
+
+      // Clean up request
+      request = null;
+    };
+
+    // Add xsrf header
+    // This is only done if running in a standard browser environment.
+    // Specifically not if we're in a web worker, or react-native.
+    if (utils.isStandardBrowserEnv()) {
+      var cookies = __webpack_require__(26);
+
+      // Add xsrf header
+      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ? cookies.read(config.xsrfCookieName) : undefined;
+
+      if (xsrfValue) {
+        requestHeaders[config.xsrfHeaderName] = xsrfValue;
+      }
+    }
+
+    // Add headers to the request
+    if ('setRequestHeader' in request) {
+      utils.forEach(requestHeaders, function setRequestHeader(val, key) {
+        if (typeof requestData === 'undefined' && key.toLowerCase() === 'content-type') {
+          // Remove Content-Type if data is undefined
+          delete requestHeaders[key];
+        } else {
+          // Otherwise add header to the request
+          request.setRequestHeader(key, val);
+        }
+      });
+    }
+
+    // Add withCredentials to request if needed
+    if (config.withCredentials) {
+      request.withCredentials = true;
+    }
+
+    // Add responseType to request if needed
+    if (config.responseType) {
+      try {
+        request.responseType = config.responseType;
+      } catch (e) {
+        if (request.responseType !== 'json') {
+          throw e;
+        }
+      }
+    }
+
+    // Handle progress if needed
+    if (typeof config.onDownloadProgress === 'function') {
+      request.addEventListener('progress', config.onDownloadProgress);
+    }
+
+    // Not all browsers support upload events
+    if (typeof config.onUploadProgress === 'function' && request.upload) {
+      request.upload.addEventListener('progress', config.onUploadProgress);
+    }
+
+    if (config.cancelToken) {
+      // Handle cancellation
+      config.cancelToken.promise.then(function onCanceled(cancel) {
+        if (!request) {
+          return;
+        }
+
+        request.abort();
+        reject(cancel);
+        // Clean up request
+        request = null;
+      });
+    }
+
+    if (requestData === undefined) {
+      requestData = null;
+    }
+
+    // Send the request
+    request.send(requestData);
+  });
+};
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * A `Cancel` is an object that is thrown when an operation is canceled.
+ *
+ * @class
+ * @param {string=} message The message.
+ */
+
+function Cancel(message) {
+  this.message = message;
+}
+
+Cancel.prototype.toString = function toString() {
+  return 'Cancel' + (this.message ? ': ' + this.message : '');
+};
+
+Cancel.prototype.__CANCEL__ = true;
+
+module.exports = Cancel;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function isCancel(value) {
+  return !!(value && value.__CANCEL__);
+};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var enhanceError = __webpack_require__(20);
+
+/**
+ * Create an Error with the specified message, config, error code, and response.
+ *
+ * @param {string} message The error message.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ @ @param {Object} [response] The response.
+ * @returns {Error} The created error.
+ */
+module.exports = function createError(message, config, code, response) {
+  var error = new Error(message);
+  return enhanceError(error, config, code, response);
+};
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = function bind(fn, thisArg) {
+  return function wrap() {
+    var args = new Array(arguments.length);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    return fn.apply(thisArg, args);
+  };
+};
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout() {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+})();
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch (e) {
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch (e) {
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e) {
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e) {
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while (len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+    return [];
+};
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+    return '/';
+};
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function () {
+    return 0;
+};
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _axios = __webpack_require__(14);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _bling = __webpack_require__(0);
+
+var _bling2 = _interopRequireDefault(_bling);
+
+var _mapStyles = __webpack_require__(32);
+
+var _mapStyles2 = _interopRequireDefault(_mapStyles);
+
+var _gmaps = __webpack_require__(33);
+
+var _gmaps2 = _interopRequireDefault(_gmaps);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function makeMap(mapDiv) {
+	if (!mapDiv) return;
+	var mapOptions = {
+		el: mapDiv,
+		center: { lat: 43.2, lng: -79.8 },
+		zoom: 8,
+		styles: _mapStyles2.default
+	};
+	// const map = new google.maps.Map(mapDiv, mapOptions);
+	var map = new _gmaps2.default(mapOptions);
+	console.log(map);
+}
+
+exports.default = makeMap;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(15);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(5);
+var bind = __webpack_require__(11);
+var Axios = __webpack_require__(17);
+var defaults = __webpack_require__(6);
+
+/**
+ * Create an instance of Axios
+ *
+ * @param {Object} defaultConfig The default config for the instance
+ * @return {Axios} A new instance of Axios
+ */
+function createInstance(defaultConfig) {
+  var context = new Axios(defaultConfig);
+  var instance = bind(Axios.prototype.request, context);
+
+  // Copy axios.prototype to instance
+  utils.extend(instance, Axios.prototype, context);
+
+  // Copy context to instance
+  utils.extend(instance, context);
+
+  return instance;
+}
+
+// Create the default instance to be exported
+var axios = createInstance(defaults);
+
+// Expose Axios class to allow class inheritance
+axios.Axios = Axios;
+
+// Factory for creating new instances
+axios.create = function create(instanceConfig) {
+  return createInstance(utils.merge(defaults, instanceConfig));
+};
+
+// Expose Cancel & CancelToken
+axios.Cancel = __webpack_require__(8);
+axios.CancelToken = __webpack_require__(16);
+axios.isCancel = __webpack_require__(9);
+
+// Expose all/spread
+axios.all = function all(promises) {
+  return Promise.all(promises);
+};
+axios.spread = __webpack_require__(31);
+
+module.exports = axios;
+
+// Allow use of default import syntax in TypeScript
+module.exports.default = axios;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Cancel = __webpack_require__(8);
+
+/**
+ * A `CancelToken` is an object that can be used to request cancellation of an operation.
+ *
+ * @class
+ * @param {Function} executor The executor function.
+ */
+function CancelToken(executor) {
+  if (typeof executor !== 'function') {
+    throw new TypeError('executor must be a function.');
+  }
+
+  var resolvePromise;
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+
+  var token = this;
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new Cancel(message);
+    resolvePromise(token.reason);
+  });
+}
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+  if (this.reason) {
+    throw this.reason;
+  }
+};
+
+/**
+ * Returns an object that contains a new `CancelToken` and a function that, when called,
+ * cancels the `CancelToken`.
+ */
+CancelToken.source = function source() {
+  var cancel;
+  var token = new CancelToken(function executor(c) {
+    cancel = c;
+  });
+  return {
+    token: token,
+    cancel: cancel
+  };
+};
+
+module.exports = CancelToken;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var defaults = __webpack_require__(6);
+var utils = __webpack_require__(5);
+var InterceptorManager = __webpack_require__(18);
+var dispatchRequest = __webpack_require__(19);
+var isAbsoluteURL = __webpack_require__(27);
+var combineURLs = __webpack_require__(25);
+
+/**
+ * Create a new instance of Axios
+ *
+ * @param {Object} instanceConfig The default config for the instance
+ */
+function Axios(instanceConfig) {
+  this.defaults = instanceConfig;
+  this.interceptors = {
+    request: new InterceptorManager(),
+    response: new InterceptorManager()
+  };
+}
+
+/**
+ * Dispatch a request
+ *
+ * @param {Object} config The config specific for this request (merged with this.defaults)
+ */
+Axios.prototype.request = function request(config) {
+  /*eslint no-param-reassign:0*/
+  // Allow for axios('example/url'[, config]) a la fetch API
+  if (typeof config === 'string') {
+    config = utils.merge({
+      url: arguments[0]
+    }, arguments[1]);
+  }
+
+  config = utils.merge(defaults, this.defaults, { method: 'get' }, config);
+
+  // Support baseURL config
+  if (config.baseURL && !isAbsoluteURL(config.url)) {
+    config.url = combineURLs(config.baseURL, config.url);
+  }
+
+  // Hook up interceptors middleware
+  var chain = [dispatchRequest, undefined];
+  var promise = Promise.resolve(config);
+
+  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+    chain.unshift(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+    chain.push(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  while (chain.length) {
+    promise = promise.then(chain.shift(), chain.shift());
+  }
+
+  return promise;
+};
+
+// Provide aliases for supported request methods
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function (url, config) {
+    return this.request(utils.merge(config || {}, {
+      method: method,
+      url: url
+    }));
+  };
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function (url, data, config) {
+    return this.request(utils.merge(config || {}, {
+      method: method,
+      url: url,
+      data: data
+    }));
+  };
+});
+
+module.exports = Axios;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(5);
+
+function InterceptorManager() {
+  this.handlers = [];
+}
+
+/**
+ * Add a new interceptor to the stack
+ *
+ * @param {Function} fulfilled The function to handle `then` for a `Promise`
+ * @param {Function} rejected The function to handle `reject` for a `Promise`
+ *
+ * @return {Number} An ID used to remove interceptor later
+ */
+InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+  this.handlers.push({
+    fulfilled: fulfilled,
+    rejected: rejected
+  });
+  return this.handlers.length - 1;
+};
+
+/**
+ * Remove an interceptor from the stack
+ *
+ * @param {Number} id The ID that was returned by `use`
+ */
+InterceptorManager.prototype.eject = function eject(id) {
+  if (this.handlers[id]) {
+    this.handlers[id] = null;
+  }
+};
+
+/**
+ * Iterate over all the registered interceptors
+ *
+ * This method is particularly useful for skipping over any
+ * interceptors that may have become `null` calling `eject`.
+ *
+ * @param {Function} fn The function to call for each interceptor
+ */
+InterceptorManager.prototype.forEach = function forEach(fn) {
+  utils.forEach(this.handlers, function forEachHandler(h) {
+    if (h !== null) {
+      fn(h);
+    }
+  });
+};
+
+module.exports = InterceptorManager;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(5);
+var transformData = __webpack_require__(22);
+var isCancel = __webpack_require__(9);
+var defaults = __webpack_require__(6);
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+}
+
+/**
+ * Dispatch a request to the server using the configured adapter.
+ *
+ * @param {object} config The config that is to be used for the request
+ * @returns {Promise} The Promise to be fulfilled
+ */
+module.exports = function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+
+  // Ensure headers exist
+  config.headers = config.headers || {};
+
+  // Transform request data
+  config.data = transformData(config.data, config.headers, config.transformRequest);
+
+  // Flatten headers
+  config.headers = utils.merge(config.headers.common || {}, config.headers[config.method] || {}, config.headers || {});
+
+  utils.forEach(['delete', 'get', 'head', 'post', 'put', 'patch', 'common'], function cleanHeaderConfig(method) {
+    delete config.headers[method];
+  });
+
+  var adapter = config.adapter || defaults.adapter;
+
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+
+    // Transform response data
+    response.data = transformData(response.data, response.headers, config.transformResponse);
+
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = transformData(reason.response.data, reason.response.headers, config.transformResponse);
+      }
+    }
+
+    return Promise.reject(reason);
+  });
+};
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Update an Error with the specified config, error code, and response.
+ *
+ * @param {Error} error The error to update.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ @ @param {Object} [response] The response.
+ * @returns {Error} The error.
+ */
+
+module.exports = function enhanceError(error, config, code, response) {
+  error.config = config;
+  if (code) {
+    error.code = code;
+  }
+  error.response = response;
+  return error;
+};
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var createError = __webpack_require__(10);
+
+/**
+ * Resolve or reject a Promise based on response status.
+ *
+ * @param {Function} resolve A function that resolves the promise.
+ * @param {Function} reject A function that rejects the promise.
+ * @param {object} response The response.
+ */
+module.exports = function settle(resolve, reject, response) {
+  var validateStatus = response.config.validateStatus;
+  // Note: status is not exposed by XDomainRequest
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(createError('Request failed with status code ' + response.status, response.config, null, response));
+  }
+};
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(5);
+
+/**
+ * Transform the data for a request or a response
+ *
+ * @param {Object|String} data The data to be transformed
+ * @param {Array} headers The headers for the request or response
+ * @param {Array|Function} fns A single function or Array of functions
+ * @returns {*} The resulting transformed data
+ */
+module.exports = function transformData(data, headers, fns) {
+  /*eslint no-param-reassign:0*/
+  utils.forEach(fns, function transform(fn) {
+    data = fn(data, headers);
+  });
+
+  return data;
+};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
+
+var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+function E() {
+  this.message = 'String contains an invalid character';
+}
+E.prototype = new Error();
+E.prototype.code = 5;
+E.prototype.name = 'InvalidCharacterError';
+
+function btoa(input) {
+  var str = String(input);
+  var output = '';
+  for (
+  // initialize result and counter
+  var block, charCode, idx = 0, map = chars;
+  // if the next str index does not exist:
+  //   change the mapping table to "="
+  //   check if d has no fractional digits
+  str.charAt(idx | 0) || (map = '=', idx % 1);
+  // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
+  output += map.charAt(63 & block >> 8 - idx % 1 * 8)) {
+    charCode = str.charCodeAt(idx += 3 / 4);
+    if (charCode > 0xFF) {
+      throw new E();
+    }
+    block = block << 8 | charCode;
+  }
+  return output;
+}
+
+module.exports = btoa;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(5);
+
+function encode(val) {
+  return encodeURIComponent(val).replace(/%40/gi, '@').replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%20/g, '+').replace(/%5B/gi, '[').replace(/%5D/gi, ']');
+}
+
+/**
+ * Build a URL by appending params to the end
+ *
+ * @param {string} url The base of the url (e.g., http://www.google.com)
+ * @param {object} [params] The params to be appended
+ * @returns {string} The formatted url
+ */
+module.exports = function buildURL(url, params, paramsSerializer) {
+  /*eslint no-param-reassign:0*/
+  if (!params) {
+    return url;
+  }
+
+  var serializedParams;
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (utils.isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    var parts = [];
+
+    utils.forEach(params, function serialize(val, key) {
+      if (val === null || typeof val === 'undefined') {
+        return;
+      }
+
+      if (utils.isArray(val)) {
+        key = key + '[]';
+      }
+
+      if (!utils.isArray(val)) {
+        val = [val];
+      }
+
+      utils.forEach(val, function parseValue(v) {
+        if (utils.isDate(v)) {
+          v = v.toISOString();
+        } else if (utils.isObject(v)) {
+          v = JSON.stringify(v);
+        }
+        parts.push(encode(key) + '=' + encode(v));
+      });
+    });
+
+    serializedParams = parts.join('&');
+  }
+
+  if (serializedParams) {
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+  }
+
+  return url;
+};
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Creates a new URL by combining the specified URLs
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} relativeURL The relative URL
+ * @returns {string} The combined URL
+ */
+
+module.exports = function combineURLs(baseURL, relativeURL) {
+  return baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '');
+};
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(5);
+
+module.exports = utils.isStandardBrowserEnv() ?
+
+// Standard browser envs support document.cookie
+function standardBrowserEnv() {
+  return {
+    write: function write(name, value, expires, path, domain, secure) {
+      var cookie = [];
+      cookie.push(name + '=' + encodeURIComponent(value));
+
+      if (utils.isNumber(expires)) {
+        cookie.push('expires=' + new Date(expires).toGMTString());
+      }
+
+      if (utils.isString(path)) {
+        cookie.push('path=' + path);
+      }
+
+      if (utils.isString(domain)) {
+        cookie.push('domain=' + domain);
+      }
+
+      if (secure === true) {
+        cookie.push('secure');
+      }
+
+      document.cookie = cookie.join('; ');
+    },
+
+    read: function read(name) {
+      var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+      return match ? decodeURIComponent(match[3]) : null;
+    },
+
+    remove: function remove(name) {
+      this.write(name, '', Date.now() - 86400000);
+    }
+  };
+}() :
+
+// Non standard browser env (web workers, react-native) lack needed support.
+function nonStandardBrowserEnv() {
+  return {
+    write: function write() {},
+    read: function read() {
+      return null;
+    },
+    remove: function remove() {}
+  };
+}();
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Determines whether the specified URL is absolute
+ *
+ * @param {string} url The URL to test
+ * @returns {boolean} True if the specified URL is absolute, otherwise false
+ */
+
+module.exports = function isAbsoluteURL(url) {
+  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+  // by any combination of letters, digits, plus, period, or hyphen.
+  return (/^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+  );
+};
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(5);
+
+module.exports = utils.isStandardBrowserEnv() ?
+
+// Standard browser envs have full support of the APIs needed to test
+// whether the request URL is of the same origin as current location.
+function standardBrowserEnv() {
+  var msie = /(msie|trident)/i.test(navigator.userAgent);
+  var urlParsingNode = document.createElement('a');
+  var originURL;
+
+  /**
+  * Parse a URL to discover it's components
+  *
+  * @param {String} url The URL to be parsed
+  * @returns {Object}
+  */
+  function resolveURL(url) {
+    var href = url;
+
+    if (msie) {
+      // IE needs attribute set twice to normalize properties
+      urlParsingNode.setAttribute('href', href);
+      href = urlParsingNode.href;
+    }
+
+    urlParsingNode.setAttribute('href', href);
+
+    // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+    return {
+      href: urlParsingNode.href,
+      protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+      host: urlParsingNode.host,
+      search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+      hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+      hostname: urlParsingNode.hostname,
+      port: urlParsingNode.port,
+      pathname: urlParsingNode.pathname.charAt(0) === '/' ? urlParsingNode.pathname : '/' + urlParsingNode.pathname
+    };
+  }
+
+  originURL = resolveURL(window.location.href);
+
+  /**
+  * Determine if a URL shares the same origin as the current location
+  *
+  * @param {String} requestURL The URL to test
+  * @returns {boolean} True if URL shares the same origin, otherwise false
+  */
+  return function isURLSameOrigin(requestURL) {
+    var parsed = utils.isString(requestURL) ? resolveURL(requestURL) : requestURL;
+    return parsed.protocol === originURL.protocol && parsed.host === originURL.host;
+  };
+}() :
+
+// Non standard browser envs (web workers, react-native) lack needed support.
+function nonStandardBrowserEnv() {
+  return function isURLSameOrigin() {
+    return true;
+  };
+}();
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(5);
+
+module.exports = function normalizeHeaderName(headers, normalizedName) {
+  utils.forEach(headers, function processHeader(value, name) {
+    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
+      headers[normalizedName] = value;
+      delete headers[name];
+    }
+  });
+};
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(5);
+
+/**
+ * Parse headers into an object
+ *
+ * ```
+ * Date: Wed, 27 Aug 2014 08:58:49 GMT
+ * Content-Type: application/json
+ * Connection: keep-alive
+ * Transfer-Encoding: chunked
+ * ```
+ *
+ * @param {String} headers Headers needing to be parsed
+ * @returns {Object} Headers parsed into an object
+ */
+module.exports = function parseHeaders(headers) {
+  var parsed = {};
+  var key;
+  var val;
+  var i;
+
+  if (!headers) {
+    return parsed;
+  }
+
+  utils.forEach(headers.split('\n'), function parser(line) {
+    i = line.indexOf(':');
+    key = utils.trim(line.substr(0, i)).toLowerCase();
+    val = utils.trim(line.substr(i + 1));
+
+    if (key) {
+      parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+    }
+  });
+
+  return parsed;
+};
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Syntactic sugar for invoking a function and expanding an array for arguments.
+ *
+ * Common use case would be to use `Function.prototype.apply`.
+ *
+ *  ```js
+ *  function f(x, y, z) {}
+ *  var args = [1, 2, 3];
+ *  f.apply(null, args);
+ *  ```
+ *
+ * With `spread` this example can be re-written.
+ *
+ *  ```js
+ *  spread(function(x, y, z) {})([1, 2, 3]);
+ *  ```
+ *
+ * @param {Function} callback
+ * @returns {Function}
+ */
+
+module.exports = function spread(callback) {
+  return function wrap(arr) {
+    return callback.apply(null, arr);
+  };
+};
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var styles = [{
+	featureType: 'all',
+	elementType: 'labels.text.fill',
+	stylers: [{
+		color: '#ffffff'
+	}]
+}, {
+	featureType: 'all',
+	elementType: 'labels.text.stroke',
+	stylers: [{
+		color: '#000000'
+	}, {
+		lightness: 13
+	}]
+}, {
+	featureType: 'administrative',
+	elementType: 'geometry.fill',
+	stylers: [{
+		color: '#000000'
+	}]
+}, {
+	featureType: 'administrative',
+	elementType: 'geometry.stroke',
+	stylers: [{
+		color: '#144b53'
+	}, {
+		lightness: 14
+	}, {
+		weight: 1.4
+	}]
+}, {
+	featureType: 'landscape',
+	elementType: 'all',
+	stylers: [{
+		color: '#08304b'
+	}]
+}, {
+	featureType: 'poi',
+	elementType: 'geometry',
+	stylers: [{
+		color: '#0c4152'
+	}, {
+		lightness: 5
+	}]
+}, {
+	featureType: 'road.highway',
+	elementType: 'geometry.fill',
+	stylers: [{
+		color: '#000000'
+	}]
+}, {
+	featureType: 'road.highway',
+	elementType: 'geometry.stroke',
+	stylers: [{
+		color: '#0b434f'
+	}, {
+		lightness: 25
+	}]
+}, {
+	featureType: 'road.arterial',
+	elementType: 'geometry.fill',
+	stylers: [{
+		color: '#000000'
+	}]
+}, {
+	featureType: 'road.arterial',
+	elementType: 'geometry.stroke',
+	stylers: [{
+		color: '#0b3d51'
+	}, {
+		lightness: 16
+	}]
+}, {
+	featureType: 'road.local',
+	elementType: 'geometry',
+	stylers: [{
+		color: '#000000'
+	}]
+}, {
+	featureType: 'transit',
+	elementType: 'all',
+	stylers: [{
+		color: '#146474'
+	}]
+}, {
+	featureType: 'water',
+	elementType: 'all',
+	stylers: [{
+		color: '#021019'
+	}]
+}];
+
+exports.default = styles;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+(function (root, factory) {
+  if (( false ? 'undefined' : _typeof(exports)) === 'object') {
+    module.exports = factory();
+  } else if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [!(function webpackMissingModule() { var e = new Error("Cannot find module \"jquery\""); e.code = 'MODULE_NOT_FOUND';; throw e; }()), !(function webpackMissingModule() { var e = new Error("Cannot find module \"googlemaps!\""); e.code = 'MODULE_NOT_FOUND';; throw e; }())], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else {
+    root.GMaps = factory();
+  }
+})(undefined, function () {
+
+  /*!
+   * GMaps.js v0.4.24
+   * http://hpneo.github.com/gmaps/
+   *
+   * Copyright 2016, Gustavo Leon
+   * Released under the MIT License.
+   */
+
+  var extend_object = function extend_object(obj, new_obj) {
+    var name;
+
+    if (obj === new_obj) {
+      return obj;
+    }
+
+    for (name in new_obj) {
+      if (new_obj[name] !== undefined) {
+        obj[name] = new_obj[name];
+      }
+    }
+
+    return obj;
+  };
+
+  var replace_object = function replace_object(obj, replace) {
+    var name;
+
+    if (obj === replace) {
+      return obj;
+    }
+
+    for (name in replace) {
+      if (obj[name] != undefined) {
+        obj[name] = replace[name];
+      }
+    }
+
+    return obj;
+  };
+
+  var array_map = function array_map(array, callback) {
+    var original_callback_params = Array.prototype.slice.call(arguments, 2),
+        array_return = [],
+        array_length = array.length,
+        i;
+
+    if (Array.prototype.map && array.map === Array.prototype.map) {
+      array_return = Array.prototype.map.call(array, function (item) {
+        var callback_params = original_callback_params.slice(0);
+        callback_params.splice(0, 0, item);
+
+        return callback.apply(this, callback_params);
+      });
+    } else {
+      for (i = 0; i < array_length; i++) {
+        callback_params = original_callback_params;
+        callback_params.splice(0, 0, array[i]);
+        array_return.push(callback.apply(this, callback_params));
+      }
+    }
+
+    return array_return;
+  };
+
+  var array_flat = function array_flat(array) {
+    var new_array = [],
+        i;
+
+    for (i = 0; i < array.length; i++) {
+      new_array = new_array.concat(array[i]);
+    }
+
+    return new_array;
+  };
+
+  var coordsToLatLngs = function coordsToLatLngs(coords, useGeoJSON) {
+    var first_coord = coords[0],
+        second_coord = coords[1];
+
+    if (useGeoJSON) {
+      first_coord = coords[1];
+      second_coord = coords[0];
+    }
+
+    return new google.maps.LatLng(first_coord, second_coord);
+  };
+
+  var arrayToLatLng = function arrayToLatLng(coords, useGeoJSON) {
+    var i;
+
+    for (i = 0; i < coords.length; i++) {
+      if (!(coords[i] instanceof google.maps.LatLng)) {
+        if (coords[i].length > 0 && _typeof(coords[i][0]) === "object") {
+          coords[i] = arrayToLatLng(coords[i], useGeoJSON);
+        } else {
+          coords[i] = coordsToLatLngs(coords[i], useGeoJSON);
+        }
+      }
+    }
+
+    return coords;
+  };
+
+  var getElementsByClassName = function getElementsByClassName(class_name, context) {
+    var element,
+        _class = class_name.replace('.', '');
+
+    if ('jQuery' in this && context) {
+      element = $("." + _class, context)[0];
+    } else {
+      element = document.getElementsByClassName(_class)[0];
+    }
+    return element;
+  };
+
+  var getElementById = function getElementById(id, context) {
+    var element,
+        id = id.replace('#', '');
+
+    if ('jQuery' in window && context) {
+      element = $('#' + id, context)[0];
+    } else {
+      element = document.getElementById(id);
+    };
+
+    return element;
+  };
+
+  var findAbsolutePosition = function findAbsolutePosition(obj) {
+    var curleft = 0,
+        curtop = 0;
+
+    if (obj.offsetParent) {
+      do {
+        curleft += obj.offsetLeft;
+        curtop += obj.offsetTop;
+      } while (obj = obj.offsetParent);
+    }
+
+    return [curleft, curtop];
+  };
+
+  var GMaps = function (global) {
+    "use strict";
+
+    var doc = document;
+    /**
+     * Creates a new GMaps instance, including a Google Maps map.
+     * @class GMaps
+     * @constructs
+     * @param {object} options - `options` accepts all the [MapOptions](https://developers.google.com/maps/documentation/javascript/reference#MapOptions) and [events](https://developers.google.com/maps/documentation/javascript/reference#Map) listed in the Google Maps API. Also accepts:
+     * * `lat` (number): Latitude of the map's center
+     * * `lng` (number): Longitude of the map's center
+     * * `el` (string or HTMLElement): container where the map will be rendered
+     * * `markerClusterer` (function): A function to create a marker cluster. You can use MarkerClusterer or MarkerClustererPlus.
+     */
+    var GMaps = function GMaps(options) {
+
+      if (!(_typeof(window.google) === 'object' && window.google.maps)) {
+        if (_typeof(window.console) === 'object' && window.console.error) {
+          console.error('Google Maps API is required. Please register the following JavaScript library https://maps.googleapis.com/maps/api/js.');
+        }
+
+        return function () {};
+      }
+
+      if (!this) return new GMaps(options);
+
+      options.zoom = options.zoom || 15;
+      options.mapType = options.mapType || 'roadmap';
+
+      var valueOrDefault = function valueOrDefault(value, defaultValue) {
+        return value === undefined ? defaultValue : value;
+      };
+
+      var self = this,
+          i,
+          events_that_hide_context_menu = ['bounds_changed', 'center_changed', 'click', 'dblclick', 'drag', 'dragend', 'dragstart', 'idle', 'maptypeid_changed', 'projection_changed', 'resize', 'tilesloaded', 'zoom_changed'],
+          events_that_doesnt_hide_context_menu = ['mousemove', 'mouseout', 'mouseover'],
+          options_to_be_deleted = ['el', 'lat', 'lng', 'mapType', 'width', 'height', 'markerClusterer', 'enableNewStyle'],
+          identifier = options.el || options.div,
+          markerClustererFunction = options.markerClusterer,
+          mapType = google.maps.MapTypeId[options.mapType.toUpperCase()],
+          map_center = new google.maps.LatLng(options.lat, options.lng),
+          zoomControl = valueOrDefault(options.zoomControl, true),
+          zoomControlOpt = options.zoomControlOpt || {
+        style: 'DEFAULT',
+        position: 'TOP_LEFT'
+      },
+          zoomControlStyle = zoomControlOpt.style || 'DEFAULT',
+          zoomControlPosition = zoomControlOpt.position || 'TOP_LEFT',
+          panControl = valueOrDefault(options.panControl, true),
+          mapTypeControl = valueOrDefault(options.mapTypeControl, true),
+          scaleControl = valueOrDefault(options.scaleControl, true),
+          streetViewControl = valueOrDefault(options.streetViewControl, true),
+          overviewMapControl = valueOrDefault(overviewMapControl, true),
+          map_options = {},
+          map_base_options = {
+        zoom: this.zoom,
+        center: map_center,
+        mapTypeId: mapType
+      },
+          map_controls_options = {
+        panControl: panControl,
+        zoomControl: zoomControl,
+        zoomControlOptions: {
+          style: google.maps.ZoomControlStyle[zoomControlStyle],
+          position: google.maps.ControlPosition[zoomControlPosition]
+        },
+        mapTypeControl: mapTypeControl,
+        scaleControl: scaleControl,
+        streetViewControl: streetViewControl,
+        overviewMapControl: overviewMapControl
+      };
+
+      if (typeof options.el === 'string' || typeof options.div === 'string') {
+        if (identifier.indexOf("#") > -1) {
+          /**
+           * Container element
+           *
+           * @type {HTMLElement}
+           */
+          this.el = getElementById(identifier, options.context);
+        } else {
+          this.el = getElementsByClassName.apply(this, [identifier, options.context]);
+        }
+      } else {
+        this.el = identifier;
+      }
+
+      if (typeof this.el === 'undefined' || this.el === null) {
+        throw 'No element defined.';
+      }
+
+      window.context_menu = window.context_menu || {};
+      window.context_menu[self.el.id] = {};
+
+      /**
+       * Collection of custom controls in the map UI
+       *
+       * @type {array}
+       */
+      this.controls = [];
+      /**
+       * Collection of map's overlays
+       *
+       * @type {array}
+       */
+      this.overlays = [];
+      /**
+       * Collection of KML/GeoRSS and FusionTable layers
+       *
+       * @type {array}
+       */
+      this.layers = [];
+      /**
+       * Collection of data layers (See {@link GMaps#addLayer})
+       *
+       * @type {object}
+       */
+      this.singleLayers = {};
+      /**
+       * Collection of map's markers
+       *
+       * @type {array}
+       */
+      this.markers = [];
+      /**
+       * Collection of map's lines
+       *
+       * @type {array}
+       */
+      this.polylines = [];
+      /**
+       * Collection of map's routes requested by {@link GMaps#getRoutes}, {@link GMaps#renderRoute}, {@link GMaps#drawRoute}, {@link GMaps#travelRoute} or {@link GMaps#drawSteppedRoute}
+       *
+       * @type {array}
+       */
+      this.routes = [];
+      /**
+       * Collection of map's polygons
+       *
+       * @type {array}
+       */
+      this.polygons = [];
+      this.infoWindow = null;
+      this.overlay_el = null;
+      /**
+       * Current map's zoom
+       *
+       * @type {number}
+       */
+      this.zoom = options.zoom;
+      this.registered_events = {};
+
+      this.el.style.width = options.width || this.el.scrollWidth || this.el.offsetWidth;
+      this.el.style.height = options.height || this.el.scrollHeight || this.el.offsetHeight;
+
+      google.maps.visualRefresh = options.enableNewStyle;
+
+      for (i = 0; i < options_to_be_deleted.length; i++) {
+        delete options[options_to_be_deleted[i]];
+      }
+
+      if (options.disableDefaultUI != true) {
+        map_base_options = extend_object(map_base_options, map_controls_options);
+      }
+
+      map_options = extend_object(map_base_options, options);
+
+      for (i = 0; i < events_that_hide_context_menu.length; i++) {
+        delete map_options[events_that_hide_context_menu[i]];
+      }
+
+      for (i = 0; i < events_that_doesnt_hide_context_menu.length; i++) {
+        delete map_options[events_that_doesnt_hide_context_menu[i]];
+      }
+
+      /**
+       * Google Maps map instance
+       *
+       * @type {google.maps.Map}
+       */
+      this.map = new google.maps.Map(this.el, map_options);
+
+      if (markerClustererFunction) {
+        /**
+         * Marker Clusterer instance
+         *
+         * @type {object}
+         */
+        this.markerClusterer = markerClustererFunction.apply(this, [this.map]);
+      }
+
+      var buildContextMenuHTML = function buildContextMenuHTML(control, e) {
+        var html = '',
+            options = window.context_menu[self.el.id][control];
+
+        for (var i in options) {
+          if (options.hasOwnProperty(i)) {
+            var option = options[i];
+
+            html += '<li><a id="' + control + '_' + i + '" href="#">' + option.title + '</a></li>';
+          }
+        }
+
+        if (!getElementById('gmaps_context_menu')) return;
+
+        var context_menu_element = getElementById('gmaps_context_menu');
+
+        context_menu_element.innerHTML = html;
+
+        var context_menu_items = context_menu_element.getElementsByTagName('a'),
+            context_menu_items_count = context_menu_items.length,
+            i;
+
+        for (i = 0; i < context_menu_items_count; i++) {
+          var context_menu_item = context_menu_items[i];
+
+          var assign_menu_item_action = function assign_menu_item_action(ev) {
+            ev.preventDefault();
+
+            options[this.id.replace(control + '_', '')].action.apply(self, [e]);
+            self.hideContextMenu();
+          };
+
+          google.maps.event.clearListeners(context_menu_item, 'click');
+          google.maps.event.addDomListenerOnce(context_menu_item, 'click', assign_menu_item_action, false);
+        }
+
+        var position = findAbsolutePosition.apply(this, [self.el]),
+            left = position[0] + e.pixel.x - 15,
+            top = position[1] + e.pixel.y - 15;
+
+        context_menu_element.style.left = left + "px";
+        context_menu_element.style.top = top + "px";
+
+        // context_menu_element.style.display = 'block';
+      };
+
+      this.buildContextMenu = function (control, e) {
+        if (control === 'marker') {
+          e.pixel = {};
+
+          var overlay = new google.maps.OverlayView();
+          overlay.setMap(self.map);
+
+          overlay.draw = function () {
+            var projection = overlay.getProjection(),
+                position = e.marker.getPosition();
+
+            e.pixel = projection.fromLatLngToContainerPixel(position);
+
+            buildContextMenuHTML(control, e);
+          };
+        } else {
+          buildContextMenuHTML(control, e);
+        }
+
+        var context_menu_element = getElementById('gmaps_context_menu');
+
+        setTimeout(function () {
+          context_menu_element.style.display = 'block';
+        }, 0);
+      };
+
+      /**
+       * Add a context menu for a map or a marker.
+       *
+       * @param {object} options - The `options` object should contain:
+       * * `control` (string): Kind of control the context menu will be attached. Can be "map" or "marker".
+       * * `options` (array): A collection of context menu items:
+       *   * `title` (string): Item's title shown in the context menu.
+       *   * `name` (string): Item's identifier.
+       *   * `action` (function): Function triggered after selecting the context menu item.
+       */
+      this.setContextMenu = function (options) {
+        window.context_menu[self.el.id][options.control] = {};
+
+        var i,
+            ul = doc.createElement('ul');
+
+        for (i in options.options) {
+          if (options.options.hasOwnProperty(i)) {
+            var option = options.options[i];
+
+            window.context_menu[self.el.id][options.control][option.name] = {
+              title: option.title,
+              action: option.action
+            };
+          }
+        }
+
+        ul.id = 'gmaps_context_menu';
+        ul.style.display = 'none';
+        ul.style.position = 'absolute';
+        ul.style.minWidth = '100px';
+        ul.style.background = 'white';
+        ul.style.listStyle = 'none';
+        ul.style.padding = '8px';
+        ul.style.boxShadow = '2px 2px 6px #ccc';
+
+        if (!getElementById('gmaps_context_menu')) {
+          doc.body.appendChild(ul);
+        }
+
+        var context_menu_element = getElementById('gmaps_context_menu');
+
+        google.maps.event.addDomListener(context_menu_element, 'mouseout', function (ev) {
+          if (!ev.relatedTarget || !this.contains(ev.relatedTarget)) {
+            window.setTimeout(function () {
+              context_menu_element.style.display = 'none';
+            }, 400);
+          }
+        }, false);
+      };
+
+      /**
+       * Hide the current context menu
+       */
+      this.hideContextMenu = function () {
+        var context_menu_element = getElementById('gmaps_context_menu');
+
+        if (context_menu_element) {
+          context_menu_element.style.display = 'none';
+        }
+      };
+
+      var setupListener = function setupListener(object, name) {
+        google.maps.event.addListener(object, name, function (e) {
+          if (e == undefined) {
+            e = this;
+          }
+
+          options[name].apply(this, [e]);
+
+          self.hideContextMenu();
+        });
+      };
+
+      //google.maps.event.addListener(this.map, 'idle', this.hideContextMenu);
+      google.maps.event.addListener(this.map, 'zoom_changed', this.hideContextMenu);
+
+      for (var ev = 0; ev < events_that_hide_context_menu.length; ev++) {
+        var name = events_that_hide_context_menu[ev];
+
+        if (name in options) {
+          setupListener(this.map, name);
+        }
+      }
+
+      for (var ev = 0; ev < events_that_doesnt_hide_context_menu.length; ev++) {
+        var name = events_that_doesnt_hide_context_menu[ev];
+
+        if (name in options) {
+          setupListener(this.map, name);
+        }
+      }
+
+      google.maps.event.addListener(this.map, 'rightclick', function (e) {
+        if (options.rightclick) {
+          options.rightclick.apply(this, [e]);
+        }
+
+        if (window.context_menu[self.el.id]['map'] != undefined) {
+          self.buildContextMenu('map', e);
+        }
+      });
+
+      /**
+       * Trigger a `resize` event, useful if you need to repaint the current map (for changes in the viewport or display / hide actions).
+       */
+      this.refresh = function () {
+        google.maps.event.trigger(this.map, 'resize');
+      };
+
+      /**
+       * Adjust the map zoom to include all the markers added in the map.
+       */
+      this.fitZoom = function () {
+        var latLngs = [],
+            markers_length = this.markers.length,
+            i;
+
+        for (i = 0; i < markers_length; i++) {
+          if (typeof this.markers[i].visible === 'boolean' && this.markers[i].visible) {
+            latLngs.push(this.markers[i].getPosition());
+          }
+        }
+
+        this.fitLatLngBounds(latLngs);
+      };
+
+      /**
+       * Adjust the map zoom to include all the coordinates in the `latLngs` array.
+       *
+       * @param {array} latLngs - Collection of `google.maps.LatLng` objects.
+       */
+      this.fitLatLngBounds = function (latLngs) {
+        var total = latLngs.length,
+            bounds = new google.maps.LatLngBounds(),
+            i;
+
+        for (i = 0; i < total; i++) {
+          bounds.extend(latLngs[i]);
+        }
+
+        this.map.fitBounds(bounds);
+      };
+
+      /**
+       * Center the map using the `lat` and `lng` coordinates.
+       *
+       * @param {number} lat - Latitude of the coordinate.
+       * @param {number} lng - Longitude of the coordinate.
+       * @param {function} [callback] - Callback that will be executed after the map is centered.
+       */
+      this.setCenter = function (lat, lng, callback) {
+        this.map.panTo(new google.maps.LatLng(lat, lng));
+
+        if (callback) {
+          callback();
+        }
+      };
+
+      /**
+       * Return the HTML element container of the map.
+       *
+       * @returns {HTMLElement} the element container.
+       */
+      this.getElement = function () {
+        return this.el;
+      };
+
+      /**
+       * Increase the map's zoom.
+       *
+       * @param {number} [magnitude] - The number of times the map will be zoomed in.
+       */
+      this.zoomIn = function (value) {
+        value = value || 1;
+
+        this.zoom = this.map.getZoom() + value;
+        this.map.setZoom(this.zoom);
+      };
+
+      /**
+       * Decrease the map's zoom.
+       *
+       * @param {number} [magnitude] - The number of times the map will be zoomed out.
+       */
+      this.zoomOut = function (value) {
+        value = value || 1;
+
+        this.zoom = this.map.getZoom() - value;
+        this.map.setZoom(this.zoom);
+      };
+
+      var native_methods = [],
+          method;
+
+      for (method in this.map) {
+        if (typeof this.map[method] == 'function' && !this[method]) {
+          native_methods.push(method);
+        }
+      }
+
+      for (i = 0; i < native_methods.length; i++) {
+        (function (gmaps, scope, method_name) {
+          gmaps[method_name] = function () {
+            return scope[method_name].apply(scope, arguments);
+          };
+        })(this, this.map, native_methods[i]);
+      }
+    };
+
+    return GMaps;
+  }(this);
+
+  GMaps.prototype.createControl = function (options) {
+    var control = document.createElement('div');
+
+    control.style.cursor = 'pointer';
+
+    if (options.disableDefaultStyles !== true) {
+      control.style.fontFamily = 'Roboto, Arial, sans-serif';
+      control.style.fontSize = '11px';
+      control.style.boxShadow = 'rgba(0, 0, 0, 0.298039) 0px 1px 4px -1px';
+    }
+
+    for (var option in options.style) {
+      control.style[option] = options.style[option];
+    }
+
+    if (options.id) {
+      control.id = options.id;
+    }
+
+    if (options.title) {
+      control.title = options.title;
+    }
+
+    if (options.classes) {
+      control.className = options.classes;
+    }
+
+    if (options.content) {
+      if (typeof options.content === 'string') {
+        control.innerHTML = options.content;
+      } else if (options.content instanceof HTMLElement) {
+        control.appendChild(options.content);
+      }
+    }
+
+    if (options.position) {
+      control.position = google.maps.ControlPosition[options.position.toUpperCase()];
+    }
+
+    for (var ev in options.events) {
+      (function (object, name) {
+        google.maps.event.addDomListener(object, name, function () {
+          options.events[name].apply(this, [this]);
+        });
+      })(control, ev);
+    }
+
+    control.index = 1;
+
+    return control;
+  };
+
+  /**
+   * Add a custom control to the map UI.
+   *
+   * @param {object} options - The `options` object should contain:
+   * * `style` (object): The keys and values of this object should be valid CSS properties and values.
+   * * `id` (string): The HTML id for the custom control.
+   * * `classes` (string): A string containing all the HTML classes for the custom control.
+   * * `content` (string or HTML element): The content of the custom control.
+   * * `position` (string): Any valid [`google.maps.ControlPosition`](https://developers.google.com/maps/documentation/javascript/controls#ControlPositioning) value, in lower or upper case.
+   * * `events` (object): The keys of this object should be valid DOM events. The values should be functions.
+   * * `disableDefaultStyles` (boolean): If false, removes the default styles for the controls like font (family and size), and box shadow.
+   * @returns {HTMLElement}
+   */
+  GMaps.prototype.addControl = function (options) {
+    var control = this.createControl(options);
+
+    this.controls.push(control);
+    this.map.controls[control.position].push(control);
+
+    return control;
+  };
+
+  /**
+   * Remove a control from the map. `control` should be a control returned by `addControl()`.
+   *
+   * @param {HTMLElement} control - One of the controls returned by `addControl()`.
+   * @returns {HTMLElement} the removed control.
+   */
+  GMaps.prototype.removeControl = function (control) {
+    var position = null,
+        i;
+
+    for (i = 0; i < this.controls.length; i++) {
+      if (this.controls[i] == control) {
+        position = this.controls[i].position;
+        this.controls.splice(i, 1);
+      }
+    }
+
+    if (position) {
+      for (i = 0; i < this.map.controls.length; i++) {
+        var controlsForPosition = this.map.controls[control.position];
+
+        if (controlsForPosition.getAt(i) == control) {
+          controlsForPosition.removeAt(i);
+
+          break;
+        }
+      }
+    }
+
+    return control;
+  };
+
+  GMaps.prototype.createMarker = function (options) {
+    if (options.lat == undefined && options.lng == undefined && options.position == undefined) {
+      throw 'No latitude or longitude defined.';
+    }
+
+    var self = this,
+        details = options.details,
+        fences = options.fences,
+        outside = options.outside,
+        base_options = {
+      position: new google.maps.LatLng(options.lat, options.lng),
+      map: null
+    },
+        marker_options = extend_object(base_options, options);
+
+    delete marker_options.lat;
+    delete marker_options.lng;
+    delete marker_options.fences;
+    delete marker_options.outside;
+
+    var marker = new google.maps.Marker(marker_options);
+
+    marker.fences = fences;
+
+    if (options.infoWindow) {
+      marker.infoWindow = new google.maps.InfoWindow(options.infoWindow);
+
+      var info_window_events = ['closeclick', 'content_changed', 'domready', 'position_changed', 'zindex_changed'];
+
+      for (var ev = 0; ev < info_window_events.length; ev++) {
+        (function (object, name) {
+          if (options.infoWindow[name]) {
+            google.maps.event.addListener(object, name, function (e) {
+              options.infoWindow[name].apply(this, [e]);
+            });
+          }
+        })(marker.infoWindow, info_window_events[ev]);
+      }
+    }
+
+    var marker_events = ['animation_changed', 'clickable_changed', 'cursor_changed', 'draggable_changed', 'flat_changed', 'icon_changed', 'position_changed', 'shadow_changed', 'shape_changed', 'title_changed', 'visible_changed', 'zindex_changed'];
+
+    var marker_events_with_mouse = ['dblclick', 'drag', 'dragend', 'dragstart', 'mousedown', 'mouseout', 'mouseover', 'mouseup'];
+
+    for (var ev = 0; ev < marker_events.length; ev++) {
+      (function (object, name) {
+        if (options[name]) {
+          google.maps.event.addListener(object, name, function () {
+            options[name].apply(this, [this]);
+          });
+        }
+      })(marker, marker_events[ev]);
+    }
+
+    for (var ev = 0; ev < marker_events_with_mouse.length; ev++) {
+      (function (map, object, name) {
+        if (options[name]) {
+          google.maps.event.addListener(object, name, function (me) {
+            if (!me.pixel) {
+              me.pixel = map.getProjection().fromLatLngToPoint(me.latLng);
+            }
+
+            options[name].apply(this, [me]);
+          });
+        }
+      })(this.map, marker, marker_events_with_mouse[ev]);
+    }
+
+    google.maps.event.addListener(marker, 'click', function () {
+      this.details = details;
+
+      if (options.click) {
+        options.click.apply(this, [this]);
+      }
+
+      if (marker.infoWindow) {
+        self.hideInfoWindows();
+        marker.infoWindow.open(self.map, marker);
+      }
+    });
+
+    google.maps.event.addListener(marker, 'rightclick', function (e) {
+      e.marker = this;
+
+      if (options.rightclick) {
+        options.rightclick.apply(this, [e]);
+      }
+
+      if (window.context_menu[self.el.id]['marker'] != undefined) {
+        self.buildContextMenu('marker', e);
+      }
+    });
+
+    if (marker.fences) {
+      google.maps.event.addListener(marker, 'dragend', function () {
+        self.checkMarkerGeofence(marker, function (m, f) {
+          outside(m, f);
+        });
+      });
+    }
+
+    return marker;
+  };
+
+  GMaps.prototype.addMarker = function (options) {
+    var marker;
+    if (options.hasOwnProperty('gm_accessors_')) {
+      // Native google.maps.Marker object
+      marker = options;
+    } else {
+      if (options.hasOwnProperty('lat') && options.hasOwnProperty('lng') || options.position) {
+        marker = this.createMarker(options);
+      } else {
+        throw 'No latitude or longitude defined.';
+      }
+    }
+
+    marker.setMap(this.map);
+
+    if (this.markerClusterer) {
+      this.markerClusterer.addMarker(marker);
+    }
+
+    this.markers.push(marker);
+
+    GMaps.fire('marker_added', marker, this);
+
+    return marker;
+  };
+
+  GMaps.prototype.addMarkers = function (array) {
+    for (var i = 0, marker; marker = array[i]; i++) {
+      this.addMarker(marker);
+    }
+
+    return this.markers;
+  };
+
+  GMaps.prototype.hideInfoWindows = function () {
+    for (var i = 0, marker; marker = this.markers[i]; i++) {
+      if (marker.infoWindow) {
+        marker.infoWindow.close();
+      }
+    }
+  };
+
+  GMaps.prototype.removeMarker = function (marker) {
+    for (var i = 0; i < this.markers.length; i++) {
+      if (this.markers[i] === marker) {
+        this.markers[i].setMap(null);
+        this.markers.splice(i, 1);
+
+        if (this.markerClusterer) {
+          this.markerClusterer.removeMarker(marker);
+        }
+
+        GMaps.fire('marker_removed', marker, this);
+
+        break;
+      }
+    }
+
+    return marker;
+  };
+
+  GMaps.prototype.removeMarkers = function (collection) {
+    var new_markers = [];
+
+    if (typeof collection == 'undefined') {
+      for (var i = 0; i < this.markers.length; i++) {
+        var marker = this.markers[i];
+        marker.setMap(null);
+
+        GMaps.fire('marker_removed', marker, this);
+      }
+
+      if (this.markerClusterer && this.markerClusterer.clearMarkers) {
+        this.markerClusterer.clearMarkers();
+      }
+
+      this.markers = new_markers;
+    } else {
+      for (var i = 0; i < collection.length; i++) {
+        var index = this.markers.indexOf(collection[i]);
+
+        if (index > -1) {
+          var marker = this.markers[index];
+          marker.setMap(null);
+
+          if (this.markerClusterer) {
+            this.markerClusterer.removeMarker(marker);
+          }
+
+          GMaps.fire('marker_removed', marker, this);
+        }
+      }
+
+      for (var i = 0; i < this.markers.length; i++) {
+        var marker = this.markers[i];
+        if (marker.getMap() != null) {
+          new_markers.push(marker);
+        }
+      }
+
+      this.markers = new_markers;
+    }
+  };
+
+  GMaps.prototype.drawOverlay = function (options) {
+    var overlay = new google.maps.OverlayView(),
+        auto_show = true;
+
+    overlay.setMap(this.map);
+
+    if (options.auto_show != null) {
+      auto_show = options.auto_show;
+    }
+
+    overlay.onAdd = function () {
+      var el = document.createElement('div');
+
+      el.style.borderStyle = "none";
+      el.style.borderWidth = "0px";
+      el.style.position = "absolute";
+      el.style.zIndex = 100;
+      el.innerHTML = options.content;
+
+      overlay.el = el;
+
+      if (!options.layer) {
+        options.layer = 'overlayLayer';
+      }
+
+      var panes = this.getPanes(),
+          overlayLayer = panes[options.layer],
+          stop_overlay_events = ['contextmenu', 'DOMMouseScroll', 'dblclick', 'mousedown'];
+
+      overlayLayer.appendChild(el);
+
+      for (var ev = 0; ev < stop_overlay_events.length; ev++) {
+        (function (object, name) {
+          google.maps.event.addDomListener(object, name, function (e) {
+            if (navigator.userAgent.toLowerCase().indexOf('msie') != -1 && document.all) {
+              e.cancelBubble = true;
+              e.returnValue = false;
+            } else {
+              e.stopPropagation();
+            }
+          });
+        })(el, stop_overlay_events[ev]);
+      }
+
+      if (options.click) {
+        panes.overlayMouseTarget.appendChild(overlay.el);
+        google.maps.event.addDomListener(overlay.el, 'click', function () {
+          options.click.apply(overlay, [overlay]);
+        });
+      }
+
+      google.maps.event.trigger(this, 'ready');
+    };
+
+    overlay.draw = function () {
+      var projection = this.getProjection(),
+          pixel = projection.fromLatLngToDivPixel(new google.maps.LatLng(options.lat, options.lng));
+
+      options.horizontalOffset = options.horizontalOffset || 0;
+      options.verticalOffset = options.verticalOffset || 0;
+
+      var el = overlay.el,
+          content = el.children[0],
+          content_height = content.clientHeight,
+          content_width = content.clientWidth;
+
+      switch (options.verticalAlign) {
+        case 'top':
+          el.style.top = pixel.y - content_height + options.verticalOffset + 'px';
+          break;
+        default:
+        case 'middle':
+          el.style.top = pixel.y - content_height / 2 + options.verticalOffset + 'px';
+          break;
+        case 'bottom':
+          el.style.top = pixel.y + options.verticalOffset + 'px';
+          break;
+      }
+
+      switch (options.horizontalAlign) {
+        case 'left':
+          el.style.left = pixel.x - content_width + options.horizontalOffset + 'px';
+          break;
+        default:
+        case 'center':
+          el.style.left = pixel.x - content_width / 2 + options.horizontalOffset + 'px';
+          break;
+        case 'right':
+          el.style.left = pixel.x + options.horizontalOffset + 'px';
+          break;
+      }
+
+      el.style.display = auto_show ? 'block' : 'none';
+
+      if (!auto_show) {
+        options.show.apply(this, [el]);
+      }
+    };
+
+    overlay.onRemove = function () {
+      var el = overlay.el;
+
+      if (options.remove) {
+        options.remove.apply(this, [el]);
+      } else {
+        overlay.el.parentNode.removeChild(overlay.el);
+        overlay.el = null;
+      }
+    };
+
+    this.overlays.push(overlay);
+    return overlay;
+  };
+
+  GMaps.prototype.removeOverlay = function (overlay) {
+    for (var i = 0; i < this.overlays.length; i++) {
+      if (this.overlays[i] === overlay) {
+        this.overlays[i].setMap(null);
+        this.overlays.splice(i, 1);
+
+        break;
+      }
+    }
+  };
+
+  GMaps.prototype.removeOverlays = function () {
+    for (var i = 0, item; item = this.overlays[i]; i++) {
+      item.setMap(null);
+    }
+
+    this.overlays = [];
+  };
+
+  GMaps.prototype.drawPolyline = function (options) {
+    var path = [],
+        points = options.path;
+
+    if (points.length) {
+      if (points[0][0] === undefined) {
+        path = points;
+      } else {
+        for (var i = 0, latlng; latlng = points[i]; i++) {
+          path.push(new google.maps.LatLng(latlng[0], latlng[1]));
+        }
+      }
+    }
+
+    var polyline_options = {
+      map: this.map,
+      path: path,
+      strokeColor: options.strokeColor,
+      strokeOpacity: options.strokeOpacity,
+      strokeWeight: options.strokeWeight,
+      geodesic: options.geodesic,
+      clickable: true,
+      editable: false,
+      visible: true
+    };
+
+    if (options.hasOwnProperty("clickable")) {
+      polyline_options.clickable = options.clickable;
+    }
+
+    if (options.hasOwnProperty("editable")) {
+      polyline_options.editable = options.editable;
+    }
+
+    if (options.hasOwnProperty("icons")) {
+      polyline_options.icons = options.icons;
+    }
+
+    if (options.hasOwnProperty("zIndex")) {
+      polyline_options.zIndex = options.zIndex;
+    }
+
+    var polyline = new google.maps.Polyline(polyline_options);
+
+    var polyline_events = ['click', 'dblclick', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'];
+
+    for (var ev = 0; ev < polyline_events.length; ev++) {
+      (function (object, name) {
+        if (options[name]) {
+          google.maps.event.addListener(object, name, function (e) {
+            options[name].apply(this, [e]);
+          });
+        }
+      })(polyline, polyline_events[ev]);
+    }
+
+    this.polylines.push(polyline);
+
+    GMaps.fire('polyline_added', polyline, this);
+
+    return polyline;
+  };
+
+  GMaps.prototype.removePolyline = function (polyline) {
+    for (var i = 0; i < this.polylines.length; i++) {
+      if (this.polylines[i] === polyline) {
+        this.polylines[i].setMap(null);
+        this.polylines.splice(i, 1);
+
+        GMaps.fire('polyline_removed', polyline, this);
+
+        break;
+      }
+    }
+  };
+
+  GMaps.prototype.removePolylines = function () {
+    for (var i = 0, item; item = this.polylines[i]; i++) {
+      item.setMap(null);
+    }
+
+    this.polylines = [];
+  };
+
+  GMaps.prototype.drawCircle = function (options) {
+    options = extend_object({
+      map: this.map,
+      center: new google.maps.LatLng(options.lat, options.lng)
+    }, options);
+
+    delete options.lat;
+    delete options.lng;
+
+    var polygon = new google.maps.Circle(options),
+        polygon_events = ['click', 'dblclick', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'];
+
+    for (var ev = 0; ev < polygon_events.length; ev++) {
+      (function (object, name) {
+        if (options[name]) {
+          google.maps.event.addListener(object, name, function (e) {
+            options[name].apply(this, [e]);
+          });
+        }
+      })(polygon, polygon_events[ev]);
+    }
+
+    this.polygons.push(polygon);
+
+    return polygon;
+  };
+
+  GMaps.prototype.drawRectangle = function (options) {
+    options = extend_object({
+      map: this.map
+    }, options);
+
+    var latLngBounds = new google.maps.LatLngBounds(new google.maps.LatLng(options.bounds[0][0], options.bounds[0][1]), new google.maps.LatLng(options.bounds[1][0], options.bounds[1][1]));
+
+    options.bounds = latLngBounds;
+
+    var polygon = new google.maps.Rectangle(options),
+        polygon_events = ['click', 'dblclick', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'];
+
+    for (var ev = 0; ev < polygon_events.length; ev++) {
+      (function (object, name) {
+        if (options[name]) {
+          google.maps.event.addListener(object, name, function (e) {
+            options[name].apply(this, [e]);
+          });
+        }
+      })(polygon, polygon_events[ev]);
+    }
+
+    this.polygons.push(polygon);
+
+    return polygon;
+  };
+
+  GMaps.prototype.drawPolygon = function (options) {
+    var useGeoJSON = false;
+
+    if (options.hasOwnProperty("useGeoJSON")) {
+      useGeoJSON = options.useGeoJSON;
+    }
+
+    delete options.useGeoJSON;
+
+    options = extend_object({
+      map: this.map
+    }, options);
+
+    if (useGeoJSON == false) {
+      options.paths = [options.paths.slice(0)];
+    }
+
+    if (options.paths.length > 0) {
+      if (options.paths[0].length > 0) {
+        options.paths = array_flat(array_map(options.paths, arrayToLatLng, useGeoJSON));
+      }
+    }
+
+    var polygon = new google.maps.Polygon(options),
+        polygon_events = ['click', 'dblclick', 'mousedown', 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'rightclick'];
+
+    for (var ev = 0; ev < polygon_events.length; ev++) {
+      (function (object, name) {
+        if (options[name]) {
+          google.maps.event.addListener(object, name, function (e) {
+            options[name].apply(this, [e]);
+          });
+        }
+      })(polygon, polygon_events[ev]);
+    }
+
+    this.polygons.push(polygon);
+
+    GMaps.fire('polygon_added', polygon, this);
+
+    return polygon;
+  };
+
+  GMaps.prototype.removePolygon = function (polygon) {
+    for (var i = 0; i < this.polygons.length; i++) {
+      if (this.polygons[i] === polygon) {
+        this.polygons[i].setMap(null);
+        this.polygons.splice(i, 1);
+
+        GMaps.fire('polygon_removed', polygon, this);
+
+        break;
+      }
+    }
+  };
+
+  GMaps.prototype.removePolygons = function () {
+    for (var i = 0, item; item = this.polygons[i]; i++) {
+      item.setMap(null);
+    }
+
+    this.polygons = [];
+  };
+
+  GMaps.prototype.getFromFusionTables = function (options) {
+    var events = options.events;
+
+    delete options.events;
+
+    var fusion_tables_options = options,
+        layer = new google.maps.FusionTablesLayer(fusion_tables_options);
+
+    for (var ev in events) {
+      (function (object, name) {
+        google.maps.event.addListener(object, name, function (e) {
+          events[name].apply(this, [e]);
+        });
+      })(layer, ev);
+    }
+
+    this.layers.push(layer);
+
+    return layer;
+  };
+
+  GMaps.prototype.loadFromFusionTables = function (options) {
+    var layer = this.getFromFusionTables(options);
+    layer.setMap(this.map);
+
+    return layer;
+  };
+
+  GMaps.prototype.getFromKML = function (options) {
+    var url = options.url,
+        events = options.events;
+
+    delete options.url;
+    delete options.events;
+
+    var kml_options = options,
+        layer = new google.maps.KmlLayer(url, kml_options);
+
+    for (var ev in events) {
+      (function (object, name) {
+        google.maps.event.addListener(object, name, function (e) {
+          events[name].apply(this, [e]);
+        });
+      })(layer, ev);
+    }
+
+    this.layers.push(layer);
+
+    return layer;
+  };
+
+  GMaps.prototype.loadFromKML = function (options) {
+    var layer = this.getFromKML(options);
+    layer.setMap(this.map);
+
+    return layer;
+  };
+
+  GMaps.prototype.addLayer = function (layerName, options) {
+    //var default_layers = ['weather', 'clouds', 'traffic', 'transit', 'bicycling', 'panoramio', 'places'];
+    options = options || {};
+    var layer;
+
+    switch (layerName) {
+      case 'weather':
+        this.singleLayers.weather = layer = new google.maps.weather.WeatherLayer();
+        break;
+      case 'clouds':
+        this.singleLayers.clouds = layer = new google.maps.weather.CloudLayer();
+        break;
+      case 'traffic':
+        this.singleLayers.traffic = layer = new google.maps.TrafficLayer();
+        break;
+      case 'transit':
+        this.singleLayers.transit = layer = new google.maps.TransitLayer();
+        break;
+      case 'bicycling':
+        this.singleLayers.bicycling = layer = new google.maps.BicyclingLayer();
+        break;
+      case 'panoramio':
+        this.singleLayers.panoramio = layer = new google.maps.panoramio.PanoramioLayer();
+        layer.setTag(options.filter);
+        delete options.filter;
+
+        //click event
+        if (options.click) {
+          google.maps.event.addListener(layer, 'click', function (event) {
+            options.click(event);
+            delete options.click;
+          });
+        }
+        break;
+      case 'places':
+        this.singleLayers.places = layer = new google.maps.places.PlacesService(this.map);
+
+        //search, nearbySearch, radarSearch callback, Both are the same
+        if (options.search || options.nearbySearch || options.radarSearch) {
+          var placeSearchRequest = {
+            bounds: options.bounds || null,
+            keyword: options.keyword || null,
+            location: options.location || null,
+            name: options.name || null,
+            radius: options.radius || null,
+            rankBy: options.rankBy || null,
+            types: options.types || null
+          };
+
+          if (options.radarSearch) {
+            layer.radarSearch(placeSearchRequest, options.radarSearch);
+          }
+
+          if (options.search) {
+            layer.search(placeSearchRequest, options.search);
+          }
+
+          if (options.nearbySearch) {
+            layer.nearbySearch(placeSearchRequest, options.nearbySearch);
+          }
+        }
+
+        //textSearch callback
+        if (options.textSearch) {
+          var textSearchRequest = {
+            bounds: options.bounds || null,
+            location: options.location || null,
+            query: options.query || null,
+            radius: options.radius || null
+          };
+
+          layer.textSearch(textSearchRequest, options.textSearch);
+        }
+        break;
+    }
+
+    if (layer !== undefined) {
+      if (typeof layer.setOptions == 'function') {
+        layer.setOptions(options);
+      }
+      if (typeof layer.setMap == 'function') {
+        layer.setMap(this.map);
+      }
+
+      return layer;
+    }
+  };
+
+  GMaps.prototype.removeLayer = function (layer) {
+    if (typeof layer == "string" && this.singleLayers[layer] !== undefined) {
+      this.singleLayers[layer].setMap(null);
+
+      delete this.singleLayers[layer];
+    } else {
+      for (var i = 0; i < this.layers.length; i++) {
+        if (this.layers[i] === layer) {
+          this.layers[i].setMap(null);
+          this.layers.splice(i, 1);
+
+          break;
+        }
+      }
+    }
+  };
+
+  var travelMode, unitSystem;
+
+  GMaps.prototype.getRoutes = function (options) {
+    switch (options.travelMode) {
+      case 'bicycling':
+        travelMode = google.maps.TravelMode.BICYCLING;
+        break;
+      case 'transit':
+        travelMode = google.maps.TravelMode.TRANSIT;
+        break;
+      case 'driving':
+        travelMode = google.maps.TravelMode.DRIVING;
+        break;
+      default:
+        travelMode = google.maps.TravelMode.WALKING;
+        break;
+    }
+
+    if (options.unitSystem === 'imperial') {
+      unitSystem = google.maps.UnitSystem.IMPERIAL;
+    } else {
+      unitSystem = google.maps.UnitSystem.METRIC;
+    }
+
+    var base_options = {
+      avoidHighways: false,
+      avoidTolls: false,
+      optimizeWaypoints: false,
+      waypoints: []
+    },
+        request_options = extend_object(base_options, options);
+
+    request_options.origin = /string/.test(_typeof(options.origin)) ? options.origin : new google.maps.LatLng(options.origin[0], options.origin[1]);
+    request_options.destination = /string/.test(_typeof(options.destination)) ? options.destination : new google.maps.LatLng(options.destination[0], options.destination[1]);
+    request_options.travelMode = travelMode;
+    request_options.unitSystem = unitSystem;
+
+    delete request_options.callback;
+    delete request_options.error;
+
+    var self = this,
+        routes = [],
+        service = new google.maps.DirectionsService();
+
+    service.route(request_options, function (result, status) {
+      if (status === google.maps.DirectionsStatus.OK) {
+        for (var r in result.routes) {
+          if (result.routes.hasOwnProperty(r)) {
+            routes.push(result.routes[r]);
+          }
+        }
+
+        if (options.callback) {
+          options.callback(routes, result, status);
+        }
+      } else {
+        if (options.error) {
+          options.error(result, status);
+        }
+      }
+    });
+  };
+
+  GMaps.prototype.removeRoutes = function () {
+    this.routes.length = 0;
+  };
+
+  GMaps.prototype.getElevations = function (options) {
+    options = extend_object({
+      locations: [],
+      path: false,
+      samples: 256
+    }, options);
+
+    if (options.locations.length > 0) {
+      if (options.locations[0].length > 0) {
+        options.locations = array_flat(array_map([options.locations], arrayToLatLng, false));
+      }
+    }
+
+    var callback = options.callback;
+    delete options.callback;
+
+    var service = new google.maps.ElevationService();
+
+    //location request
+    if (!options.path) {
+      delete options.path;
+      delete options.samples;
+
+      service.getElevationForLocations(options, function (result, status) {
+        if (callback && typeof callback === "function") {
+          callback(result, status);
+        }
+      });
+      //path request
+    } else {
+      var pathRequest = {
+        path: options.locations,
+        samples: options.samples
+      };
+
+      service.getElevationAlongPath(pathRequest, function (result, status) {
+        if (callback && typeof callback === "function") {
+          callback(result, status);
+        }
+      });
+    }
+  };
+
+  GMaps.prototype.cleanRoute = GMaps.prototype.removePolylines;
+
+  GMaps.prototype.renderRoute = function (options, renderOptions) {
+    var self = this,
+        panel = typeof renderOptions.panel === 'string' ? document.getElementById(renderOptions.panel.replace('#', '')) : renderOptions.panel,
+        display;
+
+    renderOptions.panel = panel;
+    renderOptions = extend_object({
+      map: this.map
+    }, renderOptions);
+    display = new google.maps.DirectionsRenderer(renderOptions);
+
+    this.getRoutes({
+      origin: options.origin,
+      destination: options.destination,
+      travelMode: options.travelMode,
+      waypoints: options.waypoints,
+      unitSystem: options.unitSystem,
+      error: options.error,
+      avoidHighways: options.avoidHighways,
+      avoidTolls: options.avoidTolls,
+      optimizeWaypoints: options.optimizeWaypoints,
+      callback: function callback(routes, response, status) {
+        if (status === google.maps.DirectionsStatus.OK) {
+          display.setDirections(response);
+        }
+      }
+    });
+  };
+
+  GMaps.prototype.drawRoute = function (options) {
+    var self = this;
+
+    this.getRoutes({
+      origin: options.origin,
+      destination: options.destination,
+      travelMode: options.travelMode,
+      waypoints: options.waypoints,
+      unitSystem: options.unitSystem,
+      error: options.error,
+      avoidHighways: options.avoidHighways,
+      avoidTolls: options.avoidTolls,
+      optimizeWaypoints: options.optimizeWaypoints,
+      callback: function callback(routes) {
+        if (routes.length > 0) {
+          var polyline_options = {
+            path: routes[routes.length - 1].overview_path,
+            strokeColor: options.strokeColor,
+            strokeOpacity: options.strokeOpacity,
+            strokeWeight: options.strokeWeight
+          };
+
+          if (options.hasOwnProperty("icons")) {
+            polyline_options.icons = options.icons;
+          }
+
+          self.drawPolyline(polyline_options);
+
+          if (options.callback) {
+            options.callback(routes[routes.length - 1]);
+          }
+        }
+      }
+    });
+  };
+
+  GMaps.prototype.travelRoute = function (options) {
+    if (options.origin && options.destination) {
+      this.getRoutes({
+        origin: options.origin,
+        destination: options.destination,
+        travelMode: options.travelMode,
+        waypoints: options.waypoints,
+        unitSystem: options.unitSystem,
+        error: options.error,
+        callback: function callback(e) {
+          //start callback
+          if (e.length > 0 && options.start) {
+            options.start(e[e.length - 1]);
+          }
+
+          //step callback
+          if (e.length > 0 && options.step) {
+            var route = e[e.length - 1];
+            if (route.legs.length > 0) {
+              var steps = route.legs[0].steps;
+              for (var i = 0, step; step = steps[i]; i++) {
+                step.step_number = i;
+                options.step(step, route.legs[0].steps.length - 1);
+              }
+            }
+          }
+
+          //end callback
+          if (e.length > 0 && options.end) {
+            options.end(e[e.length - 1]);
+          }
+        }
+      });
+    } else if (options.route) {
+      if (options.route.legs.length > 0) {
+        var steps = options.route.legs[0].steps;
+        for (var i = 0, step; step = steps[i]; i++) {
+          step.step_number = i;
+          options.step(step);
+        }
+      }
+    }
+  };
+
+  GMaps.prototype.drawSteppedRoute = function (options) {
+    var self = this;
+
+    if (options.origin && options.destination) {
+      this.getRoutes({
+        origin: options.origin,
+        destination: options.destination,
+        travelMode: options.travelMode,
+        waypoints: options.waypoints,
+        error: options.error,
+        callback: function callback(e) {
+          //start callback
+          if (e.length > 0 && options.start) {
+            options.start(e[e.length - 1]);
+          }
+
+          //step callback
+          if (e.length > 0 && options.step) {
+            var route = e[e.length - 1];
+            if (route.legs.length > 0) {
+              var steps = route.legs[0].steps;
+              for (var i = 0, step; step = steps[i]; i++) {
+                step.step_number = i;
+                var polyline_options = {
+                  path: step.path,
+                  strokeColor: options.strokeColor,
+                  strokeOpacity: options.strokeOpacity,
+                  strokeWeight: options.strokeWeight
+                };
+
+                if (options.hasOwnProperty("icons")) {
+                  polyline_options.icons = options.icons;
+                }
+
+                self.drawPolyline(polyline_options);
+                options.step(step, route.legs[0].steps.length - 1);
+              }
+            }
+          }
+
+          //end callback
+          if (e.length > 0 && options.end) {
+            options.end(e[e.length - 1]);
+          }
+        }
+      });
+    } else if (options.route) {
+      if (options.route.legs.length > 0) {
+        var steps = options.route.legs[0].steps;
+        for (var i = 0, step; step = steps[i]; i++) {
+          step.step_number = i;
+          var polyline_options = {
+            path: step.path,
+            strokeColor: options.strokeColor,
+            strokeOpacity: options.strokeOpacity,
+            strokeWeight: options.strokeWeight
+          };
+
+          if (options.hasOwnProperty("icons")) {
+            polyline_options.icons = options.icons;
+          }
+
+          self.drawPolyline(polyline_options);
+          options.step(step);
+        }
+      }
+    }
+  };
+
+  GMaps.Route = function (options) {
+    this.origin = options.origin;
+    this.destination = options.destination;
+    this.waypoints = options.waypoints;
+
+    this.map = options.map;
+    this.route = options.route;
+    this.step_count = 0;
+    this.steps = this.route.legs[0].steps;
+    this.steps_length = this.steps.length;
+
+    var polyline_options = {
+      path: new google.maps.MVCArray(),
+      strokeColor: options.strokeColor,
+      strokeOpacity: options.strokeOpacity,
+      strokeWeight: options.strokeWeight
+    };
+
+    if (options.hasOwnProperty("icons")) {
+      polyline_options.icons = options.icons;
+    }
+
+    this.polyline = this.map.drawPolyline(polyline_options).getPath();
+  };
+
+  GMaps.Route.prototype.getRoute = function (options) {
+    var self = this;
+
+    this.map.getRoutes({
+      origin: this.origin,
+      destination: this.destination,
+      travelMode: options.travelMode,
+      waypoints: this.waypoints || [],
+      error: options.error,
+      callback: function callback() {
+        self.route = e[0];
+
+        if (options.callback) {
+          options.callback.call(self);
+        }
+      }
+    });
+  };
+
+  GMaps.Route.prototype.back = function () {
+    if (this.step_count > 0) {
+      this.step_count--;
+      var path = this.route.legs[0].steps[this.step_count].path;
+
+      for (var p in path) {
+        if (path.hasOwnProperty(p)) {
+          this.polyline.pop();
+        }
+      }
+    }
+  };
+
+  GMaps.Route.prototype.forward = function () {
+    if (this.step_count < this.steps_length) {
+      var path = this.route.legs[0].steps[this.step_count].path;
+
+      for (var p in path) {
+        if (path.hasOwnProperty(p)) {
+          this.polyline.push(path[p]);
+        }
+      }
+      this.step_count++;
+    }
+  };
+
+  GMaps.prototype.checkGeofence = function (lat, lng, fence) {
+    return fence.containsLatLng(new google.maps.LatLng(lat, lng));
+  };
+
+  GMaps.prototype.checkMarkerGeofence = function (marker, outside_callback) {
+    if (marker.fences) {
+      for (var i = 0, fence; fence = marker.fences[i]; i++) {
+        var pos = marker.getPosition();
+        if (!this.checkGeofence(pos.lat(), pos.lng(), fence)) {
+          outside_callback(marker, fence);
+        }
+      }
+    }
+  };
+
+  GMaps.prototype.toImage = function (options) {
+    var options = options || {},
+        static_map_options = {};
+
+    static_map_options['size'] = options['size'] || [this.el.clientWidth, this.el.clientHeight];
+    static_map_options['lat'] = this.getCenter().lat();
+    static_map_options['lng'] = this.getCenter().lng();
+
+    if (this.markers.length > 0) {
+      static_map_options['markers'] = [];
+
+      for (var i = 0; i < this.markers.length; i++) {
+        static_map_options['markers'].push({
+          lat: this.markers[i].getPosition().lat(),
+          lng: this.markers[i].getPosition().lng()
+        });
+      }
+    }
+
+    if (this.polylines.length > 0) {
+      var polyline = this.polylines[0];
+
+      static_map_options['polyline'] = {};
+      static_map_options['polyline']['path'] = google.maps.geometry.encoding.encodePath(polyline.getPath());
+      static_map_options['polyline']['strokeColor'] = polyline.strokeColor;
+      static_map_options['polyline']['strokeOpacity'] = polyline.strokeOpacity;
+      static_map_options['polyline']['strokeWeight'] = polyline.strokeWeight;
+    }
+
+    return GMaps.staticMapURL(static_map_options);
+  };
+
+  GMaps.staticMapURL = function (options) {
+    var parameters = [],
+        data,
+        static_root = (location.protocol === 'file:' ? 'http:' : location.protocol) + '//maps.googleapis.com/maps/api/staticmap';
+
+    if (options.url) {
+      static_root = options.url;
+      delete options.url;
+    }
+
+    static_root += '?';
+
+    var markers = options.markers;
+
+    delete options.markers;
+
+    if (!markers && options.marker) {
+      markers = [options.marker];
+      delete options.marker;
+    }
+
+    var styles = options.styles;
+
+    delete options.styles;
+
+    var polyline = options.polyline;
+    delete options.polyline;
+
+    /** Map options **/
+    if (options.center) {
+      parameters.push('center=' + options.center);
+      delete options.center;
+    } else if (options.address) {
+      parameters.push('center=' + options.address);
+      delete options.address;
+    } else if (options.lat) {
+      parameters.push(['center=', options.lat, ',', options.lng].join(''));
+      delete options.lat;
+      delete options.lng;
+    } else if (options.visible) {
+      var visible = encodeURI(options.visible.join('|'));
+      parameters.push('visible=' + visible);
+    }
+
+    var size = options.size;
+    if (size) {
+      if (size.join) {
+        size = size.join('x');
+      }
+      delete options.size;
+    } else {
+      size = '630x300';
+    }
+    parameters.push('size=' + size);
+
+    if (!options.zoom && options.zoom !== false) {
+      options.zoom = 15;
+    }
+
+    var sensor = options.hasOwnProperty('sensor') ? !!options.sensor : true;
+    delete options.sensor;
+    parameters.push('sensor=' + sensor);
+
+    for (var param in options) {
+      if (options.hasOwnProperty(param)) {
+        parameters.push(param + '=' + options[param]);
+      }
+    }
+
+    /** Markers **/
+    if (markers) {
+      var marker, loc;
+
+      for (var i = 0; data = markers[i]; i++) {
+        marker = [];
+
+        if (data.size && data.size !== 'normal') {
+          marker.push('size:' + data.size);
+          delete data.size;
+        } else if (data.icon) {
+          marker.push('icon:' + encodeURI(data.icon));
+          delete data.icon;
+        }
+
+        if (data.color) {
+          marker.push('color:' + data.color.replace('#', '0x'));
+          delete data.color;
+        }
+
+        if (data.label) {
+          marker.push('label:' + data.label[0].toUpperCase());
+          delete data.label;
+        }
+
+        loc = data.address ? data.address : data.lat + ',' + data.lng;
+        delete data.address;
+        delete data.lat;
+        delete data.lng;
+
+        for (var param in data) {
+          if (data.hasOwnProperty(param)) {
+            marker.push(param + ':' + data[param]);
+          }
+        }
+
+        if (marker.length || i === 0) {
+          marker.push(loc);
+          marker = marker.join('|');
+          parameters.push('markers=' + encodeURI(marker));
+        }
+        // New marker without styles
+        else {
+            marker = parameters.pop() + encodeURI('|' + loc);
+            parameters.push(marker);
+          }
+      }
+    }
+
+    /** Map Styles **/
+    if (styles) {
+      for (var i = 0; i < styles.length; i++) {
+        var styleRule = [];
+        if (styles[i].featureType) {
+          styleRule.push('feature:' + styles[i].featureType.toLowerCase());
+        }
+
+        if (styles[i].elementType) {
+          styleRule.push('element:' + styles[i].elementType.toLowerCase());
+        }
+
+        for (var j = 0; j < styles[i].stylers.length; j++) {
+          for (var p in styles[i].stylers[j]) {
+            var ruleArg = styles[i].stylers[j][p];
+            if (p == 'hue' || p == 'color') {
+              ruleArg = '0x' + ruleArg.substring(1);
+            }
+            styleRule.push(p + ':' + ruleArg);
+          }
+        }
+
+        var rule = styleRule.join('|');
+        if (rule != '') {
+          parameters.push('style=' + rule);
+        }
+      }
+    }
+
+    /** Polylines **/
+    function parseColor(color, opacity) {
+      if (color[0] === '#') {
+        color = color.replace('#', '0x');
+
+        if (opacity) {
+          opacity = parseFloat(opacity);
+          opacity = Math.min(1, Math.max(opacity, 0));
+          if (opacity === 0) {
+            return '0x00000000';
+          }
+          opacity = (opacity * 255).toString(16);
+          if (opacity.length === 1) {
+            opacity += opacity;
+          }
+
+          color = color.slice(0, 8) + opacity;
+        }
+      }
+      return color;
+    }
+
+    if (polyline) {
+      data = polyline;
+      polyline = [];
+
+      if (data.strokeWeight) {
+        polyline.push('weight:' + parseInt(data.strokeWeight, 10));
+      }
+
+      if (data.strokeColor) {
+        var color = parseColor(data.strokeColor, data.strokeOpacity);
+        polyline.push('color:' + color);
+      }
+
+      if (data.fillColor) {
+        var fillcolor = parseColor(data.fillColor, data.fillOpacity);
+        polyline.push('fillcolor:' + fillcolor);
+      }
+
+      var path = data.path;
+      if (path.join) {
+        for (var j = 0, pos; pos = path[j]; j++) {
+          polyline.push(pos.join(','));
+        }
+      } else {
+        polyline.push('enc:' + path);
+      }
+
+      polyline = polyline.join('|');
+      parameters.push('path=' + encodeURI(polyline));
+    }
+
+    /** Retina support **/
+    var dpi = window.devicePixelRatio || 1;
+    parameters.push('scale=' + dpi);
+
+    parameters = parameters.join('&');
+    return static_root + parameters;
+  };
+
+  GMaps.prototype.addMapType = function (mapTypeId, options) {
+    if (options.hasOwnProperty("getTileUrl") && typeof options["getTileUrl"] == "function") {
+      options.tileSize = options.tileSize || new google.maps.Size(256, 256);
+
+      var mapType = new google.maps.ImageMapType(options);
+
+      this.map.mapTypes.set(mapTypeId, mapType);
+    } else {
+      throw "'getTileUrl' function required.";
+    }
+  };
+
+  GMaps.prototype.addOverlayMapType = function (options) {
+    if (options.hasOwnProperty("getTile") && typeof options["getTile"] == "function") {
+      var overlayMapTypeIndex = options.index;
+
+      delete options.index;
+
+      this.map.overlayMapTypes.insertAt(overlayMapTypeIndex, options);
+    } else {
+      throw "'getTile' function required.";
+    }
+  };
+
+  GMaps.prototype.removeOverlayMapType = function (overlayMapTypeIndex) {
+    this.map.overlayMapTypes.removeAt(overlayMapTypeIndex);
+  };
+
+  GMaps.prototype.addStyle = function (options) {
+    var styledMapType = new google.maps.StyledMapType(options.styles, { name: options.styledMapName });
+
+    this.map.mapTypes.set(options.mapTypeId, styledMapType);
+  };
+
+  GMaps.prototype.setStyle = function (mapTypeId) {
+    this.map.setMapTypeId(mapTypeId);
+  };
+
+  GMaps.prototype.createPanorama = function (streetview_options) {
+    if (!streetview_options.hasOwnProperty('lat') || !streetview_options.hasOwnProperty('lng')) {
+      streetview_options.lat = this.getCenter().lat();
+      streetview_options.lng = this.getCenter().lng();
+    }
+
+    this.panorama = GMaps.createPanorama(streetview_options);
+
+    this.map.setStreetView(this.panorama);
+
+    return this.panorama;
+  };
+
+  GMaps.createPanorama = function (options) {
+    var el = getElementById(options.el, options.context);
+
+    options.position = new google.maps.LatLng(options.lat, options.lng);
+
+    delete options.el;
+    delete options.context;
+    delete options.lat;
+    delete options.lng;
+
+    var streetview_events = ['closeclick', 'links_changed', 'pano_changed', 'position_changed', 'pov_changed', 'resize', 'visible_changed'],
+        streetview_options = extend_object({ visible: true }, options);
+
+    for (var i = 0; i < streetview_events.length; i++) {
+      delete streetview_options[streetview_events[i]];
+    }
+
+    var panorama = new google.maps.StreetViewPanorama(el, streetview_options);
+
+    for (var i = 0; i < streetview_events.length; i++) {
+      (function (object, name) {
+        if (options[name]) {
+          google.maps.event.addListener(object, name, function () {
+            options[name].apply(this);
+          });
+        }
+      })(panorama, streetview_events[i]);
+    }
+
+    return panorama;
+  };
+
+  GMaps.prototype.on = function (event_name, handler) {
+    return GMaps.on(event_name, this, handler);
+  };
+
+  GMaps.prototype.off = function (event_name) {
+    GMaps.off(event_name, this);
+  };
+
+  GMaps.prototype.once = function (event_name, handler) {
+    return GMaps.once(event_name, this, handler);
+  };
+
+  GMaps.custom_events = ['marker_added', 'marker_removed', 'polyline_added', 'polyline_removed', 'polygon_added', 'polygon_removed', 'geolocated', 'geolocation_failed'];
+
+  GMaps.on = function (event_name, object, handler) {
+    if (GMaps.custom_events.indexOf(event_name) == -1) {
+      if (object instanceof GMaps) object = object.map;
+      return google.maps.event.addListener(object, event_name, handler);
+    } else {
+      var registered_event = {
+        handler: handler,
+        eventName: event_name
+      };
+
+      object.registered_events[event_name] = object.registered_events[event_name] || [];
+      object.registered_events[event_name].push(registered_event);
+
+      return registered_event;
+    }
+  };
+
+  GMaps.off = function (event_name, object) {
+    if (GMaps.custom_events.indexOf(event_name) == -1) {
+      if (object instanceof GMaps) object = object.map;
+      google.maps.event.clearListeners(object, event_name);
+    } else {
+      object.registered_events[event_name] = [];
+    }
+  };
+
+  GMaps.once = function (event_name, object, handler) {
+    if (GMaps.custom_events.indexOf(event_name) == -1) {
+      if (object instanceof GMaps) object = object.map;
+      return google.maps.event.addListenerOnce(object, event_name, handler);
+    }
+  };
+
+  GMaps.fire = function (event_name, object, scope) {
+    if (GMaps.custom_events.indexOf(event_name) == -1) {
+      google.maps.event.trigger(object, event_name, Array.prototype.slice.apply(arguments).slice(2));
+    } else {
+      if (event_name in scope.registered_events) {
+        var firing_events = scope.registered_events[event_name];
+
+        for (var i = 0; i < firing_events.length; i++) {
+          (function (handler, scope, object) {
+            handler.apply(scope, [object]);
+          })(firing_events[i]['handler'], scope, object);
+        }
+      }
+    }
+  };
+
+  GMaps.geolocate = function (options) {
+    var complete_callback = options.always || options.complete;
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        options.success(position);
+
+        if (complete_callback) {
+          complete_callback();
+        }
+      }, function (error) {
+        options.error(error);
+
+        if (complete_callback) {
+          complete_callback();
+        }
+      }, options.options);
+    } else {
+      options.not_supported();
+
+      if (complete_callback) {
+        complete_callback();
+      }
+    }
+  };
+
+  GMaps.geocode = function (options) {
+    this.geocoder = new google.maps.Geocoder();
+    var callback = options.callback;
+    if (options.hasOwnProperty('lat') && options.hasOwnProperty('lng')) {
+      options.latLng = new google.maps.LatLng(options.lat, options.lng);
+    }
+
+    delete options.lat;
+    delete options.lng;
+    delete options.callback;
+
+    this.geocoder.geocode(options, function (results, status) {
+      callback(results, status);
+    });
+  };
+
+  if (_typeof(window.google) === 'object' && window.google.maps) {
+    //==========================
+    // Polygon containsLatLng
+    // https://github.com/tparkin/Google-Maps-Point-in-Polygon
+    // Poygon getBounds extension - google-maps-extensions
+    // http://code.google.com/p/google-maps-extensions/source/browse/google.maps.Polygon.getBounds.js
+    if (!google.maps.Polygon.prototype.getBounds) {
+      google.maps.Polygon.prototype.getBounds = function (latLng) {
+        var bounds = new google.maps.LatLngBounds();
+        var paths = this.getPaths();
+        var path;
+
+        for (var p = 0; p < paths.getLength(); p++) {
+          path = paths.getAt(p);
+          for (var i = 0; i < path.getLength(); i++) {
+            bounds.extend(path.getAt(i));
+          }
+        }
+
+        return bounds;
+      };
+    }
+
+    if (!google.maps.Polygon.prototype.containsLatLng) {
+      // Polygon containsLatLng - method to determine if a latLng is within a polygon
+      google.maps.Polygon.prototype.containsLatLng = function (latLng) {
+        // Exclude points outside of bounds as there is no way they are in the poly
+        var bounds = this.getBounds();
+
+        if (bounds !== null && !bounds.contains(latLng)) {
+          return false;
+        }
+
+        // Raycast point in polygon method
+        var inPoly = false;
+
+        var numPaths = this.getPaths().getLength();
+        for (var p = 0; p < numPaths; p++) {
+          var path = this.getPaths().getAt(p);
+          var numPoints = path.getLength();
+          var j = numPoints - 1;
+
+          for (var i = 0; i < numPoints; i++) {
+            var vertex1 = path.getAt(i);
+            var vertex2 = path.getAt(j);
+
+            if (vertex1.lng() < latLng.lng() && vertex2.lng() >= latLng.lng() || vertex2.lng() < latLng.lng() && vertex1.lng() >= latLng.lng()) {
+              if (vertex1.lat() + (latLng.lng() - vertex1.lng()) / (vertex2.lng() - vertex1.lng()) * (vertex2.lat() - vertex1.lat()) < latLng.lat()) {
+                inPoly = !inPoly;
+              }
+            }
+
+            j = i;
+          }
+        }
+
+        return inPoly;
+      };
+    }
+
+    if (!google.maps.Circle.prototype.containsLatLng) {
+      google.maps.Circle.prototype.containsLatLng = function (latLng) {
+        if (google.maps.geometry) {
+          return google.maps.geometry.spherical.computeDistanceBetween(this.getCenter(), latLng) <= this.getRadius();
+        } else {
+          return true;
+        }
+      };
+    }
+
+    google.maps.Rectangle.prototype.containsLatLng = function (latLng) {
+      return this.getBounds().contains(latLng);
+    };
+
+    google.maps.LatLngBounds.prototype.containsLatLng = function (latLng) {
+      return this.contains(latLng);
+    };
+
+    google.maps.Marker.prototype.setFences = function (fences) {
+      this.fences = fences;
+    };
+
+    google.maps.Marker.prototype.addFence = function (fence) {
+      this.fences.push(fence);
+    };
+
+    google.maps.Marker.prototype.getId = function () {
+      return this['__gm_id'];
+    };
+  }
+
+  //==========================
+  // Array indexOf
+  // https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/indexOf
+  if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (searchElement /*, fromIndex */) {
+      "use strict";
+
+      if (this == null) {
+        throw new TypeError();
+      }
+      var t = Object(this);
+      var len = t.length >>> 0;
+      if (len === 0) {
+        return -1;
+      }
+      var n = 0;
+      if (arguments.length > 1) {
+        n = Number(arguments[1]);
+        if (n != n) {
+          // shortcut for verifying if it's NaN
+          n = 0;
+        } else if (n != 0 && n != Infinity && n != -Infinity) {
+          n = (n > 0 || -1) * Math.floor(Math.abs(n));
+        }
+      }
+      if (n >= len) {
+        return -1;
+      }
+      var k = n >= 0 ? n : Math.max(len - Math.abs(n), 0);
+      for (; k < len; k++) {
+        if (k in t && t[k] === searchElement) {
+          return k;
+        }
+      }
+      return -1;
+    };
+  }
+
+  return GMaps;
+});
 
 /***/ })
 /******/ ]);

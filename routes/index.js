@@ -5,6 +5,7 @@ const router = express.Router();
 const eventController = require('../controllers/eventController');
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
+const bookingController = require('../controllers/bookingController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 // Do work here
@@ -23,9 +24,10 @@ router.post('/add/:id', catchErrors(eventController.updateEvent));
 
 router.get('/event/:id/map', catchErrors(eventController.getMap));
 
-// AUTHENTICATION / USERS
-
-router.get('/users/login', userController.loginForm);
+// BOOKING
+router.post('/bookings/:id', authController.isLoggedIn, catchErrors(bookingController.createBooking));
+router.router // AUTHENTICATION / USERS
+	.get('/users/login', userController.loginForm);
 
 router.post('/users/login', authController.login);
 

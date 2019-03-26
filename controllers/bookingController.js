@@ -1,23 +1,21 @@
 const mongoose = require('mongoose');
 const Booking = mongoose.model('Booking');
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.createBooking = async (req, res) => {
 	req.body.booker = req.user._id;
 	req.body.event = req.params.id;
 	const bookings = await Booking.aggregate([
 		{
-			$lookup: {
-				from: 'events',
-				localField: '_id',
-				foreignField: 'event',
-				as: 'events',
+			$match: {
+				event: ObjectId(req.body.event),
+				booker: ObjectId(req.body.booker),
 			},
 		},
-		{ $match: { 'events.1': { exists: true } } },
 	]);
-	console.log(`BOOKINGS:: ${bookings}`);
-	if (bookings[bookings.length - 1] > 0) {
-		console.log;
+	console.log(`Bookings:::::: ${bookings}`);
+	if (bookings.length > 0) {
+		console.log('suceesss');
 		req.flash('error', 'You have already booked this Event!');
 		res.redirect('back');
 	}

@@ -8,12 +8,12 @@ const BookingSchema = new Schema({
 		required: 'Please supply a number of people',
 	},
 	event: {
-		type: Schema.ObjectId,
+		type: mongoose.Schema.ObjectId,
 		ref: 'Event',
 		required: 'Must give an event!',
 	},
 	booker: {
-		type: Schema.ObjectId,
+		type: mongoose.Schema.ObjectId,
 		ref: 'User',
 		required: 'You must supply the booker!',
 	},

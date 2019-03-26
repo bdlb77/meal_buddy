@@ -64,7 +64,7 @@ const eventSchema = new Schema(
 		toObject: { virtuals: true },
 	}
 );
-eventSchema.virtual('booking', {
+eventSchema.virtual('bookings', {
 	ref: 'Booking', // what model is linked?
 	localField: '_id', //what field on model
 	foreignField: 'event', //which field on Booking?

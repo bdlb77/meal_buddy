@@ -26,8 +26,9 @@ router.get('/event/:id/map', catchErrors(eventController.getMap));
 
 // BOOKING
 router.post('/bookings/:id', authController.isLoggedIn, catchErrors(bookingController.createBooking));
-router.router // AUTHENTICATION / USERS
-	.get('/users/login', userController.loginForm);
+// AUTHENTICATION / USERS
+
+router.get('/users/login', userController.loginForm);
 
 router.post('/users/login', authController.login);
 

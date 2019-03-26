@@ -1,4 +1,6 @@
+
 extends ../layout
+include ../mixins/_bookingForm
 
 block content
     .single__event
@@ -21,14 +23,15 @@ block content
             h1 #{event.location.address}
         .single__event__buttons
           .single__event__bg
-            a(href="javascript:history.back()")
+            a(href="/events")
               i.fas.fa-arrow-left
           .single__event__bg
             a(href=`/event/${event._id}/map`)
               i.far.fa-map
         .single__event__reserve
-          button.button Reserve
+          button.button.trigger Reserve
 
       if user && event.author.equals(user._id)
         a(href=`/event/${event._id}/edit`)
             p Edit
+      +bookingForm(event)

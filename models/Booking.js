@@ -12,15 +12,15 @@ const BookingSchema = new Schema({
 		ref: 'Event',
 		required: 'Must give an event!',
 	},
-	bookee: {
+	booker: {
 		type: Schema.ObjectId,
 		ref: 'User',
-		required: 'You must supply the bookee!',
+		required: 'You must supply the booker!',
 	},
 	confirmed: {
-		type: boolean,
+		type: Boolean,
 		default: false,
 	},
 });
 
-module.exports = module.model('Booking', BookingSchema);
+module.exports = mongoose.model('Booking', BookingSchema);

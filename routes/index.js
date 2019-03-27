@@ -26,6 +26,10 @@ router.get('/event/:id/map', catchErrors(eventController.getMap));
 
 // BOOKING
 router.post('/bookings/:id', authController.isLoggedIn, catchErrors(bookingController.createBooking));
+
+// PROFILE DASHBOARD
+router.get('/profile/:id', catchErrors(userController.profile));
+
 // AUTHENTICATION / USERS
 
 router.get('/users/login', userController.loginForm);

@@ -17,6 +17,7 @@
   "browserslist": "last 3 versions",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.7.2",
+    "@google/maps": "^0.5.5",
     "axios": "0.15.3",
     "body-parser": "1.17.1",
     "connect-flash": "0.1.1",

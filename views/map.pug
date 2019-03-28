@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  .single__event__bg.btn__abs
+    a(href="javascript:history.back()")
+      i.fas.fa-arrow-left
+  .single__event#map__blur
+    .single__event__top.event__blur
+      .map__title
+        h1= event.title
+    #map(data-coords=`[${event.location.coordinates}]` 
+    data-event=`
+      {
+        "title": "${event.title}",
+        "description": "${event.description}",
+        "address": "${event.location.address}",
+        "photo": "${event.photo}",
+        "slug": "${event.slug}",
+        "price": "${event.price}"
+      }`)
+      p loading map...

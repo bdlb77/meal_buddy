@@ -1,0 +1,53 @@
+// .map {
+//     padding: 20px;
+//     background: white;
+//     box-shadow: $shad;
+//   }
+#map {
+  height: 550px;
+  position: absolute;
+  width: 90%;
+  margin-left: -45%;
+  left: 50%;
+  bottom: 0;
+  z-index: 3;
+  border-radius: 15px;
+  box-shadow: $shad;
+}
+.popup {
+  width: 300px;
+  img {
+    width: 100%;
+  }
+}
+
+#map__blur {
+  background: rgba(0, 0, 0, 0.6);
+  max-height: 100vh;
+  height: calc(100vh - 65px);
+  z-index: 2;
+}
+.map__title {
+  display: flex;
+  align-items: center;
+  padding-top: 1rem;
+  justify-content: center;
+  font-size: 24px;
+  h1 {
+   margin: 0;
+  }
+}
+.event__blur {
+  opacity: 0.5;
+}
+.btn__abs {
+  position: absolute;
+  top: 70px;
+  left: 5px;
+  height: 30px !important;
+  width: 30px !important;
+  border-radius: 50%;
+  opacity: 1;
+  z-index: 10;
+
+}

@@ -6,27 +6,45 @@ const validator = require('validator');
 const mongodbErrorHandler = require('mongoose-mongodb-errors');
 const passportLocalMongoose = require('passport-local-mongoose');
 
-const userSchema = new Schema({
-	email: {
-		type: String,
-		unique: true,
-		lowercase: true,
-		trim: true,
-		validate: [validator.isEmail, 'Invalid email address'],
-		require: 'Please supply an email',
+const userSchema = new Schema(
+	{
+		email: {
+			type: String,
+			unique: true,
+			lowercase: true,
+			trim: true,
+			validate: [validator.isEmail, 'Invalid email address'],
+			require: 'Please supply an email',
+		},
+		name: {
+			type: String,
+			required: 'Please supply a name!',
+			trim: true,
+		},
+		resetPasswordToken: String,
+		resetPasswordExpires: Date,
 	},
-	name: {
-		type: String,
-		required: 'Please supply a name!',
-		trim: true,
-	},
-	resetPasswordToken: String,
-	resetPasswordExpires: Date,
-});
+	{
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+	}
+);
 userSchema.virtual('gravatar').get(function() {
 	const hash = md5(this.email);
 	return `https://gravatar.com/avatar/${hash}?size=150`;
 });
+userSchema.virtual('bookings', {
+	ref: 'Booking', // what model is linked?
+	localField: '_id', //what field on model
+	foreignField: 'booker', //which field on Booking?
+});
+function autoPopulate(next) {
+	this.populate('bookings');
+	next();
+}
+userSchema.pre('find', autoPopulate);
+userSchema.pre('findOne', autoPopulate);
+
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 userSchema.plugin(mongodbErrorHandler);
 

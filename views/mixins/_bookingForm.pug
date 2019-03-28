@@ -1,0 +1,8 @@
+mixin bookingForm(event)
+  .booking
+    .booking__form
+      span.close-modal-button x    
+      form.booker(action=`/bookings/${event._id}` method="POST")
+        label(for='amount') Reserve for X Amount
+        input(type="number" required class="booking__amount" name="amount" min="1" max="4" value=event.amount)
+        input(type="submit" value="save" class="button")

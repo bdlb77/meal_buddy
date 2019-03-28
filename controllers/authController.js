@@ -5,10 +5,15 @@ const promisify = require('es6-promisify');
 const passport = require('passport');
 const mail = require('../handlers/mail');
 
+exports.isLoggedIn = (req, res, next) => {
+	if (req.isAuthenticated()) return next();
+	req.flash('error', 'Oops you must be logged in to do that!');
+	res.redirect('/users/login');
+};
 exports.login = passport.authenticate('local', {
 	failureRedirect: '/users/login',
 	failureFlash: 'Please Login.',
-	successRedirect: '/',
+	successRedirect: 'back',
 	successFlash: 'You are now logged in!',
 });
 

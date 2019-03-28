@@ -1,4 +1,5 @@
 .event__card {
+    transition: all 2s ease;
     display: flex;
     @include flexbox__c;
     flex-direction: column;

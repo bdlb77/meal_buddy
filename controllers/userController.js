@@ -44,6 +44,7 @@ exports.register = async (req, res, next) => {
 };
 
 exports.profile = async (req, res) => {
-	const user = await User.find({ _id: req.params.id });
-	return res.json(user);
+	const user = await User.findOne({ _id: req.params.id }).populate('bookings');
+
+	res.render('users/profile', { title: `Profile of ${user.name}`, user });
 };

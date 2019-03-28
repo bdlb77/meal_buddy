@@ -22,5 +22,10 @@ const BookingSchema = new Schema({
 		default: false,
 	},
 });
-
+function autoPopulate(next) {
+	this.populate('event');
+	next();
+}
+BookingSchema.pre('find', autoPopulate);
+BookingSchema.pre('findOne', autoPopulate);
 module.exports = mongoose.model('Booking', BookingSchema);

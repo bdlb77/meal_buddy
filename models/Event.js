@@ -69,4 +69,5 @@ eventSchema.virtual('bookings', {
 	localField: '_id', //what field on model
 	foreignField: 'event', //which field on Booking?
 });
+
 module.exports = mongoose.model('Event', eventSchema);

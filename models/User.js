@@ -38,6 +38,12 @@ userSchema.virtual('bookings', {
 	localField: '_id', //what field on model
 	foreignField: 'booker', //which field on Booking?
 });
+function autoPopulate(next) {
+	this.populate('bookings');
+	next();
+}
+userSchema.pre('find', autoPopulate);
+userSchema.pre('findOne', autoPopulate);
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
 userSchema.plugin(mongodbErrorHandler);

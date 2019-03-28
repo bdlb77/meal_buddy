@@ -15,6 +15,12 @@ body {
   @media all and (max-width: 900px) {
     .inner {
       padding: 2rem; } }
+  .inner .flash-messages {
+    position: absolute;
+    z-index: 5;
+    width: 80%;
+    margin-left: -40%;
+    left: 50%; }
 
 html {
   box-sizing: border-box; }
@@ -476,8 +482,7 @@ template {
   .flash--success {
     background: linear-gradient(135deg, #d2ff52 0%, #91e842 100%); }
   .flash--error {
-    color: black;
-    background: linear-gradient(20deg, red 0%, #c80000 100%) !important; }
+    background: linear-gradient(20deg, red 0%, #c80000 100%); }
   .flash--info {
     background: linear-gradient(35deg, #f1e767 0%, #feb645 100%); }
   .flash p {
@@ -983,5 +988,13 @@ pre.error {
       padding: 3rem 7rem;
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05); }
+
+.booking-card {
+  width: 90%;
+  height: 30vh;
+  margin: 0 auto;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat; }
 
 /*# sourceMappingURL=style.css.map*/

@@ -1,0 +1,7 @@
+extends ../layout
+include ../mixins/_bookingCard
+
+block content
+  .bookings
+  each booking in user.bookings 
+    +bookingCard(booking)

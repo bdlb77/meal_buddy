@@ -15,4 +15,11 @@ body {
   @media all and (max-width: 900px) {
     padding: 2rem;
   }
+  .flash-messages {
+    position: absolute;
+    z-index: 5;
+    width: 80%;
+    margin-left: -40%;
+    left: 50%;
+  }
 }

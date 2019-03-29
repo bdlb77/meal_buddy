@@ -18,11 +18,20 @@ $width: 800px;
 $default-diff: 12px;
 $default-width: 100%;
 $default-min: 10%;
-
+$rad: 15px;
 // mixins
 
 @mixin flexbox__c(){
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.mobile-only {
+  text-align: center;
+  font-size: 2rem;
+  height: 100vh; 
+  width: 100vw;
+  background: $primaryLinear;
+  color: $white;
 }

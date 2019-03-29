@@ -3,5 +3,8 @@ include ../mixins/_bookingCard
 
 block content
   .bookings
-  each booking in user.bookings 
-    +bookingCard(booking)
+    .bookings__title
+      h1 Bookings
+    .bookings__wrapper
+    each booking in user.bookings 
+      +bookingCard(booking)

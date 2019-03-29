@@ -1,4 +1,12 @@
 @charset "UTF-8";
+.mobile-only {
+  text-align: center;
+  font-size: 2rem;
+  height: 100vh;
+  width: 100vw;
+  background: linear-gradient(247.47deg, rgba(33, 42, 90, 0.78) 0%, #212A5A 76.54%);
+  color: #efefef; }
+
 html {
   font-size: 10px; }
 
@@ -767,6 +775,36 @@ pre.error {
       transform: scale(1);
   transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s; }
 
+.booking-card {
+  width: 90%;
+  height: 30vh;
+  margin: 2rem auto;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
+  border-radius: 15px; }
+  .booking-card__background {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+        justify-content: center;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-direction: column;
+        flex-direction: column;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    width: 100%;
+    height: inherit;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
+    font-size: 1.5rem; }
+  .booking-card__confirmed {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1rem; }
+
 .events__page {
   height: calc(100vh - (65px + 4rem));
   width: 100vw;
@@ -989,12 +1027,37 @@ pre.error {
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05); }
 
-.booking-card {
-  width: 90%;
-  height: 30vh;
-  margin: 0 auto;
-  position: relative;
-  background-size: cover;
-  background-repeat: no-repeat; }
+.bookings__title {
+  text-align: center;
+  font-size: 1.5rem; }
+  .bookings__title h1 {
+    margin: 0; }
+
+a {
+  text-decoration: none;
+  color: #efefef; }
+
+@media (min-width: 600px) {
+  .mobile-wrap {
+    display: none; }
+  .desktop-wrap {
+    position: absolute;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+        justify-content: center;
+    -ms-flex-align: center;
+        align-items: center;
+    height: 100vh;
+    width: 100vw;
+    color: white;
+    -ms-flex-direction: column;
+        flex-direction: column; } }
+
+@media (max-width: 600px) {
+  .desktop-wrap {
+    display: none; }
+  .mobile-wrap {
+    display: block; } }
 
 /*# sourceMappingURL=style.css.map*/

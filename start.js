@@ -26,6 +26,7 @@ mongoose.connection.on('error', err => {
 require('./models/User');
 require('./models/Event');
 require('./models/Booking');
+require('./models/Review');
 
 // Start our app!
 const app = require('./app');

@@ -1,12 +1,17 @@
 mixin bookingCard(booking = {})
   a(href=`/booking/${booking.id}`)
-    .booking-card(style=`background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.45)), url('/uploads/pic.jpg');`)
-      .booking-card__background
-        .booking-card__title
-          h1= booking.event.title
-        .booking-card__date
-          h3= h.moment(booking.event.date).format("MMMM Do")
-        .booking-card__amount
-          h3  Booked for: #{booking.amount} persons
-        .booking-card__confirmed
-          h4 #{booking.confirmed ? "Confirmed!" : "Pending.."}
+      .booking-card(style=`background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.45)), url('/uploads/pic.jpg');`)
+      if !booking.confirmed
+        .booking-card__background
+          .booking-card__title
+            h1= booking.event.title
+          .booking-card__date
+            h3= h.moment(booking.event.date).format("MMMM Do")
+          .booking-card__amount
+            h3  Booked for: #{booking.amount} persons
+          .booking-card__confirmed
+            h4 #{booking.confirmed ? "Confirmed!" : "Pending.."}
+      else
+        .booking_past-card
+          if booking.event.reviews 
+            h1 Review Dis

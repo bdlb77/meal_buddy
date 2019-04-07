@@ -13,7 +13,7 @@ exports.isLoggedIn = (req, res, next) => {
 exports.login = passport.authenticate('local', {
 	failureRedirect: '/users/login',
 	failureFlash: 'Please Login.',
-	successRedirect: 'back',
+	successRedirect: '/',
 	successFlash: 'You are now logged in!',
 });
 

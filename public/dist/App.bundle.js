@@ -957,20 +957,21 @@ function formModal() {
 	var modal = document.querySelector('.booking');
 	var trigger = document.querySelector('.trigger');
 	var closeModal = document.querySelector('.close-modal-button');
+	if (modal) {
+		var toggleModal = function toggleModal() {
+			modal.classList.toggle('show-modal');
+		};
 
-	function toggleModal() {
-		modal.classList.toggle('show-modal');
+		var windowOnClick = function windowOnClick(e) {
+			e.stopPropagation();
+			console.log(e.target);
+			if (e.target === modal) toggleModal();
+		};
+
+		trigger.addEventListener('click', toggleModal);
+		closeModal.addEventListener('click', toggleModal);
+		window.addEventListener('click', windowOnClick);
 	}
-
-	var windowOnClick = function windowOnClick(e) {
-		e.stopPropagation();
-		console.log(e.target);
-		if (e.target === modal) toggleModal();
-	};
-
-	trigger.addEventListener('click', toggleModal);
-	closeModal.addEventListener('click', toggleModal);
-	window.addEventListener('click', windowOnClick);
 }
 exports.default = formModal;
 
@@ -1981,7 +1982,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var navMenu = (0, _bling.$)('.nav__dropdown');
 navMenu.on('click', _navbar2.default);
 (0, _map2.default)((0, _bling.$)('#map'));
-(0, _formModal2.default)();
+if (_formModal2.default) {
+	(0, _formModal2.default)();
+}
 
 /***/ })
 /******/ ]);

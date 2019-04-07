@@ -70,4 +70,29 @@ eventSchema.virtual('bookings', {
 	foreignField: 'event', //which field on Booking?
 });
 
+eventSchema.statics.attending = function(eventId) {
+	return this.aggregate([
+		{
+			$match: { _id: eventId },
+		},
+		{
+			$lookup: {
+				from: 'bookings',
+				localField: '_id',
+				foreignField: 'event',
+				as: 'bookings',
+			},
+		},
+		{ $unwind: '$bookings' },
+		{
+			$group: {
+				_id: null,
+				sum: { $sum: '$bookings.amount' },
+			},
+		},
+		{
+			$project: { _id: 0, sum: 1 },
+		},
+	]);
+};
 module.exports = mongoose.model('Event', eventSchema);

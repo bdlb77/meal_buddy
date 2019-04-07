@@ -3,35 +3,40 @@ extends ../layout
 include ../mixins/_bookingForm
 
 block content
-    .single__event
-      .single__event__top
-        .single__event__title
-      .single__event__author.avatar__big
-      .single__event__bottom
-        .single__event__content
-          .single__event__date
-            <i class="fas fa-calendar"></i>
-            h1 #{h.moment(event.date).format("MMMM Do")}
-          .single__event__attend
-            <i class="fas fa-glass-cheers"></i>
-            h1 #{event.minCapacity} attending
-          .single__event__time
-            <i class="fas fa-clock"></i>
-            h1 #{h.moment(event.date).format("HH:mm")}
-          .single__event__locale
-            <i class="fas fa-map-marker-alt"></i>
-            h1 #{event.location.address}
-        .single__event__buttons
-          .single__event__bg
-            a(href="/events")
-              i.fas.fa-arrow-left
-          .single__event__bg
-            a(href=`/event/${event._id}/map`)
-              i.far.fa-map
-        .single__event__reserve
-          button.button.trigger Reserve
-
-      if user && event.author.equals(user._id)
-        a(href=`/event/${event._id}/edit`)
-            p Edit
+  .single__event
+    .single__event__top
+      .single__event__title
+    .single__event__author.avatar__big
+    .single__event__bottom
+      .single__event__content
+        .single__event__date
+          <i class="fas fa-calendar"></i>
+          h1 #{h.moment(event.date).format("MMMM Do")}
+        .single__event__attend
+          <i class="fas fa-glass-cheers"></i>
+          if attending && attending >=  event.maxCapacity
+            h1 This Event is Booked
+          else if attending == 0
+            h1 Be the First to Reserve!
+          else
+            h1 #{attending} / #{event.maxCapacity} attending
+        .single__event__time
+          <i class="fas fa-clock"></i>
+          h1 #{h.moment(event.date).format("HH:mm")}
+        .single__event__locale
+          <i class="fas fa-map-marker-alt"></i>
+          h1 #{event.location.address}
+      .single__event__buttons
+        .single__event__bg
+          a(href="/events")
+            i.fas.fa-arrow-left
+        .single__event__bg
+          a(href=`/event/${event._id}/map`)
+            i.far.fa-map
+      .single__event__reserve
+        button.button.trigger Reserve
       +bookingForm(event)
+
+    if user && event.author.equals(user._id)
+      a(href=`/event/${event._id}/edit`)
+          p Edit

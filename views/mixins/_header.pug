@@ -7,6 +7,11 @@ mixin header()
       .nav__dropdown
         i.fas.fa-bars
         ul.nav__dropdown__menu
-           li: a.nav__item__link(href="") Hello
-           li: a.nav__item__link(href="") World
-           li: a.nav__item__link(href="") Two
+          if user
+            li: a.nav__item__link(href=`/profile/${user._id}`) Profile
+            li: a.nav__item__link(href='/events') Events
+            li: a.nav__item__link(href='/users/logout') Sign Out
+          else
+            li: a.nav__item__link(href='/users/login') Sign In
+            li: a.nav__item__link(href='/events') Events
+            li: a.nav__item__link(href='/users/register') Sign Up

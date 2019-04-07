@@ -34,3 +34,12 @@ exports.createBooking = async (req, res) => {
 	req.flash('success', `Booked for ${req.body.amount} people`);
 	res.redirect('back');
 };
+
+exports.getSingleBooking = async (req, res) => {
+	const booking = await Booking.findOne({ _id: req.params.id });
+	if (!req.user._id === req.params.id) {
+		req.flash('error', 'Sorry, you cannot access this page.');
+		req.redirect('/');
+	}
+	return res.render('bookings/booking', { title: 'Bookings', booking, userId: booking.booker._id });
+};

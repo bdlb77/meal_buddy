@@ -22,9 +22,11 @@ exports.getEvents = async (req, res) => {
 
 exports.getSingleEvent = async (req, res, next) => {
 	const event = await Event.findOne({ slug: req.params.slug });
-	if (!Event) return next();
-
-	res.render('events/event', { event, title: event.title });
+	if (!event) return next();
+	const attend = await Event.attending(event._id);
+	let attending;
+	attend.length > 0 ? (attending = attend[0].sum) : (attending = 0);
+	res.render('events/event', { event, title: event.title, attending });
 };
 
 exports.editSingleEvent = async (req, res) => {

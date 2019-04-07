@@ -9,4 +9,6 @@ import formModal from './modules/formModal';
 const navMenu = $('.nav__dropdown');
 navMenu.on('click', navbar);
 makeMap($('#map'));
-formModal();
+if (formModal) {
+	formModal();
+}

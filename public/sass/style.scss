@@ -8,9 +8,41 @@
 @import 'partials/pagination';
 @import 'partials/map';
 @import 'partials/booking_form';
+@import 'partials/booking_card';
 
 // PAGES
 @import 'pages/events';
 @import 'pages/event_card';
 @import 'pages/single_event';
 @import 'pages/profile';
+
+// OVERALL
+a {
+  text-decoration: none;
+  color: $white;
+}
+
+@media(min-width: 600px) {
+  .mobile-wrap {
+    display: none;
+  }
+  .desktop-wrap {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    color: white;
+    flex-direction: column;
+  }
+}
+
+@media(max-width: 600px) {
+  .desktop-wrap {
+    display: none;
+  }
+  .mobile-wrap {
+    display: block;
+  }
+}

@@ -95,4 +95,12 @@ eventSchema.statics.attending = function(eventId) {
 		},
 	]);
 };
+
+function autoPopulate(next) {
+	this.populate('reviews');
+	next();
+}
+eventSchema.pre('find', autoPopulate);
+eventSchema.pre('findOne', autoPopulate);
+
 module.exports = mongoose.model('Event', eventSchema);

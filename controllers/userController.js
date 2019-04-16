@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const Booking = mongoose.model('Booking');
 const promisify = require('es6-promisify');
 
 exports.loginForm = (req, res) => {
@@ -44,7 +45,10 @@ exports.register = async (req, res, next) => {
 };
 
 exports.profile = async (req, res) => {
-	const user = await User.findOne({ _id: req.params.id }).populate('bookings');
+	const user = await User.findOne({ _id: req.params.id });
 
-	res.render('users/profile', { title: `Profile of ${user.name}`, user });
+	const bookings = [...user.bookings].map(b => {
+		if (b.event.date <= Date.now()) return b;
+	});
+	res.render('users/profile', { title: `Profile of ${user.name}`, user, bookings });
 };

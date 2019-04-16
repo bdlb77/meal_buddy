@@ -18,6 +18,7 @@ exports.createBooking = async (req, res) => {
 	if (bookings.length > 0) {
 		req.flash('error', 'You have already booked this Event!');
 		res.redirect('back');
+		return;
 	}
 	const event = Event.find({ _id: req.body.event });
 	const spotsOpen = event.maxCapacity - event.minCapacity;
@@ -25,9 +26,11 @@ exports.createBooking = async (req, res) => {
 	if (spotsOpen == 0) {
 		req.flash('error', 'There are no more spots available');
 		res.redirect('back');
+		return;
 	} else if (amount > spotsOpen) {
 		req.flash('error', 'Not enough spots open!');
 		res.redirect('back');
+		return;
 	}
 	const newBooking = new Booking(req.body);
 	await newBooking.save();

@@ -10,17 +10,62 @@
   &__background {
     @include flexbox__c;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
     width: 100%;
     height: inherit;
     text-shadow: $shad;
     font-size: 1.5rem;
-
+  }
+  &__title {
+    margin-top: 6rem;
+  }
+  &__bottom {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
   }
   &__confirmed {
+    overflow: hidden;
     position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 1rem;
+    top: -4px;
+    right: -4px;
+    height: 70px;
+    width: 70px;
+    background: $shad;
+    &::before, &::after {
+      position: absolute;
+      content: '';
+      display: block;
+      border: 6px solid $yellow;
+      z-index: -1;
+    }
+    &::before {
+      top: 0;
+      left: 0;
+    }
+    &::after {
+      bottom: 0;
+      right: 0;
+    }
   }
+  &__confirmed span {
+    position: absolute;
+    padding: 5px 0;
+    width: 150px;
+    top: 10px;
+    left: -30px;
+    background: $yellow;
+    transform: rotate(45deg);
+    box-shadow: $shad;
+    @include flexbox__c;
+  }
+  
+  .confirm__green {
+    background: $green;
+  }
+  .confirm__yellow {
+    
+  }
+
+
 }

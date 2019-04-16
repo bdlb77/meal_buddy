@@ -32,13 +32,6 @@
     height: 70px;
     width: 70px;
     background: $shad;
-    &::before, &::after {
-      position: absolute;
-      content: '';
-      display: block;
-      border: 6px solid $yellow;
-      z-index: -1;
-    }
     &::before {
       top: 0;
       left: 0;
@@ -47,6 +40,12 @@
       bottom: 0;
       right: 0;
     }
+    &::before, &::after {
+      position: absolute;
+      content: '';
+      display: block;
+      z-index: -1;
+    }
   }
   &__confirmed span {
     position: absolute;
@@ -54,18 +53,23 @@
     width: 150px;
     top: 10px;
     left: -30px;
-    background: $yellow;
     transform: rotate(45deg);
     box-shadow: $shad;
     @include flexbox__c;
   }
   
-  .confirm__green {
-    background: $green;
+  .confirm__green span{
+    background: green;
   }
-  .confirm__yellow {
-    
+  .confirm__yellow span {
+    background: $yellow;
   }
+  .confirm__green::before, .confirm__green::after {
+    border: 6px solid green;
 
+  }
+  .confirm__yellow::before, .confirm__yellow::after {
+    border: 6px solid $yellow;
 
+  }
 }

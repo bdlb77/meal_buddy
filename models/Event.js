@@ -70,6 +70,12 @@ eventSchema.virtual('bookings', {
 	foreignField: 'event', //which field on Booking?
 });
 
+eventSchema.virtual('reviews', {
+	ref: 'Review',
+	localField: '_id',
+	foreignField: 'event',
+});
+
 eventSchema.statics.attending = function(eventId) {
 	return this.aggregate([
 		{
@@ -97,9 +103,10 @@ eventSchema.statics.attending = function(eventId) {
 };
 
 function autoPopulate(next) {
-	this.populate('reviews');
+	this.populate('reviews author');
 	next();
 }
+
 eventSchema.pre('find', autoPopulate);
 eventSchema.pre('findOne', autoPopulate);
 

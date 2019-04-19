@@ -26,6 +26,9 @@ block content
         .single__event__bg
           a(href=`/event/${booking.event._id}/map`)
             i.far.fa-map
+      if !review
+        .single__event__reserve
+          button.button#add__review Leave Review
     //- if user && event.author.equals(user._id)
     //-   a(href=`/event/${booking.event._id}/edit`)
     //-       p Edit

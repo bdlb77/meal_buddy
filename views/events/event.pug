@@ -1,6 +1,7 @@
 
 extends ../layout
 include ../mixins/_bookingForm
+include ../mixins/_reviewCard
 
 block content
   .single__event
@@ -36,7 +37,9 @@ block content
       .single__event__reserve
         button.button.trigger Reserve
       +bookingForm(event)
-
+    if event.reviews
+      each review in event.author.reviews
+        +reviewCard(review)
     if user && event.author.equals(user._id)
       a(href=`/event/${event._id}/edit`)
           p Edit

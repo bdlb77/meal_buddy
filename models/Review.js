@@ -8,10 +8,15 @@ const reviewSchema = new Schema({
 		ref: 'User',
 		required: 'You must apply the author',
 	},
-	event: {
+	booking: {
 		type: mongoose.Schema.ObjectId,
-		ref: 'Event',
+		ref: 'Booking',
 		required: 'You must give an Event',
+	},
+	host: {
+		type: mongoose.Schema.ObjectId,
+		ref: 'User',
+		required: 'Please review the correct Host.',
 	},
 	comment: {
 		type: String,

@@ -29,7 +29,7 @@ exports.validateRegister = (req, res, next) => {
 	const errors = req.validationErrors();
 	if (errors) {
 		req.flash('error', errors.map(err => err.msg));
-		res.render('users/register', { title: 'Regiser', body: req.body, flashes: req.flash() });
+		res.render('users/register', { title: 'Register', body: req.body, flashes: req.flash() });
 		return;
 	}
 	next();
@@ -46,6 +46,7 @@ exports.register = async (req, res, next) => {
 
 exports.profile = async (req, res) => {
 	const user = await User.findOne({ _id: req.params.id });
+	if (!user._id.equals(req.user._id)) throw new Error('You cannot access this page.');
 
 	const bookings = [...user.bookings].map(b => {
 		if (b.event.date <= Date.now()) return b;

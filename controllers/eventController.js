@@ -22,6 +22,7 @@ exports.getEvents = async (req, res) => {
 
 exports.getSingleEvent = async (req, res, next) => {
 	const event = await Event.findOne({ slug: req.params.slug });
+
 	if (!event) return next();
 	const attend = await Event.attending(event._id);
 	let attending;

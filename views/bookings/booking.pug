@@ -1,4 +1,5 @@
 extends ../layout
+include ../mixins/_reviewForm
 
 block content
   .single__event
@@ -29,6 +30,7 @@ block content
       if !review
         .single__event__reserve
           button.button#add__review Leave Review
+        +reviewForm(booking)
     //- if user && event.author.equals(user._id)
     //-   a(href=`/event/${booking.event._id}/edit`)
     //-       p Edit

@@ -26,12 +26,10 @@ exports.createBooking = async (req, res) => {
 
 	if (spotsOpen == 0) {
 		req.flash('error', 'There are no more spots available');
-		res.redirect('back');
-		return;
+		return res.redirect('back');
 	} else if (amount > spotsOpen) {
 		req.flash('error', 'Not enough spots open!');
-		res.redirect('back');
-		return;
+		return res.redirect('back');
 	}
 	const newBooking = new Booking(req.body);
 	await newBooking.save();

@@ -87,14 +87,11 @@
         font-size: 2rem;
         @include flexbox__c;
         .button {
-            padding: 8% 30%;
+            padding: 8% 29%;
             border-radius: 15px;
             width: 90%;
             box-shadow: $shad;
             text-align: center;
-        }
-        #add__review {
-          width: 100%;
         }
     }
 }

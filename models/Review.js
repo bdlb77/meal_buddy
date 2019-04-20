@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Booking = mongoose.model('Booking');
+
 mongoose.Promise = global.Promise;
 
 const reviewSchema = new Schema({
@@ -11,6 +13,7 @@ const reviewSchema = new Schema({
 	booking: {
 		type: mongoose.Schema.ObjectId,
 		ref: 'Booking',
+		unique: true,
 		required: 'You must give an Event',
 	},
 	host: {
@@ -37,7 +40,22 @@ function autoPopulate(next) {
 	this.populate('author');
 	next();
 }
+reviewSchema.index({
+	host: 1,
+	booking: 1,
+});
 
+// make sure review date of Booking has already happened.
+// reviewSchema.pre('save', async function(next) {
+// 	const now = new Date(Date.now());
+// 	const booking = await Booking.find({ _id: this.booking._id });
+// 	if (now < booking.event.date) {
+// 		// next(new Error('Please attend your event first!'));
+// 		return;
+// 	}
+
+// 	next();
+// });
 reviewSchema.pre('find', autoPopulate);
 reviewSchema.pre('findOne', autoPopulate);
 

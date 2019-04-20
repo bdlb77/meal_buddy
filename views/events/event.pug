@@ -37,7 +37,7 @@ block content
       .single__event__reserve
         button.button.trigger Reserve
       +bookingForm(event)
-    if event.reviews
+    if event.author.reviews.length
       each review in event.author.reviews
         +reviewCard(review)
     if user && event.author.equals(user._id)

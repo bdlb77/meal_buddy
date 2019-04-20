@@ -6,6 +6,7 @@ const eventController = require('../controllers/eventController');
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
 const bookingController = require('../controllers/bookingController');
+const reviewController = require('../controllers/reviewController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 // Do work here
@@ -30,7 +31,7 @@ router.post('/bookings/:id', authController.isLoggedIn, catchErrors(bookingContr
 router.get('/booking/:id', authController.isLoggedIn, catchErrors(bookingController.getSingleBooking));
 
 // REVIEW
-
+router.post('/reviews/:id', catchErrors(reviewController.createReview));
 // PROFILE DASHBOARD
 router.get('/profile/:id', catchErrors(userController.profile));
 

@@ -23,13 +23,14 @@ exports.createReview = async (req, res) => {
 	req.body.booking = booking._id;
 
 	const newReview = new Review(req.body);
-	await newReview.save(function(err, save) {
-		if (err) {
+	await newReview
+		.save()
+		.then(data => {
+			req.flash('success', 'Review Saved!');
+			return res.redirect('back');
+		})
+		.catch(err => {
 			req.flash('error', err.message);
 			return res.redirect('back');
-		}
-		console.log('success!');
-	});
-	req.flash('success', 'Review Saved!');
-	res.redirect('back');
+		});
 };

@@ -103,7 +103,7 @@ eventSchema.statics.attending = function(eventId) {
 };
 
 function autoPopulate(next) {
-	this.populate('reviews author');
+	this.populate('reviews');
 	next();
 }
 

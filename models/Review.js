@@ -9,11 +9,11 @@ const reviewSchema = new Schema({
 		type: mongoose.Schema.ObjectId,
 		ref: 'User',
 		required: 'You must apply the author',
+		unique: false,
 	},
 	booking: {
 		type: mongoose.Schema.ObjectId,
 		ref: 'Booking',
-		unique: true,
 		required: 'You must give an Event',
 	},
 	host: {
@@ -46,17 +46,15 @@ reviewSchema.index({
 });
 
 // make sure review date of Booking has already happened.
-// reviewSchema.pre('save', async function(next) {
-// 	const now = new Date(Date.now());
-// 	const booking = await Booking.find({ _id: this.booking._id });
-// 	if (now < booking.event.date) {
-// 		// next(new Error('Please attend your event first!'));
-// 		return;
-// 	}
-
-// 	next();
-// });
+reviewSchema.pre('save', async function(next) {
+	const now = new Date(Date.now());
+	const booking = await Booking.findOne({ _id: this.booking._id });
+	if (booking.event.date > Date.now()) {
+		next(new Error('Please attend the event first!'));
+	} else {
+		next();
+	}
+});
 reviewSchema.pre('find', autoPopulate);
 reviewSchema.pre('findOne', autoPopulate);
-
 module.exports = mongoose.model('Review', reviewSchema);

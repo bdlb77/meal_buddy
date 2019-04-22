@@ -16,7 +16,7 @@ block content
           h1  Booked for #{booking.amount} people
         .single__event__time
           <i class="fas fa-clock"></i>
-          h1 #{h.moment(booking.event.date).format("HH:mm")}
+          h1 #{h.moment(booking.event.date).format(" MMM Do YYYY, HH:mm ")}
         .single__event__locale
           <i class="fas fa-map-marker-alt"></i>
           h1 #{booking.event.location.address}
@@ -27,7 +27,7 @@ block content
         .single__event__bg
           a(href=`/event/${booking.event._id}/map`)
             i.far.fa-map
-      if !review
+      if (booking.event.date < Date.now()) && !review
         .single__event__reserve
           button.button#add__review Leave Review
         +reviewForm(booking)

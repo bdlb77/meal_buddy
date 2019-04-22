@@ -51,13 +51,11 @@ const eventSchema = new Schema(
 		},
 		photo: String,
 		author: {
-			type: Schema.ObjectId,
+			type: mongoose.Schema.ObjectId,
 			ref: 'User',
 			required: 'You must supply an author!',
 		},
 		available: Boolean,
-
-		// attendees: [User], you can do through virtuals
 	},
 	{
 		toJSON: { virtuals: true },
@@ -70,11 +68,10 @@ eventSchema.virtual('bookings', {
 	foreignField: 'event', //which field on Booking?
 });
 
-eventSchema.virtual('reviews', {
-	ref: 'Review',
-	localField: '_id',
-	foreignField: 'event',
-});
+function autoPopulate(next) {
+	this.populate('author');
+	next();
+}
 
 eventSchema.statics.attending = function(eventId) {
 	return this.aggregate([
@@ -101,11 +98,6 @@ eventSchema.statics.attending = function(eventId) {
 		},
 	]);
 };
-
-function autoPopulate(next) {
-	this.populate('reviews');
-	next();
-}
 
 eventSchema.pre('find', autoPopulate);
 eventSchema.pre('findOne', autoPopulate);

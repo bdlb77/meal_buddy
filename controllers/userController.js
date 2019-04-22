@@ -45,7 +45,7 @@ exports.register = async (req, res, next) => {
 };
 
 exports.profile = async (req, res) => {
-	const user = await User.findOne({ _id: req.params.id });
+	const user = await User.findOne({ _id: req.params.id }).populate('bookings');
 	if (!user._id.equals(req.user._id)) throw new Error('You cannot access this page.');
 
 	const bookings = [...user.bookings].map(b => {

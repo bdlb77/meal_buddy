@@ -45,9 +45,10 @@ userSchema.virtual('reviews', {
 });
 
 function autoPopulate(next) {
-	this.populate('bookings reviews');
+	this.populate('reviews');
 	next();
 }
+
 userSchema.pre('find', autoPopulate);
 userSchema.pre('findOne', autoPopulate);
 

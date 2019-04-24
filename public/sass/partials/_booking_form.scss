@@ -1,26 +1,28 @@
 .booking {
-  position: fixed;
-  left: 0;
+  position: absolute;
   top: 0;
-  width: 100%;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.75);
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 400;
+  left: 50%;
+  margin-left: -50vw;
+  @include flexbox__c;
   opacity: 0;
   visibility: hidden;
-  transform: scale(1.1);
-  z-index: 3;
+  transform: translateX(-550px);
+  transition: all 0.5s cubic-bezier(0.8, 0.8, 0.9, 1);
   &__form {
-    color: $black;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color:$white;
-    padding: 1rem 1.5rem;
-    width: 24rem;
-    border-radius: 0.5rem;
-    height: 15vh;
-    z-index: 4;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    margin-bottom: 2rem;
+    height: 40vh;
+    width: 94vw;
+    z-index: 5000;
+    background:$primaryLinear;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    border-radius: 15px;
   }
   form {
     display: flex;
@@ -33,23 +35,4 @@
   &__amount {
     width: 50px;
   }
-}
-.close-button {
-  float: right;
-  width: 1.5rem;
-  line-height: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 0.25rem;
-  background-color: lightgray;
-  &:hover {
-    background-color: darkgray;
-
-  }
-}
-.show-modal {
-  opacity: 1;
-  visibility: visible;
-  transform: scale(1.0);
-  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }

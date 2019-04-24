@@ -953,38 +953,6 @@ process.umask = function () {
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-function formModal() {
-	var modal = document.querySelector('.booking');
-	var trigger = document.querySelector('.trigger');
-	var closeModal = document.querySelector('.close-modal-button');
-	if (modal) {
-		var toggleModal = function toggleModal() {
-			modal.classList.toggle('show-modal');
-		};
-
-		var windowOnClick = function windowOnClick(e) {
-			e.stopPropagation();
-			console.log(e.target);
-			if (e.target === modal) toggleModal();
-		};
-
-		trigger.addEventListener('click', toggleModal);
-		closeModal.addEventListener('click', toggleModal);
-		window.addEventListener('click', windowOnClick);
-	}
-}
-exports.default = formModal;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -1027,7 +995,7 @@ function makeMap(mapDiv) {
 exports.default = makeMap;
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1044,6 +1012,42 @@ function navbar(e) {
 	navDrop.classList.toggle('active__drop__menu');
 }
 exports.default = navbar;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+function reviewFormAnimate() {
+	var button = document.querySelector('#add__review');
+	var reviewForm = document.querySelector('.review__wrap');
+	var bookingForm = document.querySelector('.booking');
+
+	if (button) {
+		var handleForms = function handleForms(form) {
+			function handleOneForm() {
+				form.classList.toggle('review__form__animate');
+			}
+			var closeForm = function closeForm(e) {
+				if (e.target === form && form.classList.contains('review__form__animate')) {
+					form.classList.remove('review__form__animate');
+				}
+			};
+
+			form.addEventListener('click', closeForm, true);
+			button.addEventListener('click', handleOneForm);
+		};
+
+		if (reviewForm) handleForms(reviewForm);
+		if (bookingForm) handleForms(bookingForm);
+	}
+}
+exports.default = reviewFormAnimate;
 
 /***/ }),
 /* 12 */
@@ -1963,28 +1967,31 @@ __webpack_require__(12);
 
 var _bling = __webpack_require__(1);
 
-var _navbar = __webpack_require__(11);
+var _navbar = __webpack_require__(10);
 
 var _navbar2 = _interopRequireDefault(_navbar);
 
-var _map = __webpack_require__(10);
+var _map = __webpack_require__(9);
 
 var _map2 = _interopRequireDefault(_map);
 
-var _formModal = __webpack_require__(9);
+var _reviewFormAnimate = __webpack_require__(11);
 
-var _formModal2 = _interopRequireDefault(_formModal);
+var _reviewFormAnimate2 = _interopRequireDefault(_reviewFormAnimate);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // allow for easier use of querySelector and querySelectorAll
 // credits to WesBos!
 var navMenu = (0, _bling.$)('.nav__dropdown');
+// import formModal from './modules/formModal';
+
 navMenu.on('click', _navbar2.default);
 (0, _map2.default)((0, _bling.$)('#map'));
-if (_formModal2.default) {
-	(0, _formModal2.default)();
-}
+// if (formModal) {
+// 	formModal();
+// }
+(0, _reviewFormAnimate2.default)();
 
 /***/ })
 /******/ ]);

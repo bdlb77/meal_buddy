@@ -1,10 +1,12 @@
 extends ../layout
+include ../mixins/_reviewForm
+include ../mixins/_reviewCard
 
 block content
   .single__event
     .single__event__top
       .single__event__title
-    .single__event__author.avatar__big
+    img.single__event__author.avatar__big(src=booking.event.author.gravatar)
     .single__event__bottom
       .single__event__content
         .single__event__date
@@ -15,7 +17,7 @@ block content
           h1  Booked for #{booking.amount} people
         .single__event__time
           <i class="fas fa-clock"></i>
-          h1 #{h.moment(booking.event.date).format("HH:mm")}
+          h1 #{h.moment(booking.event.date).format(" MMM Do YYYY, HH:mm ")}
         .single__event__locale
           <i class="fas fa-map-marker-alt"></i>
           h1 #{booking.event.location.address}
@@ -26,6 +28,18 @@ block content
         .single__event__bg
           a(href=`/event/${booking.event._id}/map`)
             i.far.fa-map
+      .single__event__reserve
+        if (booking.event.date < Date.now()) && !review
+          button.button#add__review Leave Review
+          +reviewForm(booking)
+        else
+          .booking__review
+            .booking__review-rating
+                = `★`.repeat(review.rating)
+                = `☆`.repeat(5 - review.rating)
+            .booking__review-comment
+              p= review.comment
+
     //- if user && event.author.equals(user._id)
     //-   a(href=`/event/${booking.event._id}/edit`)
     //-       p Edit

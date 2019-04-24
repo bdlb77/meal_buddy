@@ -6,6 +6,7 @@ const eventController = require('../controllers/eventController');
 const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
 const bookingController = require('../controllers/bookingController');
+const reviewController = require('../controllers/reviewController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 // Do work here
@@ -18,8 +19,11 @@ router.get('/events', catchErrors(eventController.getEvents));
 
 router.get('/event/:slug', catchErrors(eventController.getSingleEvent));
 
+router.get('/events/add', authController.isLoggedIn, eventController.addEvent);
+
 router.get('/event/:id/edit', catchErrors(eventController.editSingleEvent));
 
+router.post('/add', catchErrors(eventController.createEvent));
 router.post('/add/:id', catchErrors(eventController.updateEvent));
 
 router.get('/event/:id/map', catchErrors(eventController.getMap));
@@ -28,8 +32,12 @@ router.get('/event/:id/map', catchErrors(eventController.getMap));
 router.post('/bookings/:id', authController.isLoggedIn, catchErrors(bookingController.createBooking));
 
 router.get('/booking/:id', authController.isLoggedIn, catchErrors(bookingController.getSingleBooking));
+
+// REVIEW
+router.post('/reviews/:id', catchErrors(reviewController.createReview));
 // PROFILE DASHBOARD
 router.get('/profile/:id', catchErrors(userController.profile));
+router.get('/dashboard/:id', authController.isLoggedIn, catchErrors(userController.dashboard));
 
 // AUTHENTICATION / USERS
 

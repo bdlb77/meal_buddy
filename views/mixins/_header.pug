@@ -8,6 +8,7 @@ mixin header()
         i.fas.fa-bars
         ul.nav__dropdown__menu
           if user
+            li: a.nav__item__link(href=`/dashboard/${user._id}`) Dashboard
             li: a.nav__item__link(href=`/profile/${user._id}`) Profile
             li: a.nav__item__link(href='/events') Events
             li: a.nav__item__link(href='/users/logout') Sign Out

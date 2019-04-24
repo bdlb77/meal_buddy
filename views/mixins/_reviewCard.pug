@@ -1,0 +1,18 @@
+mixin reviewCard(review = {})
+  .review__card
+    .review__card__author
+      h1= review.author.name
+      img.avatar(src=review.author.gravatar)
+    .review__card__body
+      .review__card__rating
+        = `★`.repeat(review.rating)
+        = `☆`.repeat(5 - review.rating)
+      .review__card__event
+        h3= review.booking.event.title
+      .review__card__comment
+        p= review.comment
+    .review__card__date
+      h3 #{h.moment(review.created).format("HH:mm")}
+      h3 #{h.moment(review.created).format("MM/DD/YY")}
+      
+      

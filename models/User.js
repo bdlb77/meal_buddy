@@ -38,10 +38,17 @@ userSchema.virtual('bookings', {
 	localField: '_id', //what field on model
 	foreignField: 'booker', //which field on Booking?
 });
+userSchema.virtual('reviews', {
+	ref: 'Review',
+	localField: '_id',
+	foreignField: 'host',
+});
+
 function autoPopulate(next) {
-	this.populate('bookings');
+	this.populate('reviews');
 	next();
 }
+
 userSchema.pre('find', autoPopulate);
 userSchema.pre('findOne', autoPopulate);
 

@@ -9,12 +9,15 @@
 @import 'partials/map';
 @import 'partials/booking_form';
 @import 'partials/booking_card';
+@import 'partials/review_form';
+@import 'partials/review_card';
 
 // PAGES
 @import 'pages/events';
 @import 'pages/event_card';
 @import 'pages/single_event';
 @import 'pages/profile';
+@import 'pages/dashboard';
 
 // OVERALL
 a {

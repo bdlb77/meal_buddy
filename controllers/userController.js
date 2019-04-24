@@ -61,7 +61,8 @@ exports.dashboard = async (req, res) => {
 		req.flash('error', 'you cannot access this page.');
 		return res.redirect('/');
 	}
-	const events = await Event.find({ author: req.params.id });
-
-	res.render('users/dashboard', { title: `${user.name}'s Dashboard`, user, events });
+	const hostedEvents = await Event.find({ author: req.params.id });
+	const pastBookings = [];
+	const upcoming = [];
+	res.render('users/dashboard', { title: `${user.name}'s Dashboard`, user, hostedEvents, pastBookings, upcoming });
 };

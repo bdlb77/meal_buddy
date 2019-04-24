@@ -31,7 +31,6 @@
     right: -4px;
     height: 70px;
     width: 70px;
-    background: $shad;
     &::before {
       top: 0;
       left: 0;
@@ -61,6 +60,9 @@
   .confirm__green span{
     background: green;
   }
+  .dashboard__edit span{
+    background: $secondBold;
+  }
   .confirm__yellow span {
     background: $yellow;
   }
@@ -70,6 +72,10 @@
   }
   .confirm__yellow::before, .confirm__yellow::after {
     border: 6px solid $yellow;
+
+  }
+  .dashboard__edit::before, .dashboard__edit::after {
+    border: 6px solid $secondBold;
 
   }
 }

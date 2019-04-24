@@ -2,7 +2,32 @@ extends ../layout
 include ../mixins/_dashboardCard
 block content
   .dashboard
-    a.dashboard__add.button(href=`/events/add`) Add Event
-    h1 My Events
-    each event in events
-      +dashboardCard(event)
+    .dashboard__profile
+      .dashboard__profile__left
+        img.avatar__med(src=user.gravatar)
+      .dashboard__profile__right
+        .dashboard__profile-name
+          h1= user.name
+        .dashboard__profile-email
+          h1= user.email
+    .dashboard__nav
+      .dashboard__nav-hosting
+        h2 Hosting
+      .dashboard__nav-upcoming
+        h2 Upcoming
+      .dashboard__nav-past
+        h2 Past
+      .dashboard__nav-add
+        a.dashboard__add(href=`/events/add`) Add Event
+    .dashboard__events
+      if hostedEvents.length
+        each event in hostedEvents
+          +dashboardCard(event)
+      else if upcoming.length
+        each booking in upcoming
+          +bookingCard(booking)
+      else if pastBookings.length
+        each booking in pastBookings
+          +bookingCard(booking)
+
+    

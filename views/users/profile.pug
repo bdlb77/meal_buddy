@@ -4,8 +4,12 @@ include ../mixins/_bookingCard
 block content
   .bookings
     .bookings__title
-      h1 Bookings
-    .bookings__wrapper
-    //- =h.dump(bookings)
-    each booking in bookings 
-      +bookingCard(booking)
+      .bookings__wrapper
+        if  upcoming && upcoming.length > 0
+          h1 Upcoming Bookings
+          each booking in upcoming
+            +bookingCard(booking)
+        if pastBookings && pastBookings.length > 0
+          h1 Past Bookings
+          each booking in pastBookings
+              +bookingCard(booking)

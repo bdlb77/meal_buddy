@@ -1,0 +1,8 @@
+extends ../layout
+include ../mixins/_dashboardCard
+block content
+  .dashboard
+    a.dashboard__add.button(href=`/events/add`) Add Event
+    h1 My Events
+    each event in events
+      +dashboardCard(event)

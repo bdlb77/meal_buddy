@@ -1,11 +1,12 @@
 extends ../layout
 include ../mixins/_reviewForm
+include ../mixins/_reviewCard
 
 block content
   .single__event
     .single__event__top
       .single__event__title
-    .single__event__author.avatar__big
+    img.single__event__author.avatar__big(src=booking.event.author.gravatar)
     .single__event__bottom
       .single__event__content
         .single__event__date
@@ -27,10 +28,18 @@ block content
         .single__event__bg
           a(href=`/event/${booking.event._id}/map`)
             i.far.fa-map
-      if (booking.event.date < Date.now()) && !review
-        .single__event__reserve
+      .single__event__reserve
+        if (booking.event.date < Date.now()) && !review
           button.button#add__review Leave Review
-        +reviewForm(booking)
+          +reviewForm(booking)
+        else
+          .booking__review
+            .booking__review-rating
+                = `★`.repeat(review.rating)
+                = `☆`.repeat(5 - review.rating)
+            .booking__review-comment
+              p= review.comment
+
     //- if user && event.author.equals(user._id)
     //-   a(href=`/event/${booking.event._id}/edit`)
     //-       p Edit

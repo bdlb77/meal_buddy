@@ -19,8 +19,11 @@ router.get('/events', catchErrors(eventController.getEvents));
 
 router.get('/event/:slug', catchErrors(eventController.getSingleEvent));
 
+router.get('/events/add', authController.isLoggedIn, eventController.addEvent);
+
 router.get('/event/:id/edit', catchErrors(eventController.editSingleEvent));
 
+router.post('/add', catchErrors(eventController.createEvent));
 router.post('/add/:id', catchErrors(eventController.updateEvent));
 
 router.get('/event/:id/map', catchErrors(eventController.getMap));
@@ -34,6 +37,7 @@ router.get('/booking/:id', authController.isLoggedIn, catchErrors(bookingControl
 router.post('/reviews/:id', catchErrors(reviewController.createReview));
 // PROFILE DASHBOARD
 router.get('/profile/:id', catchErrors(userController.profile));
+router.get('/dashboard/:id', authController.isLoggedIn, catchErrors(userController.dashboard));
 
 // AUTHENTICATION / USERS
 

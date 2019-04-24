@@ -94,4 +94,25 @@
             text-align: center;
         }
     }
+    .booking__review {
+      border-top: 1px solid $grey;
+      display: grid;
+      grid-template-columns: 30% 1fr;
+      column-gap: 1rem;
+      justify-content: space-around;
+      width: 100%;
+      align-items: center;
+      margin: 0 1.5rem;
+      height: 80%;
+      font-size: 16px;
+      &-comment {
+        height: 6rem;
+        overflow-y: auto;
+        p {
+          margin-top: 0;
+        }
+      }
+    }
 }
+
+

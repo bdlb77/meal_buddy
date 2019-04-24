@@ -14,5 +14,7 @@ mixin eventForm(event = {})
         input(type="number" name="maxCapacity" value=event.maxCapacity)
         label(for="price") Price
         input(type="number" name="price" value=event.price)
+        label(for="date") Date
+        input(type="date" name="date" value=event.date)
         input(type="submit" value="save" class="button")
 

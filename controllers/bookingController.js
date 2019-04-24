@@ -7,6 +7,9 @@ const ObjectId = mongoose.Types.ObjectId;
 exports.createBooking = async (req, res) => {
 	req.body.booker = req.user._id;
 	req.body.event = req.params.id;
+	// IGNORE CONFIRMATION FOR NOW
+	req.body.confirmed = true;
+
 	const amount = req.body.amount;
 	const bookings = await Booking.aggregate([
 		{
@@ -44,5 +47,5 @@ exports.getSingleBooking = async (req, res) => {
 		req.flash('error', `Sorry, you cannot access this page.`);
 		res.redirect('back');
 	}
-	return res.render('bookings/booking', { title: 'Bookings', booking, userId: booking.booker._id, review });
+	return res.render('bookings/booking', { title: 'Bookings', booking, review });
 };

@@ -7,7 +7,6 @@ block content
   .single__event
     .single__event__top
       .single__event__title
-        h1= event.title
     .single__event__author.avatar__big
     .single__event__bottom
       .single__event__content
@@ -36,12 +35,9 @@ block content
           a(href=`/event/${event._id}/map`)
             i.far.fa-map
       .single__event__reserve
-        button.button.trigger Reserve
-      +bookingForm(event)
+        button.button#add__review Book
+        +bookingForm(event)
     if host.reviews
     .single__event__reviews
-      each review in event.author.reviews
+      each review in reviews
         +reviewCard(review)
-    if user && event.author.equals(user._id)
-      a(href=`/event/${event._id}/edit`)
-          p Edit

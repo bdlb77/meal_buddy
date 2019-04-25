@@ -31,7 +31,7 @@
       display: none;
       &:checked {
         & ~ label {
-          color: $yellow;
+          color: $secondBold;
         }
       }
       & + label {
@@ -50,7 +50,7 @@
         &[for="star2"] { order: 2; }
         &[for="star1"] { order: 1; }
         &:hover, &:hover ~ label {
-          color: lighten($yellow,20%);
+          color: $secondBold;
         }
       }
     }
@@ -61,10 +61,14 @@
     font-size: 2rem;
     padding: 2rem;
     height: 100px;
-    border-bottom: 1px solid gray;
+    border-bottom: 2px solid $secondBold;
     background: transparent;
     color: $white;
+    &:focus {
+      outline: $primaryBold  auto 4px;
+    }
   }
+
   .button {
     width: 80%;
     padding: 5% 20%;

@@ -45,15 +45,15 @@ exports.register = async (req, res, next) => {
 	next();
 };
 
-exports.profile = async (req, res) => {
-	const user = await User.findOne({ _id: req.params.id }).populate('bookings');
-	if (!user._id.equals(req.user._id)) throw new Error('You cannot access this page.');
+// exports.profile = async (req, res) => {
+// 	const user = await User.findOne({ _id: req.params.id }).populate('bookings');
+// 	if (!user._id.equals(req.user._id)) throw new Error('You cannot access this page.');
 
-	const pastBookings = [...user.bookings].filter(b => b.event.date <= Date.now());
-	const upcoming = [...user.bookings].filter(b => b.event.date > Date.now());
+// 	const pastBookings = [...user.bookings].filter(b => b.event.date <= Date.now());
+// 	const upcoming = [...user.bookings].filter(b => b.event.date > Date.now());
 
-	res.render('users/profile', { title: `Profile of ${user.name}`, user, pastBookings, upcoming });
-};
+// 	res.render('users/profile', { title: `Profile of ${user.name}`, user, pastBookings, upcoming });
+// };
 
 exports.dashboard = async (req, res) => {
 	const user = await User.findOne({ _id: req.params.id }).populate('bookings');

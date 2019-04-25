@@ -21,6 +21,14 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
+    a {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .far {
+      font-size: 2rem;
+    }
   }
 
   &__nav-add {

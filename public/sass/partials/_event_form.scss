@@ -1,0 +1,19 @@
+.event__form {
+  margin: 0 auto;
+  width: 90vw;
+  display: grid;
+  height: 80vh;
+  grid-template-rows: repeat(8, 1fr);
+  grid-row-gap: 1.5rem;
+  font-size: 16px;
+  input:not(:last-child), textarea{
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid $secondBold;
+    color: $white;
+    &:focus {
+      outline: $primaryBold  auto 4px;
+    }
+  }
+ 
+}

@@ -1,0 +1,19 @@
+.dashboard-card {
+  width: 90%;
+  height: 30vh;
+  margin: 2rem auto;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-shadow: $shad;
+  border-radius: $rad;
+  &__background {
+    @include flexbox__c;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
+    height: inherit;
+    text-shadow: $shad;
+    font-size: 1.5rem;
+  }
+}

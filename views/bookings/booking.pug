@@ -23,7 +23,7 @@ block content
           h1 #{booking.event.location.address}
       .single__event__buttons
         .single__event__bg
-          a(href=`/profile/${booking.booker._id}`)
+          a(href=`/dashboard/${booking.booker._id}`)
             i.fas.fa-arrow-left
         .single__event__bg
           a(href=`/event/${booking.event._id}/map`)

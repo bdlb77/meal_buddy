@@ -45,23 +45,40 @@ exports.register = async (req, res, next) => {
 	next();
 };
 
-exports.profile = async (req, res) => {
-	const user = await User.findOne({ _id: req.params.id }).populate('bookings');
-	if (!user._id.equals(req.user._id)) throw new Error('You cannot access this page.');
+// exports.profile = async (req, res) => {
+// 	const user = await User.findOne({ _id: req.params.id }).populate('bookings');
+// 	if (!user._id.equals(req.user._id)) throw new Error('You cannot access this page.');
 
-	const pastBookings = [...user.bookings].filter(b => b.event.date <= Date.now());
-	const upcoming = [...user.bookings].filter(b => b.event.date > Date.now());
+// 	const pastBookings = [...user.bookings].filter(b => b.event.date <= Date.now());
+// 	const upcoming = [...user.bookings].filter(b => b.event.date > Date.now());
 
-	res.render('users/profile', { title: `Profile of ${user.name}`, user, pastBookings, upcoming });
-};
+// 	res.render('users/profile', { title: `Profile of ${user.name}`, user, pastBookings, upcoming });
+// };
 
 exports.dashboard = async (req, res) => {
-	const user = await User.findOne({ _id: req.params.id });
+	const user = await User.findOne({ _id: req.params.id }).populate('bookings');
 	if (!user._id.equals(req.user._id)) {
 		req.flash('error', 'you cannot access this page.');
 		return res.redirect('/');
 	}
-	const events = await Event.find({ author: req.params.id });
 
-	res.render('users/dashboard', { title: `${user.name}'s Dashboard`, user, events });
+	let hostedEvents = [],
+		upcomingEvents = [],
+		pastEvents = [];
+	if (req.query.host) {
+		hostedEvents = await Event.find({ author: req.params.id });
+	}
+	if (req.query.upcoming) {
+		upcomingEvents = [...user.bookings].filter(b => b.event.date > Date.now());
+	}
+	if (req.query.past) {
+		pastEvents = [...user.bookings].filter(b => b.event.date <= Date.now());
+	}
+	res.render('users/dashboard', {
+		title: `${user.name}'s Dashboard`,
+		user,
+		hostedEvents,
+		upcomingEvents,
+		pastEvents,
+	});
 };

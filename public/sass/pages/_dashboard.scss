@@ -1,11 +1,42 @@
 .dashboard {
-  &__add {
-      padding: 0.25rem 0.5rem;
+  height: calc(100vh - (65px + 4rem));
+  display: grid;
+  grid-template-rows: 25% 15% 60%;
+  &__profile {
+    @include flexbox__c;
+    justify-content: space-around;
   }
-}
+  &__profile-email h1 {
+    font-weight: lighter;
+  }
+  &__profile-name h1 {
+    font-size: 3rem;
+  }
+  &__nav {
+    & > * {
+      width: 100%;
+      @include flexbox__c;
+    }
+    background: $secondary;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    a {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .far {
+      font-size: 2rem;
+    }
+  }
 
-.dashboard-card {
-  width: 80%;
-  margin: 0 auto;
-  height: 20vh;
+  &__nav-add {
+    border-left: 1px solid $white;
+    height: 100%;
+  }
+  &__events {
+    overflow-y: auto;
+    height: 100%;
+  }
 }

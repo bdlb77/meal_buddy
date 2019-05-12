@@ -36,7 +36,7 @@ router.get('/booking/:id', authController.isLoggedIn, catchErrors(bookingControl
 // REVIEW
 router.post('/reviews/:id', catchErrors(reviewController.createReview));
 // PROFILE DASHBOARD
-router.get('/profile/:id', catchErrors(userController.profile));
+// router.get('/profile/:id', catchErrors(userController.profile));
 router.get('/dashboard/:id', authController.isLoggedIn, catchErrors(userController.dashboard));
 
 // AUTHENTICATION / USERS

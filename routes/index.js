@@ -45,11 +45,11 @@ router.get('/users/login', userController.loginForm);
 
 router.post('/users/login', authController.login);
 
-router.get('/users/logout', authController.logout);
-
 router.get('/users/register', userController.registerForm);
 
 router.post('/users/register', userController.validateRegister, userController.register, authController.login);
+
+router.get('/users/logout', authController.logout);
 
 router.post('/account/forgot', catchErrors(authController.forgot));
 

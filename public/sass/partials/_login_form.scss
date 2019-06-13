@@ -1,0 +1,78 @@
+
+.login__form {
+  height: 60vh;
+  @include flexbox__c;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 26px;
+  .fieldset{
+    @include flexbox__c;
+    flex-direction: column;
+    height: 15vh;
+  }
+ 
+  input:not([type="submit"]) {
+    margin-top: 2rem;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid $secondBold;
+    color: $white;
+    &:focus {
+      outline: $primaryBold  auto 4px;
+    }
+  }
+  .button {
+    width: 80vw;
+    padding: 2rem;
+  }
+
+}
+
+.register__form {
+  height: 80vh;
+
+  .button {
+    margin-top: 1rem;
+  }
+}
+
+
+// FORGOT FORM
+
+.forgot__form {
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  label {
+    font-size: 16px;
+    align-self: baseline;
+    width: 50%;
+  }
+  .fieldset {
+    display: flex;
+    width: 80vw;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+  }
+  
+  input:not([type="submit"]) {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid $secondBold;
+    color: $white;
+    width: 100%;
+    font-size: 16px;
+
+    &:focus {
+      outline: $primaryBold  auto 4px;
+    }
+  }
+
+  .button {
+    width: 40vw;
+    padding: 1.5rem;
+  }
+}

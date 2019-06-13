@@ -1,8 +1,8 @@
 extends ../layout
 
 block content
-    form.form(action="/users/register" method="POST")
-      h2 Register
+    form.form.login__form.register__form(action="/users/register" method="POST")
+      h3 Register
       label(for="name") Name
       input(type="text" name="name" )
       label(for="email") Email Address
@@ -11,4 +11,4 @@ block content
       input(type="password" name="password")
       label(for="password-confirm") Confirm Password
       input(type="password" name="password-confirm")
-      input.button(type="submit" value="Register!")
+      input.button(type="submit" value="Sign Up!")

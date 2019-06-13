@@ -23,8 +23,18 @@ router.get('/events/add', authController.isLoggedIn, eventController.addEvent);
 
 router.get('/event/:id/edit', catchErrors(eventController.editSingleEvent));
 
-router.post('/add', catchErrors(eventController.createEvent));
-router.post('/add/:id', catchErrors(eventController.updateEvent));
+router.post(
+	'/add',
+	eventController.upload,
+	catchErrors(eventController.resize),
+	catchErrors(eventController.createEvent)
+);
+router.post(
+	'/add/:id',
+	eventController.upload,
+	catchErrors(eventController.resize),
+	catchErrors(eventController.updateEvent)
+);
 
 router.get('/event/:id/map', catchErrors(eventController.getMap));
 
@@ -45,11 +55,11 @@ router.get('/users/login', userController.loginForm);
 
 router.post('/users/login', authController.login);
 
-router.get('/users/logout', authController.logout);
-
 router.get('/users/register', userController.registerForm);
 
 router.post('/users/register', userController.validateRegister, userController.register, authController.login);
+
+router.get('/users/logout', authController.logout);
 
 router.post('/account/forgot', catchErrors(authController.forgot));
 

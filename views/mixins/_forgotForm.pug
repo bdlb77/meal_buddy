@@ -1,7 +1,8 @@
 mixin forgotForm()
 
-    form.form(action="/account/forgot" method="POST")
+    form.form.forgot__form(action="/account/forgot" method="POST")
         h2 Forgot your password?
-        label(for="email")
-        input(type="email" name="email")
+        .fieldset
+            label(for="email") Account Email
+            input(type="email" name="email")
         input.button(type="submit" value="Send Request")

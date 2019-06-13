@@ -16,7 +16,6 @@ const eventSchema = new Schema(
 		},
 		slug: {
 			type: String,
-			required: 'A slug must be added.',
 		},
 		created: {
 			type: Date,
@@ -65,6 +64,23 @@ const eventSchema = new Schema(
 		toObject: { virtuals: true },
 	}
 );
+eventSchema.pre('save', async function(next) {
+	// 1. return if name is not modified.
+	if (!this.isModified('title')) return next();
+	// 2. set slug properly
+	this.slug = slug(this.title);
+	// 3. handle slugs to be unique
+	// - regex to find slugs with matching name.
+	const slugRegex = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
+	const eventsWithSlug = await this.constructor.find({ slug: slugRegex });
+	// - increment number.
+	if (eventsWithSlug.length) {
+		this.slug = `${this.slug}-${eventsWIthSlug.length + 1}`;
+	}
+	// 4. continue on
+	next();
+});
+
 eventSchema.virtual('bookings', {
 	ref: 'Booking', // what model is linked?
 	localField: '_id', //what field on model
@@ -101,23 +117,6 @@ eventSchema.statics.attending = function(eventId) {
 		},
 	]);
 };
-eventSchema.pre('save', async function(next) {
-	// 1. return if name is not modified.
-	if (!this.isModified('title')) return next();
-	// 2. set slug properly
-	this.slug = slug(this.title);
-	console.log(`SLUG:::::: ${this.slug}`);
-	// 3. handle slugs to be unique
-	// - regex to find slugs with matching name.
-	const slugRegex = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
-	const eventsWithSlug = await this.constructor.find({ slug: slugRegex });
-	// - increment number.
-	if (eventsWithSlug.length) {
-		this.slug = `${this.slug}-${eventsWIthSlug.length + 1}`;
-	}
-	// 4. continue on
-	next();
-});
 
 eventSchema.pre('find', autoPopulate);
 eventSchema.pre('findOne', autoPopulate);

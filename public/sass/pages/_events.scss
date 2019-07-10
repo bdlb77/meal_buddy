@@ -22,14 +22,14 @@
   box-shadow: $top-shad;
   text-decoration: none;
   color: $white;
+  background-size: cover;
   &:nth-child(1) {
     z-index: 5;
-    background: gray;
     bottom: $default-diff * 0;
     width: $default-width - $default-min * 0;
   }
-  &:nth-child(n + 2) {
-    background: $secondary;
+  &:nth-child(n + 3) {
+    background: $secondary !important;
   }
   &:nth-child(2) {
     z-index: 4;

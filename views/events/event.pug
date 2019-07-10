@@ -4,11 +4,10 @@ include ../mixins/_bookingForm
 include ../mixins/_reviewCard
 
 block content
-  =h.dump(event.photo)
   .single__event
-    .single__event__top
+    .single__event__top( style=`background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),  url(/uploads/${event.photo || 'chicken.jpeg'}); background-size: cover`)
       .single__event__title
-    .single__event__author.avatar__big
+    .single__event__author.avatar__big( style=`background-image: url(${event.author.gravatar}); background-size: cover`)
     .single__event__bottom
       .single__event__content
         .single__event__date

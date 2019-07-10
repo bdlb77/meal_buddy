@@ -1,8 +1,8 @@
 mixin reviewCard(review = {})
   .review__card
     .review__card__author
-      h1= review.author.name
-      img.avatar(src=review.author.gravatar)
+      //- h1= review.author.name
+      //- img.avatar(src=review.author.gravatar)
     .review__card__body
       .review__card__rating
         = `★`.repeat(review.rating)

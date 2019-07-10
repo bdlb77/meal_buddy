@@ -1,7 +1,9 @@
 const CACHE_NAME = 'meal-buddy-v1 static';
 const CACHE_DYNAMIC = 'meal-buddy-v1 dynamic';
 
-const assetsToCache = ['./', './javascripts/express-app.js', './sass/style.scss' /* fallback files */];
+const assetsToCache = [
+	/* fallback files */
+];
 
 self.addEventListener('install', async event => {
 	console.info('Event: Install');

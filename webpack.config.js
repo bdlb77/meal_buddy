@@ -6,7 +6,7 @@ const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
-const WorkboxPlugin = require('workbox-webpack-plugin');
+const workboxPlugin = require('workbox-webpack-plugin');
 
 /* 
  PERFOMANCE BUDGET 
@@ -89,10 +89,11 @@ const config = {
 	plugins: [
 		// here is where we tell it to output our css to a separate file
 		new ExtractTextPlugin('style.css'),
-		new WorkboxPlugin.InjectManifest({
-			swSrc: './public/src-sw.js',
-			swDest: 'sw.js',
-		}),
+		// new workbox.GenerateSW({
+		// 	swDest: './sw.js',
+		// 	skipWaiting: true,
+		// 	clientsClaim: true,
+		// }),
 	],
 	performance: performanceConfig,
 };

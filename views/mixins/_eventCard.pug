@@ -1,5 +1,5 @@
 mixin eventCard(event = {})
-  a.event__card(href=`/event/${event.slug}`)
+  a.event__card(href=`/event/${event.slug}` style=`background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),  url(/uploads/${event.photo || 'chicken.jpeg'}); background-size: cover,`)
     .event__card__title=event.title
     .event__card__date=h.moment(event.date).format("MMMM Do")
     .event__card__avatar
